@@ -1,0 +1,211 @@
+:root {
+  /* Colors */
+  --primaryColor: #1b4a0aca;
+  --hoverColor: #44de108f;
+  --paleGreen: hsl(96, 75%, 89%);
+  --whiteColor: white;
+  --blackColor: black;
+  /* Fonts */
+  --biggestFontSize: 2.5rem;
+  --h1FontSize: 1.5rem;
+  --h2FontSize: 1.25rem;
+  --h3FontSize: 1rem;
+  --normalFontSize: .938rem;
+  --smallFontSize: .813rem;
+  --smallestFontSize: .75rem;
+}
+
+.homePage {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  scrollbar-color: transparent transparent;
+}
+
+.homePage::-webkit-scrollbar {
+  display: none;
+}
+
+.homePage {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow-x: hidden;
+}
+.homePage video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+  z-index: 1;
+}
+.homePage .contentContainer {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+}
+.homePage .contentContainer h1 {
+  font-size: 3rem;
+  color: white;
+  margin: 0.5rem 0;
+}
+.homePage .contentContainer p {
+  font-size: 1.5rem;
+  color: white;
+  margin: 0.5rem 0;
+}
+.homePage .contentContainer button {
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  color: white;
+  background-color: var(--primaryColor);
+  border: none;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  margin-top: 1rem;
+}
+.homePage .contentContainer button:hover {
+  background-color: var(--hoverColor);
+}
+.homePage .mainContent {
+  background-color: #f5f5f5;
+  padding: 4rem 2rem;
+  animation: fadeIn 1.5s ease-in-out;
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.homePage .mainContent section {
+  margin-bottom: 4rem;
+  background: #fff;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.homePage .mainContent section:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+.homePage .mainContent section h2 {
+  font-size: 2.5rem;
+  color: #333;
+  margin-bottom: 1rem;
+}
+.homePage .mainContent section p {
+  font-size: 1.25rem;
+  color: #666;
+  margin-bottom: 1.5rem;
+}
+.homePage .mainContent section .mission, .homePage .mainContent section .team {
+  margin-top: 2rem;
+}
+.homePage .mainContent section .mission h3, .homePage .mainContent section .team h3 {
+  font-size: 2rem;
+  color: #555;
+  margin-bottom: 1rem;
+}
+.homePage .mainContent section .mission p, .homePage .mainContent section .team p {
+  font-size: 1.25rem;
+  color: #777;
+}
+.homePage .mainContent section ul {
+  list-style: none;
+  padding: 0;
+}
+.homePage .mainContent section ul li {
+  margin-bottom: 2rem;
+}
+.homePage .mainContent section ul li h3 {
+  font-size: 2rem;
+  color: #444;
+  margin-bottom: 0.5rem;
+}
+.homePage .mainContent section ul li p {
+  font-size: 1.25rem;
+  color: #666;
+}
+.homePage .mainContent section .testimonial {
+  margin-top: 2rem;
+  background: url("/path-to-testimonial-bg.jpg") no-repeat center center/cover;
+  padding: 2rem;
+  border-radius: 8px;
+  color: #fff;
+}
+.homePage .mainContent section .testimonial p {
+  font-size: 1.25rem;
+  font-style: italic;
+}
+.homePage .mainContent section form {
+  display: flex;
+  flex-direction: column;
+  background: #fafafa;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+.homePage .mainContent section form input, .homePage .mainContent section form textarea {
+  margin-bottom: 1rem;
+  padding: 0.75rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  transition: border-color 0.3s;
+}
+.homePage .mainContent section form input:focus, .homePage .mainContent section form textarea:focus {
+  border-color: #3498db;
+  outline: none;
+}
+.homePage .mainContent section form button {
+  padding: 0.75rem 2rem;
+  font-size: 1rem;
+  background-color: #3498db;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+.homePage .mainContent section form button:hover {
+  background-color: #2980b9;
+}
+.homePage .footer {
+  position: relative;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  padding: 1rem 0;
+  background-color: gray;
+  color: #fff;
+}
+.homePage .footer h2 {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+.homePage .footer p {
+  font-size: 1rem;
+  margin-bottom: 0.25rem;
+}
+.homePage .footer .socialMedia {
+  display: flex;
+  justify-content: center;
+}
+.homePage .footer .socialMedia .icon_sm {
+  color: white;
+}
+.homePage .footer .socialMedia .icon_sm:hover {
+  color: #3498db;
+}/*# sourceMappingURL=Home.css.map */

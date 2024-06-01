@@ -1,0 +1,114 @@
+.profile-user {
+  flex: 1;
+  padding: 20px;
+  background-color: #f4f4f4;
+}
+.profile-user .profile-header {
+  display: flex;
+  align-items: center;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #ddd;
+}
+.profile-user .profile-header .profile-picture {
+  border-radius: 50%;
+  width: 80px;
+  height: 80px;
+  margin-right: 20px;
+}
+.profile-user .profile-header h1 {
+  margin: 0;
+  font-size: 24px;
+  color: #333;
+}
+.profile-user .profile-header h1 input {
+  font-size: 24px;
+  border: none;
+  border-bottom: 1px solid #333;
+  background: none;
+  padding: 5px;
+}
+.profile-user .profile-header p {
+  margin: 5px 0;
+  font-size: 16px;
+  color: #666;
+}
+.profile-user .profile-header p input {
+  font-size: 16px;
+  border: none;
+  border-bottom: 1px solid #666;
+  background: none;
+  padding: 5px;
+}
+.profile-user .profile-header p select {
+  font-size: 16px;
+  border: none;
+  border-bottom: 1px solid #666;
+  background: none;
+  padding: 5px;
+}
+.profile-user .profile-header .profile-actions {
+  margin-left: auto;
+}
+.profile-user .profile-header .profile-actions button {
+  margin-left: 10px;
+  padding: 10px;
+  border: none;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+  border-radius: 5px;
+}
+.profile-user .profile-tabs {
+  display: flex;
+  margin-top: 20px;
+}
+.profile-user .profile-tabs button {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ddd;
+  background-color: white;
+  cursor: pointer;
+}
+.profile-user .profile-tabs button.active {
+  background-color: #007bff;
+  color: white;
+}
+.profile-user .profile-content {
+  margin-top: 20px;
+}
+.profile-user .profile-content .profile-section {
+  margin-bottom: 30px;
+  border: 1px solid #ddd;
+  padding: 20px;
+  background-color: white;
+  border-radius: 5px;
+}
+.profile-user .profile-content .profile-section h2 {
+  margin-bottom: 10px;
+  font-size: 20px;
+  color: #333;
+}
+.profile-user .profile-content .profile-section p {
+  margin: 5px 0;
+  font-size: 16px;
+  color: #666;
+}
+.profile-user .profile-content .profile-section p input {
+  font-size: 16px;
+  border: none;
+  border-bottom: 1px solid #666;
+  background: none;
+  padding: 5px;
+}
+.profile-user .profile-content .profile-section .vitals p strong {
+  color: #333;
+}
+.profile-user .profile-content .profile-section button {
+  padding: 10px 20px;
+  border: none;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+  border-radius: 5px;
+  margin-top: 10px;
+}/*# sourceMappingURL=ProfileUser.css.map */

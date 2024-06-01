@@ -1,0 +1,103 @@
+
+.root {
+    /* Colors */
+    --primaryColor: #1b4a0aca;
+    --hoverColor: #44de108f;
+    --paleGreen: hsl(96, 75%, 89%);
+    --whiteColor: white;
+    --blackColor: black;
+    /* Fonts */
+    --biggestFontSize: 2.5rem;
+    --h1FontSize: 1.5rem;
+    --h2FontSize: 1.25rem;
+    --h3FontSize: 1rem;
+    --normalFontSize: .938rem;
+    --smallFontSize: .813rem;
+    --smallestFontSize: .75rem;
+  }
+  
+  .navbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 20px;
+      background-color: #ffffff;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    
+      &__logo img {
+        height: 40px;
+      }
+    
+      &__links {
+        display: flex;
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    
+        .title_app{
+          font-size: var(--h2FontSize);
+        }
+        li {
+          margin: 0 10px;
+    
+          a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+    
+            &:hover {
+              color: var(--hoverColor);
+            }
+          }
+        }
+      }
+    
+      &__search {
+        flex-grow: 1;
+        display: flex;
+        justify-content: center;
+    
+        input {
+          width: 300px;
+          padding: 5px 10px;
+          border: 1px solid #ddd;
+          border-radius: 3px;
+    
+          &:focus {
+            border-color: #0073e6;
+          }
+        }
+      }
+    
+      &__buttons {
+        display: flex;
+        align-items: center;
+    
+        .navbar__button {
+          padding: 8px 16px;
+          margin: 0 5px;
+          border: none;
+          border-radius: 3px;
+          background-color: #a3e279;
+          color: var(--primaryColor);
+          font-weight: 500;
+          cursor: pointer;
+    
+          &:hover {
+            background-color: var(--primaryColor);
+            color: white;
+          }
+    
+          &--primary {
+            background-color: var(--primaryColor);
+            color: white;
+    
+            &:hover {
+              background-color: #a3e279;
+              color: var(--primaryColor);
+            }
+          }
+        }
+      }
+    }
+    
