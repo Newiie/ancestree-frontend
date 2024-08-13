@@ -20,6 +20,7 @@ import Records from './components/Records/Records';
 import Gallery from './components/Gallery/Gallery';
 import Help from './components/Help/Help';
 import Setting from './components/Settings/Setting';
+import Search from './components/Pages/Search';
 
 
 
@@ -68,6 +69,11 @@ function App() {
                  element={<Setting />} />
           <Route path="/help" 
                  element={<Help />} />
+          <Route path="/search"
+                 element={<Search/>}
+                 
+          />
+
         </Routes>
       </div>
     </Router>

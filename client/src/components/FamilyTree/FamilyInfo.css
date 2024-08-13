@@ -1,0 +1,33 @@
+.family-info {
+  width: 50%;
+  margin: auto;
+  padding: 10px;
+  overflow-y: auto;
+}
+
+.family-card {
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+h2 {
+  text-align: center;
+}
+
+p {
+  margin: 5px 0;
+}
+
+strong {
+  font-weight: bold;
+}/*# sourceMappingURL=FamilyInfo.css.map */

@@ -10,7 +10,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import Nav_Home from '../NavBar/Nav_Home';
 
 // Asset imports
-import video from '../../loginAssets/miku_vid.mp4';
+import video from '../../pageAssets/backgroundHome.mp4';
 import logo from '../../loginAssets/doge.png';
 
 // Icon imports
@@ -52,9 +52,10 @@ const Register = () => {
 
     <div> <Nav_Home/>
     <div className='registerPage flex'>
-      <div className="container flex">
+      {/* <div className="container flex"> */}
         <div className="videoDiv">
           <video src={video} autoPlay muted loop></video>
+          <div className='overlay'></div>
           <div className="textDiv">
             <h2 className='title'>AncesTREE</h2>
             <p>Unraveling Ancestral Lineages through Geographical History</p>
@@ -68,7 +69,7 @@ const Register = () => {
         </div>
         <div className="formDiv flex">
           <div className="headerDiv">
-            <img src={logo} alt="Doge" />
+            {/* <img src={logo} alt="Doge" /> */}
             <h1>Register Now</h1>
           </div>
           <form className='form grid' onSubmit={createUser}>
@@ -124,7 +125,7 @@ const Register = () => {
       </div>
       <ToastContainer />
     </div>
-    </div>
+    // </div>
   );
 };
 

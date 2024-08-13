@@ -1,3 +1,5 @@
+
+
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { auth, db } from "../../firebase";
@@ -7,6 +9,7 @@ import FamilyTreeForm from './FamilyTreeForm';
 import AncesTree from './AncesTree';
 import FamilyInfo from './FamilyInfo';
 import "./TreeMain.css";
+import Rel_Content from '../Relationships/Rel_Content';
 
 const TreeMain = () => {
   const [familyTreeData, setFamilyTreeData] = useState(null);
@@ -50,10 +53,20 @@ const TreeMain = () => {
     const user = auth.currentUser;
     if (user) {
       try {
+        const cleanData = {
+          ...data,
+          partner: data.partner || null, // Ensures that 'partner' field is not undefined
+          children: data.children.map(child => ({
+            ...child,
+            partner: child.partner || null,
+            children: child.children || []
+          }))
+        };
+
         const userDocRef = doc(db, "Users", user.uid);
-        await setDoc(userDocRef, { familyTree: data }, { merge: true });
-        console.log("Saved family tree data:", data);
-        setFamilyTreeData(data);
+        await setDoc(userDocRef, { familyTree: cleanData }, { merge: true });
+        console.log("Saved family tree data:", cleanData);
+        setFamilyTreeData(cleanData);
         setIsEditingTree(false);
         navigate('/family_tree');  
       } catch (error) {
@@ -83,7 +96,7 @@ const TreeMain = () => {
   }
 
   return (
-    <div className="TreeMain" style={{ display: 'flex', width: "100%", height: "95vh", justifyContent: "center", alignItems: "center" }}>
+    <div className="TreeMain" >
       <div style={{ flex: 1, padding: '10px' }}>
         <h1>Family Tree</h1>
         <AncesTree 
@@ -94,13 +107,17 @@ const TreeMain = () => {
           <FamilyTreeForm 
             onSubmit={handleFormSubmit} 
             initialData={familyTreeData} 
+            onClose={() => setIsEditingTree(false)}
           />
         )}
       </div>
+      
       <FamilyInfo familyData={familyTreeData} />
+      
+      
+        
     </div>
   );
 };
 
 export default TreeMain;
-

@@ -31,7 +31,9 @@ const Notification = () => {
           <a href='/user_settings'><SidebarItem icon={<Settings size={20} />} text="Settings" /></a>
 
           </SideBar>
-          
+          <div className="content">
+            
+          </div>
         </div>
       </div>
     </div>

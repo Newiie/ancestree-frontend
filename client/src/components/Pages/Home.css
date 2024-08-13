@@ -15,12 +15,12 @@
   --smallestFontSize: .75rem;
 }
 
+/* Hide the scrollbar */
 .homePage {
   -ms-overflow-style: none;
   scrollbar-width: none;
   scrollbar-color: transparent transparent;
 }
-
 .homePage::-webkit-scrollbar {
   display: none;
 }
@@ -76,9 +76,11 @@
   background-color: var(--hoverColor);
 }
 .homePage .mainContent {
-  background-color: #f5f5f5;
-  padding: 4rem 2rem;
+  background-color: #D2E0C6;
   animation: fadeIn 1.5s ease-in-out;
+  z-index: 2;
+  padding: 2rem;
+  height: 375vh;
 }
 @keyframes fadeIn {
   from {
@@ -88,98 +90,112 @@
     opacity: 1;
   }
 }
-.homePage .mainContent section {
-  margin-bottom: 4rem;
-  background: #fff;
+.homePage .mainContent .searchFamily {
+  position: relative;
   padding: 2rem;
+  background-color: var(--paleGreen);
   border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s, box-shadow 0.3s;
+  text-align: center;
+  height: 89vh;
 }
-.homePage .mainContent section:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-}
-.homePage .mainContent section h2 {
-  font-size: 2.5rem;
-  color: #333;
+.homePage .mainContent .searchFamily .searchCardVideo {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
   margin-bottom: 1rem;
 }
-.homePage .mainContent section p {
-  font-size: 1.25rem;
-  color: #666;
-  margin-bottom: 1.5rem;
-}
-.homePage .mainContent section .mission, .homePage .mainContent section .team {
-  margin-top: 2rem;
-}
-.homePage .mainContent section .mission h3, .homePage .mainContent section .team h3 {
-  font-size: 2rem;
-  color: #555;
-  margin-bottom: 1rem;
-}
-.homePage .mainContent section .mission p, .homePage .mainContent section .team p {
-  font-size: 1.25rem;
-  color: #777;
-}
-.homePage .mainContent section ul {
-  list-style: none;
-  padding: 0;
-}
-.homePage .mainContent section ul li {
-  margin-bottom: 2rem;
-}
-.homePage .mainContent section ul li h3 {
-  font-size: 2rem;
-  color: #444;
-  margin-bottom: 0.5rem;
-}
-.homePage .mainContent section ul li p {
-  font-size: 1.25rem;
-  color: #666;
-}
-.homePage .mainContent section .testimonial {
-  margin-top: 2rem;
-  background: url("/path-to-testimonial-bg.jpg") no-repeat center center/cover;
-  padding: 2rem;
-  border-radius: 8px;
-  color: #fff;
-}
-.homePage .mainContent section .testimonial p {
-  font-size: 1.25rem;
-  font-style: italic;
-}
-.homePage .mainContent section form {
-  display: flex;
-  flex-direction: column;
-  background: #fafafa;
-  padding: 2rem;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-.homePage .mainContent section form input, .homePage .mainContent section form textarea {
-  margin-bottom: 1rem;
-  padding: 0.75rem;
+.homePage .mainContent .searchFamily button {
+  padding: 0.75rem 1.5rem;
   font-size: 1rem;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  transition: border-color 0.3s;
-}
-.homePage .mainContent section form input:focus, .homePage .mainContent section form textarea:focus {
-  border-color: #3498db;
-  outline: none;
-}
-.homePage .mainContent section form button {
-  padding: 0.75rem 2rem;
-  font-size: 1rem;
-  background-color: #3498db;
+  color: var(--whiteColor);
+  background-color: var(--primaryColor);
   border: none;
-  color: #fff;
+  border-radius: 0.25rem;
   cursor: pointer;
-  transition: background-color 0.3s;
 }
-.homePage .mainContent section form button:hover {
-  background-color: #2980b9;
+.homePage .mainContent .searchFamily button:hover {
+  background-color: var(--hoverColor);
+}
+.homePage .mainContent .viewRecords {
+  position: relative;
+  padding: 2rem;
+  background-color: var(--paleGreen);
+  border-radius: 8px;
+  text-align: center;
+  margin-top: 2rem; /* Space between searchFamily and viewRecords */
+  height: 89vh;
+}
+.homePage .mainContent .viewRecords .recordCardVideo {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+.homePage .mainContent .viewRecords button {
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  color: var(--whiteColor);
+  background-color: var(--primaryColor);
+  border: none;
+  border-radius: 0.25rem;
+  cursor: pointer;
+}
+.homePage .mainContent .viewRecords button:hover {
+  background-color: var(--hoverColor);
+}
+.homePage .mainContent .familyTree {
+  position: relative;
+  padding: 2rem;
+  background-color: var(--paleGreen);
+  border-radius: 8px;
+  text-align: center;
+  margin-top: 2rem; /* Space between searchFamily and viewRecords */
+  height: 89vh;
+}
+.homePage .mainContent .familyTree .familyCardVideo {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+.homePage .mainContent .familyTree button {
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  color: var(--whiteColor);
+  background-color: var(--primaryColor);
+  border: none;
+  border-radius: 0.25rem;
+  cursor: pointer;
+}
+.homePage .mainContent .familyTree button:hover {
+  background-color: var(--hoverColor);
+}
+.homePage .mainContent .createAccount {
+  position: relative;
+  padding: 2rem;
+  background-color: var(--paleGreen);
+  border-radius: 8px;
+  text-align: center;
+  margin-top: 2rem; /* Space between searchFamily and viewRecords */
+  height: 89vh;
+}
+.homePage .mainContent .createAccount .createCardVideo {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+.homePage .mainContent .createAccount button {
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  color: var(--whiteColor);
+  background-color: var(--primaryColor);
+  border: none;
+  border-radius: 0.25rem;
+  cursor: pointer;
+}
+.homePage .mainContent .createAccount button:hover {
+  background-color: var(--hoverColor);
 }
 .homePage .footer {
   position: relative;
@@ -191,10 +207,6 @@
   background-color: gray;
   color: #fff;
 }
-.homePage .footer h2 {
-  font-size: 1.5rem;
-  margin-bottom: 0.5rem;
-}
 .homePage .footer p {
   font-size: 1rem;
   margin-bottom: 0.25rem;
@@ -203,9 +215,10 @@
   display: flex;
   justify-content: center;
 }
-.homePage .footer .socialMedia .icon_sm {
+.homePage .footer .socialMedia a {
   color: white;
+  margin: 0 0.5rem;
 }
-.homePage .footer .socialMedia .icon_sm:hover {
+.homePage .footer .socialMedia a:hover {
   color: #3498db;
 }/*# sourceMappingURL=Home.css.map */

@@ -24,7 +24,10 @@ const FamilyTree = () => {
             <a href='/help'><SidebarItem icon={<HelpCircle size={20} />} text="Help" /></a>
             <a href='/user_settings'><SidebarItem icon={<Settings size={20} />} text="Settings" /></a>
           </SideBar>
+          <div className="content">
           <TreeMain />
+          </div>
+          
         </div>
       </div>
     </div>

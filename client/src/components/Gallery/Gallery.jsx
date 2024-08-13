@@ -10,6 +10,7 @@ import { ToastContainer } from 'react-toastify';
 
 import { BarChart, Handshake, HelpCircle, Home, LucideGlasses, Settings, TreePine, User, Bell, FileArchive} from 'lucide-react';
 import { AiTwotonePicture } from "react-icons/ai";
+import GalleryContent from './GalleryContent';
 
 
 
@@ -32,7 +33,9 @@ const Gallery = () => {
           <a href='/user_settings'><SidebarItem icon={<Settings size={20} />} text="Settings" /></a>
 
           </SideBar>
-          
+          <div className="content">
+            <GalleryContent/>
+          </div>
         </div>
       </div>
     </div>

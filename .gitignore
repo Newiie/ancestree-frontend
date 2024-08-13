@@ -1,1 +1,7 @@
 client/src/firebase.js
+firebase.json
+.firebaserc
+storage.rules
+client/src/cors.js
+client/src/firebase.js
+client/package-lock.json

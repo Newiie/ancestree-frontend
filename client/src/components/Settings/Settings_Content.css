@@ -1,0 +1,72 @@
+.loading-state {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  font-size: 1.5rem;
+  color: hsl(115, 44%, 32%);
+}
+
+.settings-container {
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  height: 93vh;
+}
+.settings-container.dark-mode {
+  background-color: #333;
+  color: #fff;
+}
+.settings-container h1,
+.settings-container h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+.settings-container div {
+  margin-bottom: 20px;
+}
+.settings-container p {
+  text-align: center;
+  font-size: 1.2em;
+  margin-bottom: 10px;
+}
+.settings-container button {
+  display: block;
+  padding: 10px;
+  margin: 10px 0;
+  border: none;
+  border-radius: 5px;
+  background-color: hsl(115, 44%, 32%);
+  font-size: 1em;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  width: 50vh;
+}
+.settings-container button:hover {
+  background-color: hsl(125, 68%, 27%);
+  color: black;
+}
+.settings-container input {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 1em;
+}
+.settings-container.dark-mode {
+  background-color: #333;
+  color: #fff;
+}
+.settings-container.dark-mode input {
+  background-color: #555;
+  color: #fff;
+  border: 1px solid #777;
+}
+.settings-container.dark-mode button {
+  background-color: #444;
+  color: #fff;
+}
+.settings-container.dark-mode button:hover {
+  background-color: #666;
+}/*# sourceMappingURL=Settings_Content.css.map */

@@ -11,6 +11,7 @@ import { ToastContainer } from 'react-toastify';
 import { BarChart, Handshake, HelpCircle, Home, LucideGlasses, Settings, TreePine, User, Bell, FileArchive} from 'lucide-react';
 import { AiTwotonePicture } from "react-icons/ai";
 
+import RecordsContent from '../Records/RecordsContent'
 
 const Records = () => {
   return (
@@ -31,6 +32,9 @@ const Records = () => {
           <a href='/user_settings'><SidebarItem icon={<Settings size={20} />} text="Settings" /></a>
 
           </SideBar>
+          <div className="content">
+          <RecordsContent/>
+          </div>
           
         </div>
       </div>

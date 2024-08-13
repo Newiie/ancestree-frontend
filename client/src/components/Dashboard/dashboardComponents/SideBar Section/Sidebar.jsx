@@ -40,19 +40,13 @@ export default function Sidebar({ children }) {
   return (
     <aside className="sidebar-container">
       <nav className="sidebar-nav">
-        <div className="sidebar-header">
-          <img
-            src={logo}
-            className={`logo ${expanded ? 'expanded' : 'collapsed'}`}
-            alt=""
-          />
-          <button
+      
+        <button
             onClick={() => setExpanded((curr) => !curr)}
             className="toggle-btn"
           >
             {expanded ? <ChevronFirst /> : <ChevronLast />}
           </button>
-        </div>
 
         <SidebarContext.Provider value={{ expanded }}>
           <ul className="sidebar-content">{children}</ul>

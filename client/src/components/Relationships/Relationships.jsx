@@ -10,6 +10,7 @@ import { ToastContainer } from 'react-toastify';
 
 import { BarChart, Handshake, HelpCircle, Home, LucideGlasses, Settings, TreePine, User, Bell, FileArchive} from 'lucide-react';
 import { AiTwotonePicture } from "react-icons/ai";
+import Rel_Content from './Rel_Content';
 
 
 const Relationships = () => {
@@ -31,7 +32,7 @@ const Relationships = () => {
           <a href='/user_settings'><SidebarItem icon={<Settings size={20} />} text="Settings" /></a>
 
           </SideBar>
-          
+          <Rel_Content/>
         </div>
       </div>
     </div>

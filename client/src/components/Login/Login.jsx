@@ -7,7 +7,7 @@ import { auth } from '../../firebase';
 import Nav_Home from '../NavBar/Nav_Home';
 
 // asset imports
-import video from '../../loginAssets/miku_vid.mp4';
+import video from '../../pageAssets/backgroundHome.mp4';
 import logo from '../../loginAssets/doge.png';
 
 // icon imports
@@ -44,9 +44,10 @@ const Login = () => {
   return (
     <div> <Nav_Home/>
     <div className='loginPage flex'>
-      <div className='container flex'>
+      {/* <div className='container flex'> */}
         <div className='videoDiv'>
           <video src={video} autoPlay muted loop></video>
+          <div className='overlay'></div>
 
           <div className='textDiv'>
             <h2 className='title'>AncesTREE</h2>
@@ -63,7 +64,7 @@ const Login = () => {
 
         <div className='formDiv flex'>
           <div className='headerDiv'>
-            <img src={logo} alt='Doge' />
+            
             <h1>Welcome Back!</h1>
           </div>
           <form className='form grid' onSubmit={loginUser}>
@@ -107,7 +108,7 @@ const Login = () => {
             </span>
           </form>
         </div>
-      </div>
+      {/* </div> */}
       <ToastContainer/>
     </div>
     </div>

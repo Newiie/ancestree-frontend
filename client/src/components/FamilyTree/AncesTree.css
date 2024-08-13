@@ -26,7 +26,7 @@
 .edit-button {
   margin-top: 20px;
   padding: 10px 20px;
-  background-color: #3498db;
+  background-color: #227320;
   color: white;
   border: none;
   border-radius: 5px;
@@ -36,6 +36,6 @@
 }
 
 .edit-button:hover {
-  background-color: darken(#3498db, 10%);
+  background-color: darken(#227320, 10%);
   transform: scale(1.05);
 }

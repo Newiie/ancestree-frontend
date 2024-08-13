@@ -1,1 +1,128 @@
-/*# sourceMappingURL=Records.css.map */
+.records-content {
+  padding: 20px;
+}
+
+h2 {
+  margin-bottom: 20px;
+}
+
+input[type=file] {
+  margin-bottom: 20px;
+}
+
+.file-detail {
+  margin-bottom: 10px;
+}
+.file-detail input[type=text],
+.file-detail select {
+  display: block;
+  margin-bottom: 10px;
+  padding: 8px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+button {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #296f42;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  margin-top: 20px;
+  margin-right: 10px;
+}
+button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+.filter {
+  margin-top: 20px;
+}
+.filter label {
+  margin-right: 10px;
+}
+.filter select {
+  padding: 8px;
+}
+
+.uploaded-files {
+  margin-top: 20px;
+}
+.uploaded-files h2 {
+  margin-bottom: 20px;
+}
+.uploaded-files .file-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 20px;
+}
+.uploaded-files .file-preview {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  transition: box-shadow 0.3s;
+}
+.uploaded-files .file-preview:hover {
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+.uploaded-files .file-preview img {
+  max-width: 100px;
+  max-height: 100px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+}
+.uploaded-files .file-preview a {
+  text-decoration: none;
+  color: #3576bb;
+  margin-bottom: 10px;
+  max-width: -moz-min-content;
+  max-width: min-content;
+  margin-bottom: auto;
+}
+.uploaded-files .file-preview .file-info {
+  text-align: center;
+}
+.uploaded-files .file-preview .file-info p {
+  margin: 0 0 5px;
+}
+.uploaded-files .file-preview .file-info p:last-child {
+  margin-bottom: 0;
+}
+
+.delete-confirm {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  z-index: 1000;
+  width: 300px;
+  text-align: center;
+}
+.delete-confirm p {
+  margin-bottom: 20px;
+}
+.delete-confirm button {
+  margin: 0 10px;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+}/*# sourceMappingURL=Records.css.map */

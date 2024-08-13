@@ -10,6 +10,7 @@ import { ToastContainer } from 'react-toastify';
 
 import { BarChart, Handshake, HelpCircle, Home, LucideGlasses, Settings, TreePine, User, Bell, FileArchive} from 'lucide-react';
 import { AiTwotonePicture } from "react-icons/ai";
+import Settings_Content from './Settings_Content';
 
 
 
@@ -18,7 +19,7 @@ const Setting = () => {
     <div>
         <Nav_Logged />
       <div className="dashboard flex">
-        <div className="dashboardContainer flex">
+       
           <SideBar>
           <a href='/dashboard'><SidebarItem icon={<Home size={20} />} text="Home" /></a>
           <a href='/analytics'><SidebarItem icon={<BarChart size={20} />} text="Analytics" /></a>
@@ -32,10 +33,12 @@ const Setting = () => {
           <a href='/user_settings'><SidebarItem icon={<Settings size={20} />} text="Settings" active/></a>
 
           </SideBar>
-          
+          <div className="content">
+            <Settings_Content/>
+          </div>
         </div>
       </div>
-    </div>
+  
   )
 }
 

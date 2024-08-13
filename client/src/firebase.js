@@ -3,10 +3,11 @@ import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { getAuth } from "firebase/auth";
 import {getFirestore} from "firebase/firestore";
+import { getStorage } from "firebase/storage";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "",
+  apiKey: "AIzaSyDFHDRlE19Q5D7mULYqxnBvzSXiG1JUCT8",
   authDomain: "ancestree-se.firebaseapp.com",
   projectId: "ancestree-se",
   storageBucket: "ancestree-se.appspot.com",
@@ -19,6 +20,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 export const auth = getAuth(app);
+export const storage = getStorage(app);
 
 export const db=getFirestore(app);
 

@@ -11,13 +11,15 @@ import { ToastContainer } from 'react-toastify';
 import { BarChart, Handshake, HelpCircle, Home, LucideGlasses, Settings, TreePine, User, Bell, FileArchive} from 'lucide-react';
 import { AiTwotonePicture } from "react-icons/ai";
 
+import "../Profile/Profile.css"
+
 import ProfileUser from './ProfileUser';
 const Profile = () => {
   return (
     <div>
         <Nav_Logged />
       <div className="dashboard flex">
-        <div className="dashboardContainer flex">
+        {/* <div className="dashboardContainer flex"> */}
           <SideBar>
           <a href='/dashboard'><SidebarItem icon={<Home size={20} />} text="Home" /></a>
           <a href='/analytics'><SidebarItem icon={<BarChart size={20} />} text="Analytics"/></a>
@@ -31,10 +33,13 @@ const Profile = () => {
           <a href='/user_settings'><SidebarItem icon={<Settings size={20} />} text="Settings" /></a>
 
           </SideBar>
+          <div className="content">
           <ProfileUser />
+          </div>
+          
         </div>
       </div>
-    </div>
+    // </div>
   )
 }
 
