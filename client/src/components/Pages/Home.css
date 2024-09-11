@@ -221,4 +221,12 @@
 }
 .homePage .footer .socialMedia a:hover {
   color: #3498db;
+}
+
+.signIn {
+  position: absolute;
+  padding: 10px 68px;
+  left: 47.2%;
+  top: 45%;
+  z-index: 100;
 }/*# sourceMappingURL=Home.css.map */

@@ -1,10 +1,10 @@
 
-
 import React, { useState, useEffect } from 'react';
 import { auth, db, storage } from "../../firebase";
 import { collection, addDoc, getDocs, doc, deleteDoc, updateDoc } from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { ref, uploadBytes, getDownloadURL, listAll, deleteObject } from "firebase/storage";
+import { FaTrash } from 'react-icons/fa'; // Import FontAwesome trash icon
 import Modal from 'react-modal';
 import './Gallery.css';
 
@@ -60,6 +60,25 @@ const GalleryContent = () => {
   const handleAlbumClick = (album) => {
     setSelectedAlbum(album);
     fetchPhotos(album.id);
+  };
+
+  const handleDeleteAlbum = async (albumId) => {
+    if (user) {
+      const confirmed = window.confirm("Are you sure you want to delete this album and all its photos?");
+      if (confirmed) {
+        const albumRef = doc(db, 'Users', user.uid, 'albums', albumId);
+
+        // Delete all photos in the album from storage
+        const photosFolderRef = ref(storage, `Users/${user.uid}/albums/${albumId}/photos`);
+        const photosList = await listAll(photosFolderRef);
+        const deletePromises = photosList.items.map(item => deleteObject(item));
+        await Promise.all(deletePromises);
+
+        // Delete album document
+        await deleteDoc(albumRef);
+        fetchAlbums(user.uid);
+      }
+    }
   };
 
   const handlePhotoUpload = async (event) => {
@@ -119,8 +138,9 @@ const GalleryContent = () => {
       <button onClick={createAlbum}>Add Album</button>
       <div className="album-container">
         {albums.map(album => (
-          <div key={album.id} className="album" onClick={() => handleAlbumClick(album)}>
-            <div className="album-name">{album.name}</div>
+          <div key={album.id} className="album">
+            <div className="album-name" onClick={() => handleAlbumClick(album)}>{album.name}</div>
+            <FaTrash className="delete-icon" onClick={() => handleDeleteAlbum(album.id)} />
           </div>
         ))}
       </div>

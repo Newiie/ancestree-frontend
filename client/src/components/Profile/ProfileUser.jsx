@@ -8,6 +8,8 @@ import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import FamilyInfo from '../../components/FamilyTree/FamilyInfo.jsx';
 import './ProfileUser.css';
 import places from "../../pageAssets/places.json"
+import bloodtype from "../../pageAssets/bloodtype.json"
+
 
 const ProfileUser = () => {
   const [userDetails, setUserDetails] = useState({});

@@ -50,8 +50,12 @@ const Home = () => {
 
                     {/* Create Account Section */}
                     <div className="createAccount">
+                        <button className="signIn">
+                            Sign In
+                        </button>
+                    
                         <video className="createCardVideo" src={createCard} autoPlay muted loop></video>
-                        <a href='/search'><button>Go</button></a>
+
                     </div>
 
                     

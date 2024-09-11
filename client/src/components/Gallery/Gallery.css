@@ -1,4 +1,4 @@
-/* Gallery.css */
+/* Gallery.scss */
 .album-container {
   display: flex;
   overflow-x: auto;
@@ -22,6 +22,7 @@
 
 .album-name {
   font-weight: bold;
+  margin-bottom: 90px;
 }
 
 .photo-preview {

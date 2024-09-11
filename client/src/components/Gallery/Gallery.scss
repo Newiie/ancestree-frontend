@@ -1,4 +1,4 @@
-/* Gallery.css */
+/* Gallery.scss */
 .album-container {
     
     display: flex;
@@ -19,10 +19,13 @@
     text-align: center;
     width: 20vh;
     height: 20vh;
+    
   }
   
   .album-name {
     font-weight: bold;
+    margin-bottom: 90px;
+    
   }
   
 
@@ -58,4 +61,8 @@
   
   .photo-name {
     margin-bottom: 10px;
+  }
+
+  svg.delete-icon {
+    
   }
