@@ -48,7 +48,7 @@ const AncesTree = ({ data, onEditTree }) => {
           collapsible
           initialDepth={2}
           transitionDuration={500}
-          onNodeClick={handleNodeClick}
+          // onNodeClick={handleNodeClick}
         />
       ) : (
         <div className="no-data">
