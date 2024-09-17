@@ -17,7 +17,7 @@ const NavBar = () => {
       </div>
       <div className='flex gap-[1rem] items-center justify-center'>
         <Link className='py-[0.5rem] px-[1rem] text-[0.9rem] rounded-[3px] text-primary bg-secondary-btn hover:text-white hover:bg-primary transition-colors duration-200' href={"/login"}>Sign In</Link>
-        <Link className='py-[0.5rem] px-[1rem] text-[0.9rem] rounded-[3px] bg-primary hover:text-primary hover:bg-hover transition-colors duration-200' href={"/register"}>Sign Up</Link>
+        <Link className='py-[0.5rem] text-white px-[1rem] text-[0.9rem] rounded-[3px] bg-primary hover:text-primary hover:bg-hover transition-colors duration-200' href={"/register"}>Sign Up</Link>
       </div>
     </div>
   )

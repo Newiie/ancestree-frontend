@@ -58,7 +58,7 @@ const LoginForm = () => {
         />
       </div>
 
-      <button className="py-[0.5rem] px-[1rem] text-[0.9rem] rounded-[3px] bg-primary hover:text-primary hover:bg-hover transition-colors duration-200 mt-[1rem]" type="submit">
+      <button className="py-[0.5rem] px-[1rem] text-[0.9rem] text-white rounded-[3px] bg-primary hover:text-primary hover:bg-hover transition-colors duration-200 mt-[1rem]" type="submit">
         Login
       </button>
     </form>
