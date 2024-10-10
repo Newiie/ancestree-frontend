@@ -12,10 +12,12 @@ const config: Config = {
   		backgroundImage: {
   			'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
   			'gradient-conic': 'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
-  			'gradient-linear-green-white': 'linear-gradient(to right, #D4F3C0 69%, #EFFFF4 120%)'
+  			'gradient-linear-green-white': 'linear-gradient(to right, #D4F3C0 69%, #EFFFF4 120%)',
+			'gradient-linear-navigation': 'linear-gradient(to right, #1B5A1B 10%, #D4F3C0 80%)'
   		},
   		backgroundColor: {
   			'primary': '#1b4a0aca',
+			'btn-primary': "#1B5A1B",
   			'btn-active': '#34762E',
   			'hover': '#44de108f',
   			'secondary-btn': '#a3e279',
@@ -23,7 +25,8 @@ const config: Config = {
   			'white': '#FAFAFA',
   			'btn-secondary': '#D4F3C0',
   			'black': '#010101',
-  			'nav': '#D4F3C0'
+  			'nav': '#D4F3C0',
+			'content': "#DFDFDF"
   		},
   		colors: {
   			'hover': '#44de108f',

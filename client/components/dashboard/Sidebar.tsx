@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import React, { useState } from 'react';
+import Link from 'next/link';
 import { FaHome, FaChartBar, FaUser, FaBell, FaTree, FaHeart, FaFileAlt, FaImages, FaCog, FaBars, FaEllipsisV, FaSignOutAlt, FaQuestionCircle } from 'react-icons/fa';
 import {
   Popover,
@@ -7,12 +8,22 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover"
 import  useAuth  from '@/hooks/useAuth';
+import {usePathname} from 'next/navigation';
+import path from 'path';
 
 const Sidebar = () => {
   const [isMinimized, setIsMinimized] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { logout } = useAuth();
+
+  const pathName = usePathname();
+
+  const dashboardRegex = /^\/Dashboard/i;
+
+  const isDashboardPath = dashboardRegex.test(pathName);
   const toggleSidebar = () => {
+    console.log("PATH NAME ", pathName);
+    console.log("IS PATH ", isDashboardPath);
     setIsMinimized(!isMinimized);
   };
 
@@ -30,18 +41,19 @@ const Sidebar = () => {
 
       <ul className="space-y-2 flex-grow overflow-y-auto">
         {[ 
-          { icon: <FaHome />, label: 'Home' },
-          { icon: <FaChartBar />, label: 'Analytics' },
-          { icon: <FaUser />, label: 'Profile' },
-          { icon: <FaBell />, label: 'Notifications' },
-          { icon: <FaTree />, label: 'Family Tree' },
-          { icon: <FaHeart />, label: 'Relationships' },
-          { icon: <FaFileAlt />, label: 'My records' },
-          { icon: <FaImages />, label: 'Gallery' },
+          { icon: <FaHome />, label: 'Home', url: "/" },
+          { icon: <FaChartBar />, label: 'Analytics', url: "/" },
+          { icon: <FaUser />, label: 'Profile', url: "/" },
+          { icon: <FaBell />, label: 'Notifications', url: "/" },
+          { icon: <FaTree />, label: 'Family Tree', url: "/" },
+          { icon: <FaHeart />, label: 'Relationships', url: "/Dashboard/Relationships" },
+          { icon: <FaFileAlt />, label: 'My records', url: "/" },
+          { icon: <FaImages />, label: 'Gallery', url: "/" },
         ].map((item, index) => (
-          <li
+          <Link
+            href={item.url}
             key={index}
-            className="flex px-2 py-[6px] rounded-[3px] items-center text-[1.2rem] text-black hover:bg-gradient-linear-green-white cursor-pointer h-[3rem] overflow-none"
+            className={`flex px-2 py-[6px] rounded-[3px] items-center text-[1.2rem] text-black ${ (pathName ==  "/Dashboard/" + item.label) ?  "bg-gradient-linear-green-white": "hover:bg-gradient-linear-green-white"} cursor-pointer h-[3rem] overflow-none`}
           >
             <div className="flex-shrink-0 text-primary w-[1.5rem] h-[1.5rem] mr-3">
               {item.icon}
@@ -51,7 +63,7 @@ const Sidebar = () => {
             >
               <span className='text-primary'>{item.label}</span>
             </div>
-          </li>
+          </Link>
         ))}
       </ul>
       <Popover>

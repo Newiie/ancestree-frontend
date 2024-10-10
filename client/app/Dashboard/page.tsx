@@ -23,13 +23,11 @@ const Page = () => {
   }
 
   return (
-    <div className="grid grid-rows-[auto_1fr] grid-cols-[auto_1fr] h-screen">
-      <Header  />
-      <Sidebar />
+    
       <div className="content | overflow-y-auto">
         <Content />
       </div>
-    </div>
+    
   );
 };
 
