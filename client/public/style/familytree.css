@@ -1,0 +1,152 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500&display=swap');
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.tree {
+    min-width: 600px;
+    transition: transform 0.3s ease-in-out;
+}
+
+.controls {
+    margin-bottom: 10px;
+}
+
+.tree-container {
+    width: 100%;
+    height: 92.5vh;
+    overflow-x: auto;
+    overflow-y: auto;
+    border: 1px solid #ccc;
+    position: relative;
+    display: flex;
+    justify-content: center;
+}
+
+.tree-content {
+    width: auto;
+    display: inline-block;
+    text-align: center;
+    transition: transform 0.3s ease-in-out;
+    white-space: nowrap; 
+}
+
+
+.tree ul {
+    display: flex;
+    justify-content: center;
+    padding: 20px 0;
+    list-style-type: none;
+    position: relative;
+    margin: 0;
+	width: fit-content;
+}
+
+.tree li {
+    display: inline-block;
+    text-align: center;
+    position: relative;
+    padding-top: 10px;
+    padding-left: 30px;
+    padding-right: 30px;
+    vertical-align: top;
+}
+
+.tree li::before, .tree li::after {
+	content: '';
+	position: absolute;
+	top: 0;
+	right: 50%;
+	border-top: 1px solid #ccc;
+	width: 51%;
+	height: 10px;
+}
+.tree li::after {
+	right: auto;
+	left: 50%;
+	border-left: 1px solid #ccc;
+}
+.tree li:only-child::after, .tree li:only-child::before {
+	display: none;
+}
+.tree li:only-child {
+	padding-top: 0;
+}
+.tree li:first-child::before, .tree li:last-child::after {
+	border: 0 none;
+}
+.tree li:last-child::before {
+	border-right: 1px solid #ccc;
+	border-radius: 0 5px 0 0;
+	-webkit-border-radius: 0 5px 0 0;
+	-moz-border-radius: 0 5px 0 0;
+}
+.tree li:first-child::after {
+	border-radius: 5px 0 0 0;
+	-webkit-border-radius: 5px 0 0 0;
+	-moz-border-radius: 5px 0 0 0;
+}
+.tree ul ul::before {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: 50%;
+	border-left: 1px solid #ccc;
+	width: 0;
+	height: 20px;
+}
+
+/* Tree links */
+.tree li a {
+    border: 1px solid #ccc;
+    padding: 10px;
+    display: inline-grid;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: 0.5s;
+    width: 10rem;
+    white-space: normal;
+}
+
+.tree li a img {
+    width: 50px;
+    height: 50px;
+    margin-bottom: 10px !important;
+    border-radius: 50%;
+    margin: auto;
+}
+
+.tree li a span {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    color: #666;
+    padding: 8px;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 500;
+}
+
+/* Hover effects */
+.tree li a:hover, .tree li a:hover i, .tree li a:hover span, .tree li a:hover+ul li a {
+    background: #c8e4f8;
+    color: #000;
+    border: 1px solid #94a0b4;
+}
+
+.tree li a:hover+ul li::after, .tree li a:hover+ul li::before, .tree li a:hover+ul::before, .tree li a:hover+ul ul::before {
+    border-color: #94a0b4;
+}

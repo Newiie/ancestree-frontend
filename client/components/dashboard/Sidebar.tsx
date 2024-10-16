@@ -33,7 +33,7 @@ const Sidebar = () => {
 
   return (
     <div className={`relative bg-white p-4 h-full flex flex-col transition-width duration-300 ${isMinimized ? 'w-[5rem]' : 'w-[15rem]'}`}>
-      <button className="absolute top-2 -right-4 bg-white shadow-md rounded-[3px] p-2 flex items-center justify-center"
+      <button className="absolute top-2 -right-4 z-20 bg-white shadow-md rounded-[3px] p-2 flex items-center justify-center"
         onClick={toggleSidebar}
       >
         <FaBars className="text-black" />  
@@ -41,11 +41,11 @@ const Sidebar = () => {
 
       <ul className="space-y-2 flex-grow overflow-y-auto">
         {[ 
-          { icon: <FaHome />, label: 'Home', url: "/" },
+          { icon: <FaHome />, label: 'Home', url: "/Dashboard" },
           { icon: <FaChartBar />, label: 'Analytics', url: "/" },
           { icon: <FaUser />, label: 'Profile', url: "/" },
           { icon: <FaBell />, label: 'Notifications', url: "/" },
-          { icon: <FaTree />, label: 'Family Tree', url: "/" },
+          { icon: <FaTree />, label: 'Family Tree', url: "/Dashboard/FamilyTree" },
           { icon: <FaHeart />, label: 'Relationships', url: "/Dashboard/Relationships" },
           { icon: <FaFileAlt />, label: 'My records', url: "/" },
           { icon: <FaImages />, label: 'Gallery', url: "/" },
@@ -81,9 +81,9 @@ const Sidebar = () => {
               {!isMinimized && <span className="text-sm text-gray-600">user@email.com</span>}
             </div>
             <PopoverTrigger>
-              <button onClick={toggleMenu} className="p-2">
+              <div onClick={toggleMenu} className="p-2">
                 <FaEllipsisV className="text-gray-500" />
-              </button>
+              </div>
             </PopoverTrigger>
             <PopoverContent>
                 <p className="p-2 hover:bg-gray-100 cursor-pointer flex gap-2 items-center" onClick={logout}>
@@ -98,7 +98,6 @@ const Sidebar = () => {
                   <FaCog />
                   Settings
                 </p>
-              {/* </ul> */}
             </PopoverContent>
           </div>
         </div>

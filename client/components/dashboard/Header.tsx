@@ -1,11 +1,17 @@
 'use client'
 import Image from 'next/image'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux';
 import { RootState } from '@/store/store';
 
 const Header = () => {
     const user = useSelector((state: RootState) => state.user.user);
+    const [isMounted, setIsMounted] = useState(false);
+
+    useEffect(() => {
+        setIsMounted(true); 
+    }, []);
+
     return (
         <div className='col-span-2 flex justify-between items-center px-[1rem] py-[0.5rem] bg-white shadow-md'>
 
@@ -15,7 +21,12 @@ const Header = () => {
                     <span className='text-primary/50'>Ances</span>TREE
                 </h1>
             </div>
-            <p className='text-[1rem] text-black font-semibold'>WELCOME, {user}!</p>
+     
+            {isMounted && (user ? (
+                <p className='text-[1rem] text-black font-semibold'>WELCOME, {user}!</p>
+            ) : (
+                <p className='text-[1rem] text-black font-semibold'>WELCOME!</p>
+            ))}
         </div>
     )
 }

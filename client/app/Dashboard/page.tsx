@@ -6,6 +6,7 @@ import useAuth from '@/hooks/useAuth';
 import Sidebar from '@/components/dashboard/Sidebar';
 import Content from '@/components/dashboard/Content';
 
+
 const Page = () => {
   const { user } = useAuth();
   const [isClient, setIsClient] = useState(false);
@@ -23,10 +24,11 @@ const Page = () => {
   }
 
   return (
-    
+
       <div className="content | overflow-y-auto">
         <Content />
       </div>
+
     
   );
 };
