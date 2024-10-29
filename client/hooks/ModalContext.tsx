@@ -29,7 +29,18 @@ export const ModalProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     const [selectedNode, setSelectedNode] = useState(null);
 
     const [treeData, setTreeData] = useState<TreeNode[]>([
-        { id: '1', name: 'Child', children: [] },
+        { id: '1', name: 'Child', children: [
+            { id: '2', name: 'Grandchild', children: [
+                { id: '3', name: 'Great Grandchild', children: [] },
+                { id: '4', name: 'Great Grandchild', children: [] },
+            ] },
+            { id: '5', name: 'Grandchild', children: [
+                { id: '6', name: 'Great Grandchild', children: [] },
+                { id: '7', name: 'Great Grandchild', children: [
+                    { id: '8', name: 'Great Great Grandchild', children: [] },
+                ] },
+            ] },
+        ] },
     ]);
 
     const handleEditPerson = () => {

@@ -3,13 +3,15 @@ import React, { createContext, useContext, useState, ReactNode } from 'react';
 interface ProfileContextType {
   selectedDetail: string;
   setSelectedDetail: (detail: string) => void;
+  profileTabs: string;
+  setProfileTabs: (tabs: string) => void;
 }
 
 const ProfileContext = createContext<ProfileContextType | undefined>(undefined);
 
 export const ProfileProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [selectedDetail, setSelectedDetail] = useState('General Information');
-
+  const [profileTabs, setProfileTabs] = useState('Personal Details');
   const GeneralInformation = () => {
     return (
         <>
@@ -29,7 +31,7 @@ export const ProfileProvider: React.FC<{ children: ReactNode }> = ({ children })
     );
   };
   return (
-    <ProfileContext.Provider value={{ selectedDetail, setSelectedDetail }}> 
+    <ProfileContext.Provider value={{ selectedDetail, setSelectedDetail, profileTabs, setProfileTabs }}> 
       {children}
     </ProfileContext.Provider>
   );

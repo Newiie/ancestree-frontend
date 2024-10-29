@@ -1,3 +1,4 @@
+"use client"
 import NavBar from '@/components/common/NavBar';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';

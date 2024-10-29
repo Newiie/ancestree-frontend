@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/popover"
 import  useAuth  from '@/hooks/useAuth';
 import {usePathname} from 'next/navigation';
-import path from 'path';
+
 
 const Sidebar = () => {
   const [isMinimized, setIsMinimized] = useState(false);
@@ -42,13 +42,13 @@ const Sidebar = () => {
       <ul className="space-y-2 flex-grow overflow-y-auto">
         {[ 
           { icon: <FaHome />, label: 'Home', url: "/Dashboard" },
-          { icon: <FaChartBar />, label: 'Analytics', url: "/" },
-          { icon: <FaUser />, label: 'Profile', url: "/" },
-          { icon: <FaBell />, label: 'Notifications', url: "/" },
+          // { icon: <FaChartBar />, label: 'Analytics', url: "/Dashboard/Analytics" },
+          { icon: <FaUser />, label: 'Profile', url: "/Dashboard/Profile" },
+          { icon: <FaBell />, label: 'Notifications', url: "/Dashboard/Notifications" },
           { icon: <FaTree />, label: 'Family Tree', url: "/Dashboard/FamilyTree" },
           { icon: <FaHeart />, label: 'Relationships', url: "/Dashboard/Relationships" },
-          { icon: <FaFileAlt />, label: 'My records', url: "/" },
-          { icon: <FaImages />, label: 'Gallery', url: "/" },
+          { icon: <FaFileAlt />, label: 'My records', url: "/Dashboard/MyRecords" },
+          { icon: <FaImages />, label: 'Gallery', url: "/Dashboard/Gallery" },
         ].map((item, index) => (
           <Link
             href={item.url}

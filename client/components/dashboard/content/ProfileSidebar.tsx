@@ -2,16 +2,16 @@ import React from 'react';
 import { useProfile } from '../../../hooks/ProfileContext';
 
 const ProfileSidebar = () => {
-  const { selectedDetail, setSelectedDetail } = useProfile();
+  const { selectedDetail, setSelectedDetail, profileTabs } = useProfile();
 
   return (
-    <div className='flex flex-col border-r-[2.5px] border-[#DFDFDF] py-4 pr-4'>
+    profileTabs === 'Personal Details' && <div className='flex flex-col border-r-[2.5px] border-[#DFDFDF] py-4 pr-4'>
       <h2 className='p-2 text-lg font-bold'>Personal Details</h2>
       <div className='mt-2'>
         {[
         'General Information', 
         'Addresses', 
-        'Vitals', 
+        'Vital Information', 
         'Personal Interests', 
         'Contact Information'
       ].map((item) => (

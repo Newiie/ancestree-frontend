@@ -13,27 +13,27 @@ const config: Config = {
   			'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
   			'gradient-conic': 'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
   			'gradient-linear-green-white': 'linear-gradient(to right, #D4F3C0 69%, #EFFFF4 120%)',
-			'gradient-linear-navigation': 'linear-gradient(to right, #1B5A1B 10%, #D4F3C0 80%)'
+  			'gradient-linear-navigation': 'linear-gradient(to right, #1B5A1B 10%, #D4F3C0 80%)'
   		},
   		backgroundColor: {
-  			'primary': '#1b4a0aca',
-			'btn-primary': "#1B5A1B",
+  			primary: '#1b4a0aca',
+  			'btn-primary': '#1B5A1B',
   			'btn-active': '#34762E',
-  			'hover': '#44de108f',
+  			hover: '#44de108f',
   			'secondary-btn': '#a3e279',
-  			'paleGreen': '#hsl(96, 75%, 89%)',
-  			'white': '#FAFAFA',
+  			paleGreen: '#hsl(96, 75%, 89%)',
+  			white: '#FAFAFA',
   			'btn-secondary': '#D4F3C0',
-  			'black': '#010101',
-  			'nav': '#D4F3C0',
-			'content': "#DFDFDF"
+  			black: '#010101',
+  			nav: '#D4F3C0',
+  			content: '#DFDFDF'
   		},
   		colors: {
-  			'hover': '#44de108f',
-  			'paleGreen': '#hsl(96, 75%, 89%)',
-  			'white': '#FAFAFA',
-  			'black': '#010101',
-  			'nav': '#333333',
+  			hover: '#44de108f',
+  			paleGreen: '#hsl(96, 75%, 89%)',
+  			white: '#FAFAFA',
+  			black: '#010101',
+  			nav: '#333333',
   			'sidebar-text': '#4B5563',
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
@@ -77,19 +77,41 @@ const config: Config = {
   			}
   		},
   		fontSize: {
-  			'header': '2.5rem',
+  			header: '2.5rem',
   			'h-15': '1.5rem'
   		},
   		borderWidth: {
   			'1': '1px'
   		},
   		borderColor: {
-  			'green': '#1B5A1B'
+  			green: '#1B5A1B'
   		},
   		borderRadius: {
   			lg: 'var(--radius)',
   			md: 'calc(var(--radius) - 2px)',
   			sm: 'calc(var(--radius) - 4px)'
+  		},
+  		keyframes: {
+  			'accordion-down': {
+  				from: {
+  					height: '0'
+  				},
+  				to: {
+  					height: 'var(--radix-accordion-content-height)'
+  				}
+  			},
+  			'accordion-up': {
+  				from: {
+  					height: 'var(--radix-accordion-content-height)'
+  				},
+  				to: {
+  					height: '0'
+  				}
+  			}
+  		},
+  		animation: {
+  			'accordion-down': 'accordion-down 0.2s ease-out',
+  			'accordion-up': 'accordion-up 0.2s ease-out'
   		}
   	}
   },

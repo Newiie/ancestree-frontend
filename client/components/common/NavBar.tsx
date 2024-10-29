@@ -9,11 +9,11 @@ const NavBar = () => {
       <div className='flex gap-[1rem] items-center'>
         <Image src={"/images/doge.png"} alt='logo' height={35} width={35} />
         <Link className='text-nav hover:text-primary nav-text text-[0.9rem] font-medium transition-colors duration-200' href={"/"}>AncesTREE</Link>
-        <Link className='text-nav hover:text-primary nav-text text-[0.9rem] font-medium transition-colors duration-200' href={"About"}>About</Link>
+        {/* <Link className='text-nav hover:text-primary nav-text text-[0.9rem] font-medium transition-colors duration-200' href={"About"}>About</Link>
         <Link className='text-nav hover:text-primary nav-text text-[0.9rem] font-medium transition-colors duration-200' href={"Search"}>Search</Link>
         <Link className='text-nav hover:text-primary nav-text text-[0.9rem] font-medium transition-colors duration-200' href={"Records"}>Records</Link>
         <Link className='text-nav hover:text-primary nav-text text-[0.9rem] font-medium transition-colors duration-200' href={"Activities"}>Activities</Link>
-        <Link className='text-nav hover:text-primary nav-text text-[0.9rem] font-medium transition-colors duration-200' href={"Memories"}>Memories</Link>
+        <Link className='text-nav hover:text-primary nav-text text-[0.9rem] font-medium transition-colors duration-200' href={"Memories"}>Memories</Link> */}
       </div>
       <div className='flex gap-[1rem] items-center justify-center'>
         <Link className='py-[0.5rem] px-[1rem] text-[0.9rem] rounded-[3px] text-primary bg-secondary-btn hover:text-white hover:bg-primary transition-colors duration-200' href={"/login"}>Sign In</Link>

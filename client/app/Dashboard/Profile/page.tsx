@@ -4,7 +4,7 @@ import Header from '@/components/dashboard/Header';
 import React, { useEffect, useState } from 'react';
 import useAuth from '@/hooks/useAuth';
 import Sidebar from '@/components/dashboard/Sidebar';
-import Content from '@/components/dashboard/Content';
+import Content from '@/components/dashboard/Profile/Content';
 import { ProfileProvider } from '@/hooks/ProfileContext';
 
 const Page = () => {

@@ -11,6 +11,7 @@ const useAuth = () => {
   const dispatch = useDispatch();
   const router = useRouter();
   const pathname = usePathname();
+  
   useEffect(() => {
     if (!user && pathname !== '/register' && pathname !== '/login') {
       router.push('/login');

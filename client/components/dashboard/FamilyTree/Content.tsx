@@ -60,13 +60,14 @@ const Node = ({ node, selectedNode, setSelectedNode, toggleAddFamilyModal, toggl
                                         animate={{ opacity: 1, y: 0 }}
                                         exit={{ opacity: 0, y: -10 }}
                                         transition={{ duration: 0.3, ease: 'easeInOut' }}
-                                        className="absolute top-0 -right-[12rem] bg-white-500 border border-[#E0E0E0] hover:bg-gray-100 text-[#7C7C7C] px-2 py-1 rounded-[3px] w-[10rem] h-[15rem] flex items-center justify-center"
+                                        className="absolute top-0 -right-[12rem] "
                                     >
-                                        <div className="flex flex-col gap-1">
+                                        <div className="flex flex-col gap-1 z-100 bg-[#FAFAFA] border border-[#E0E0E0] hover:bg-gray-100 text-[#7C7C7C] px-2 py-2 rounded-[3px] w-[10rem] flex">
+                                            <h1>Details: </h1>
                                             <span>{node.name}</span>
-                                            <span>{node.birthday}</span>
-                                            <span>{node.gender}</span>
-                                            <span>{node.relationship}</span>
+                                            <span>December 12, 1990</span>
+                                            <span>Male</span>
+                                            <span>Father</span>
                                         </div>
                                     </motion.div>
                                 </AnimatePresence>  
