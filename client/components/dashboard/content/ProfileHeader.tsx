@@ -27,8 +27,8 @@ const ProfileHeader = () => {
         <h1 className='text-xl font-bold mt-2'>Jethro Layan Cenas</h1>
         <p className='text-gray-700'>ID: 0000000000000001</p>
         <div className='flex mt-2'>
-          <Link href={'/Dashboard/FamilyTree'} className={`bg-white hover:bg-btn-secondary text-primary border-1 border-green px-2 py-1 rounded-lg mr-2`}>View Tree</Link>
-          <Link href={'/Dashboard/Connections'} className={`bg-white hover:bg-btn-secondary  text-primary border-1 border-green px-2 py-1 rounded-lg`}>Connection</Link>
+          <Link href={'/dashboard/FamilyTree'} className={`bg-white hover:bg-btn-secondary text-primary border-1 border-green px-2 py-1 rounded-lg mr-2`}>View Tree</Link>
+          <Link href={'/dashboard/Connections'} className={`bg-white hover:bg-btn-secondary  text-primary border-1 border-green px-2 py-1 rounded-lg`}>Connection</Link>
         </div>
       </div>
     </div>

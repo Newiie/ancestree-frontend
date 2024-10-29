@@ -204,8 +204,8 @@ const Content = () => {
                   <p className=''>john@doe.com</p>
                 </div>
                 <div className='flex items-center'>
-                  <Link href={'/Dashboard/FamilyTree'} className={`bg-white hover:bg-btn-secondary text-primary border-1 border-green px-2 py-1 rounded-lg mr-2`}>View Tree</Link>
-                  <Link href={'/Dashboard/Connections'} className={`bg-white hover:bg-btn-secondary  text-primary border-1 border-green px-2 py-1 rounded-lg`}>Connections</Link>
+                  <Link href={'/dashboard/FamilyTree'} className={`bg-white hover:bg-btn-secondary text-primary border-1 border-green px-2 py-1 rounded-lg mr-2`}>View Tree</Link>
+                  <Link href={'/dashboard/Connections'} className={`bg-white hover:bg-btn-secondary  text-primary border-1 border-green px-2 py-1 rounded-lg`}>Connections</Link>
                 </div>
                 <EllipsisIcon className='absolute top-2 right-4 cursor-pointer' />
               </div>

@@ -16,7 +16,7 @@ const RegisterForm = () => {
 
   useEffect(() => {
     if (user) {
-      router.push('/Dashboard');
+      router.push('/dashboard');
     }
   }, [user, router]);
 
@@ -26,7 +26,7 @@ const RegisterForm = () => {
     try {
       const user = await authService.register({ name, username, password });
       console.log('Registered user:', user);
-      router.push('/Dashboard');
+      router.push('/dashboard');
     } catch (error: any) {
       setError(error.message);
     }

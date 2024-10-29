@@ -15,7 +15,7 @@ const LoginForm = () => {
 
   useEffect(() => {
     if (user) {
-      router.push('/Dashboard');
+      router.push('/dashboard');
     }
   }, [user, router]);
 
@@ -25,7 +25,7 @@ const LoginForm = () => {
     try {
       const user = await authService.login({ username, password });
       login(user.username);
-      router.push('/Dashboard');
+      router.push('/dashboard');
     } catch (error: any) {
       setError(error.message);
     }
