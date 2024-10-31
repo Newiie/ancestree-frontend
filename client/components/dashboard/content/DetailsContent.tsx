@@ -1,5 +1,5 @@
 import React from 'react';
-import { useProfile } from '../../../hooks/ProfileContext';
+import { useProfile } from '../../../providers/ProfileProvider';
 import { SquarePenIcon, StarIcon } from 'lucide-react';
 import ConnectionCard from './ConnectionCard';
 const DetailsContent = () => {

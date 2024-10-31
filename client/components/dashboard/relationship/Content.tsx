@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import ConnectionCard from '../content/ConnectionCard';
 
-const FloatingInput : React.FC<{label: string; type: string; name: string; id:string;}> = ({ label, type, name, id }) => {
+const FloatingInput = ({ label, type, name, id }: { label: string, type: string, name: string, id: string }) => {
   const [inputValue, setInputValue] = useState('');
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {

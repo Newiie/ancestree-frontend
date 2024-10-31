@@ -7,8 +7,8 @@ const NavBar = () => {
     <div className="flex justify-between py-[0.5rem] px-[2rem] bg-white fixed top-0 w-full z-50">
 
       <div className='flex gap-[1rem] items-center'>
-        <Image src={"/images/doge.png"} alt='logo' height={35} width={35} />
-        <Link className='text-nav hover:text-primary nav-text text-[0.9rem] font-medium transition-colors duration-200' href={"/"}>AncesTREE</Link>
+        <Image src={"/images/favicon.ico"} alt='logo' height={35} width={35} />
+        <Link className='text-primary text-[1.5rem] font-medium transition-colors duration-200' href={"/"}>AncesTREE</Link>
         {/* <Link className='text-nav hover:text-primary nav-text text-[0.9rem] font-medium transition-colors duration-200' href={"About"}>About</Link>
         <Link className='text-nav hover:text-primary nav-text text-[0.9rem] font-medium transition-colors duration-200' href={"Search"}>Search</Link>
         <Link className='text-nav hover:text-primary nav-text text-[0.9rem] font-medium transition-colors duration-200' href={"Records"}>Records</Link>

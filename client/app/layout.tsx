@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   title: "Ancestree",
   description: "Connect your family Tree",
   icons: {
-    icon: "/favicon.ico",
+    icon: "./favicon.ico",
   },
 };
 

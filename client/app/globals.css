@@ -15,7 +15,6 @@
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
-  --primary: #1b4a0aca;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -27,7 +26,7 @@
 }
 
 /* SCROLLBAR */
-body, .content {
+body, .content, .landing-page {
   --sb-track-color: #fefefe;
   --sb-thumb-color: #6BAF8D;
   --sb-size: 8px;
@@ -35,25 +34,29 @@ body, .content {
 }
 
 body::-webkit-scrollbar, 
-.content::-webkit-scrollbar {
+.content::-webkit-scrollbar,
+.landing-page::-webkit-scrollbar {
   width: var(--sb-size);
 }
 
 body::-webkit-scrollbar-track, 
-.content::-webkit-scrollbar-track {
+.content::-webkit-scrollbar-track,
+.landing-page::-webkit-scrollbar-track {
   background: var(--sb-track-color);
   border-radius: 3px;
 }
 
 body::-webkit-scrollbar-thumb, 
-.content::-webkit-scrollbar-thumb {
+.content::-webkit-scrollbar-thumb,
+.landing-page::-webkit-scrollbar-thumb {
   background: var(--sb-thumb-color);
   border-radius: 3px;
 }
 
 @supports not selector(::-webkit-scrollbar) {
   body, 
-  .content {
+  .content,
+  .landing-page {
       scrollbar-color: var(--sb-thumb-color)
                      var(--sb-track-color);
   }
@@ -80,8 +83,9 @@ body::-webkit-scrollbar-thumb,
     --card-foreground: 0 0% 3.9%;
     --popover: 0 0% 100%;
     --popover-foreground: 0 0% 3.9%;
-    --primary: 0 0% 9%;
+    --primary: #1B5A1B;
     --primary-foreground: 0 0% 98%;
+    --settings: #4B5563;
     --secondary: 0 0% 96.1%;
     --secondary-foreground: 0 0% 9%;
     --muted: 0 0% 96.1%;

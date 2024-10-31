@@ -4,7 +4,7 @@ import React, { FormEvent, useState, useEffect } from 'react';
 import { KeyRound, User } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import authService from '../../services/api/authService';
-import useAuth from '@/hooks/useAuth';
+import useAuth from '@/providers/useAuth';
 
 const LoginForm = () => {
   const [username, setUsername] = useState('');

@@ -4,7 +4,7 @@ import ProfileHeader from '../content/ProfileHeader';
 import ProfileTabs from '../content/ProfileTabs';
 import ProfileSidebar from '../content/ProfileSidebar';
 import DetailsContent from '../content/DetailsContent';
-import { useProfile } from '@/hooks/ProfileContext';
+import { useProfile } from '@/providers/ProfileProvider';
 
 const Content = () => {
   const { profileTabs } = useProfile();

@@ -3,7 +3,7 @@ import ProfileHeader from './content/ProfileHeader';
 import ProfileTabs from './content/ProfileTabs';
 import ProfileSidebar from './content/ProfileSidebar';
 import DetailsContent from './content/DetailsContent';
-import { useProfile } from '@/hooks/ProfileContext';
+import { useProfile } from '@/providers/ProfileProvider';
 import Image from 'next/image';
 import Link from 'next/link';
 import { CalendarHeartIcon, CirclePlusIcon, EllipsisIcon, GiftIcon } from 'lucide-react';
@@ -22,36 +22,6 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel"
 import { type CarouselApi } from "@/components/ui/carousel"
-
-export function Example() {
-  const [api, setApi] = React.useState<CarouselApi>()
-  const [current, setCurrent] = React.useState(0)
-  const [count, setCount] = React.useState(0)
-
-  React.useEffect(() => {
-    if (!api) {
-      return
-    }
-
-    setCount(api.scrollSnapList().length)
-    setCurrent(api.selectedScrollSnap() + 1)
-
-    api.on("select", () => {
-      setCurrent(api.selectedScrollSnap() + 1)
-    })
-  }, [api])
-
-  return (
-    <Carousel setApi={setApi}>
-      <CarouselContent>
-        <CarouselItem>...</CarouselItem>
-        <CarouselItem>...</CarouselItem>
-        <CarouselItem>...</CarouselItem>
-      </CarouselContent>
-    </Carousel>
-  )
-}
-
 
 const progress = [
   {

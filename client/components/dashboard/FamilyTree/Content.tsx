@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import Image from 'next/image';
 import '@/public/style/familytree.css';
 import { InfoIcon, PencilIcon, PlusIcon, UserRoundIcon, ZoomInIcon, ZoomOutIcon } from 'lucide-react';
-import { useModal } from '@/hooks/ModalContext';
+import { useTree } from '@/providers/TreeProvider';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const Node = ({ node, selectedNode, setSelectedNode, toggleAddFamilyModal, toggleEditPersonModal }: any) => {
@@ -13,7 +13,6 @@ const Node = ({ node, selectedNode, setSelectedNode, toggleAddFamilyModal, toggl
             <a 
                 href="#" 
                 className='relative'
-   
                 onClick={() => setSelectedNode(node.id)}
             >
                 <Image src={`/images/familytree/${node.id}.jpg`} alt={node.name} width={100} height={100} />
@@ -99,7 +98,7 @@ const Node = ({ node, selectedNode, setSelectedNode, toggleAddFamilyModal, toggl
 
 const Content = () => {
 
-    const {toggleAddFamilyModal, treeData, selectedNode, setSelectedNode, toggleEditPersonModal} = useModal();
+    const {toggleAddFamilyModal, treeData, selectedNode, setSelectedNode, toggleEditPersonModal} = useTree();
 
     const [zoomLevel, setZoomLevel] = useState(1);
     const treeContainerRef = useRef<HTMLDivElement | null>(null);
@@ -108,11 +107,6 @@ const Content = () => {
     const [startY, setStartY] = useState(0);
     const [scrollLeft, setScrollLeft] = useState(0);
     const [scrollTop, setScrollTop] = useState(0);
- 
-
-
-
-
 
     const renderTree = (nodes: any) => (
         <ul className='tree-content'>

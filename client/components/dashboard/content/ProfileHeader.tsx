@@ -1,6 +1,8 @@
 import Image from 'next/image';
 import React from 'react';
 import Link from 'next/link';
+import { useProfile } from '../../../providers/ProfileProvider';
+
 const ProfileHeader = () => {
   return (
     <div className='w-full relative bg-white p-4 rounded-lg'>
@@ -28,7 +30,7 @@ const ProfileHeader = () => {
         <p className='text-gray-700'>ID: 0000000000000001</p>
         <div className='flex mt-2'>
           <Link href={'/dashboard/FamilyTree'} className={`bg-white hover:bg-btn-secondary text-primary border-1 border-green px-2 py-1 rounded-lg mr-2`}>View Tree</Link>
-          <Link href={'/dashboard/Connections'} className={`bg-white hover:bg-btn-secondary  text-primary border-1 border-green px-2 py-1 rounded-lg`}>Connection</Link>
+          <button className={`bg-white hover:bg-btn-secondary cursor-pointer text-primary border-1 border-green px-2 py-1 rounded-lg`}>Connect</button>
         </div>
       </div>
     </div>

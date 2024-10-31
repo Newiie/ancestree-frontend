@@ -4,7 +4,7 @@ import React, { FormEvent, useState, useEffect } from 'react';
 import { KeyRound, Mail, User } from 'lucide-react';
 import authService from '../../services/api/authService';
 import { useRouter } from 'next/navigation';
-import useAuth from '@/hooks/useAuth';
+import useAuth from '@/providers/useAuth';
 
 const RegisterForm = () => {
   const router = useRouter();

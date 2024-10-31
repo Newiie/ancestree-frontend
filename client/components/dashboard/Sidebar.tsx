@@ -1,15 +1,14 @@
 import Image from 'next/image';
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { FaHome, FaChartBar, FaUser, FaBell, FaTree, FaHeart, FaFileAlt, FaImages, FaCog, FaBars, FaEllipsisV, FaSignOutAlt, FaQuestionCircle } from 'react-icons/fa';
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
-import  useAuth  from '@/hooks/useAuth';
+import  useAuth  from '@/providers/useAuth';
 import {usePathname} from 'next/navigation';
-
+import { BellIcon, BookImageIcon, BookTextIcon, EllipsisVerticalIcon, HeartIcon, HelpCircleIcon, HouseIcon, LogOutIcon, NetworkIcon, SettingsIcon, UserIcon, MenuIcon } from 'lucide-react';  
 
 const Sidebar = () => {
   const [isMinimized, setIsMinimized] = useState(false);
@@ -36,32 +35,32 @@ const Sidebar = () => {
       <button className="absolute top-2 -right-4 z-20 bg-white shadow-md rounded-[3px] p-2 flex items-center justify-center"
         onClick={toggleSidebar}
       >
-        <FaBars className="text-black" />  
+        <MenuIcon className="text-black" />  
       </button>
 
       <ul className="space-y-2 flex-grow overflow-y-auto">
         {[ 
-          { icon: <FaHome />, label: 'Home', url: "/dashboard" },
+          { icon: <HouseIcon />, label: 'Home', url: "/dashboard" },
           // { icon: <FaChartBar />, label: 'Analytics', url: "/dashboard/Analytics" },
-          { icon: <FaUser />, label: 'Profile', url: "/dashboard/profile" },
-          { icon: <FaBell />, label: 'Notifications', url: "/dashboard/notifications" },
-          { icon: <FaTree />, label: 'Family Tree', url: "/dashboard/family-tree" },
-          { icon: <FaHeart />, label: 'Relationships', url: "/dashboard/relationships" },
-          { icon: <FaFileAlt />, label: 'My records', url: "/dashboard/my-records" },
-          { icon: <FaImages />, label: 'Gallery', url: "/dashboard/gallery" },
-        ].map((item, index) => (
+          { icon: <UserIcon />, label: 'Profile', url: "/dashboard/profile" },
+          { icon: <BellIcon />, label: 'Notifications', url: "/dashboard/notifications" },
+          { icon: <NetworkIcon />, label: 'Family Tree', url: "/dashboard/family-tree" },
+          { icon: <HeartIcon />, label: 'Relationships', url: "/dashboard/relationships" },
+          { icon: <BookTextIcon />, label: 'My records', url: "/dashboard/my-records" },
+          { icon: <BookImageIcon />, label: 'Gallery', url: "/dashboard/gallery" },
+        ].map((item) => (
           <Link
             href={item.url}
-            key={index}
-            className={`flex px-2 py-[6px] rounded-[3px] items-center text-[1.2rem] text-black ${ (pathName ==  "/Dashboard/" + item.label) ?  "bg-gradient-linear-green-white": "hover:bg-gradient-linear-green-white"} cursor-pointer h-[3rem] overflow-none`}
+            key={item.label}
+            className={`flex px-2 py-[6px] rounded-[0.6rem] items-center text-[1.2rem] text-sidebar ${ (pathName ==  "/Dashboard/" + item.label) ?  "bg-gradient-linear-green-white": "hover:bg-gradient-linear-green-white"} cursor-pointer h-[3rem] overflow-none`}
           >
-            <div className="flex-shrink-0 text-primary w-[1.5rem] h-[1.5rem] mr-3">
+            <div className="flex-shrink-0  w-[1.5rem] h-[1.5rem] mr-3">
               {item.icon}
             </div>
             <div
               className={`transition-all duration-300 ease-in-out overflow-hidden ${isMinimized ? 'max-w-0 opacity-0' : 'max-w-full opacity-100'}`}
             >
-              <span className='text-primary'>{item.label}</span>
+              <span className=''>{item.label}</span>
             </div>
           </Link>
         ))}
@@ -82,20 +81,20 @@ const Sidebar = () => {
             </div>
             <PopoverTrigger>
               <div onClick={toggleMenu} className="p-2">
-                <FaEllipsisV className="text-gray-500" />
+                <EllipsisVerticalIcon className="text-gray-500" />
               </div>
             </PopoverTrigger>
             <PopoverContent>
                 <p className="p-2 hover:bg-gray-100 cursor-pointer flex gap-2 items-center" onClick={logout}>
-                  <FaSignOutAlt />
+                  <LogOutIcon />
                   Logout
                 </p>
                 <p className="p-2 hover:bg-gray-100 cursor-pointer flex gap-2 items-center">
-                  <FaQuestionCircle />
+                  <HelpCircleIcon />
                   Help
                 </p>
                 <p className="p-2 hover:bg-gray-100 cursor-pointer flex gap-2 items-center">
-                  <FaCog />
+                  <SettingsIcon />
                   Settings
                 </p>
             </PopoverContent>

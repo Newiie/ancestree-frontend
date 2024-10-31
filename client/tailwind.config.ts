@@ -19,6 +19,7 @@ const config: Config = {
   			primary: '#1b4a0aca',
   			'btn-primary': '#1B5A1B',
   			'btn-active': '#34762E',
+			sidebar: 'var(--settings)',
   			hover: '#44de108f',
   			'secondary-btn': '#a3e279',
   			paleGreen: '#hsl(96, 75%, 89%)',
@@ -34,7 +35,7 @@ const config: Config = {
   			white: '#FAFAFA',
   			black: '#010101',
   			nav: '#333333',
-  			'sidebar-text': '#4B5563',
+  			sidebar: 'var(--settings)',
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
   			card: {
@@ -46,7 +47,7 @@ const config: Config = {
   				foreground: 'hsl(var(--popover-foreground))'
   			},
   			primary: {
-  				DEFAULT: 'hsl(var(--primary))',
+  				DEFAULT: 'var(--primary)',
   				foreground: 'hsl(var(--primary-foreground))'
   			},
   			secondary: {

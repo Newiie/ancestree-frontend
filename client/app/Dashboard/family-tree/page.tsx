@@ -5,12 +5,94 @@ import Sidebar from '@/components/dashboard/Sidebar'
 import React, { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion';
 import MainLayout from '@/components/MainLayout'
-import { useModal } from '@/hooks/ModalContext'
+import { useTree } from '@/providers/TreeProvider'
 import { CircleXIcon } from 'lucide-react'
+import { z } from 'zod';
+import { DateInput } from '@/components/forms/DateInput'
+import FamilyTreeSkeleton from './loading'
+
+// Define Zod schema for form validation
+const familyMemberSchema = z.object({
+  firstName: z.string().min(1, "First Name is required"),
+  middleName: z.string().optional(),
+  lastName: z.string().min(1, "Last Name is required"),
+  suffix: z.string().optional(),
+  birthday: z.date().min(new Date(), "Birthday is required"),
+  birthplace: z.string(),
+  birthCountry: z.string(),
+  sex: z.enum(["male", "female"]),
+  status: z.enum(["living", "deceased", "unknown"]),
+  nationality: z.array(z.string()).min(1, "Nationality is required"),
+});
+
+// Define Zod schema for editing a person
+const editPersonSchema = z.object({
+  firstName: z.string().min(1, "First Name is required"),
+  middleName: z.string().optional(),
+  lastName: z.string().min(1, "Last Name is required"),
+  suffix: z.string().optional(),
+  birthday: z.date().min(new Date(), "Birthday is required"),
+  birthplace: z.string(),
+  birthCountry: z.string(),
+  sex: z.enum(["male", "female"]),
+  status: z.enum(["living", "deceased", "unknown"]),
+});
 
 const AddFamilyMember = () => {
   const [selectedPerson, setSelectedPerson] = useState('Add Child');
-  const { toggleAddFamilyModal, handleAddFamilyMember } = useModal();
+  const { toggleAddFamilyModal, handleAddFamilyMember } = useTree();
+  const [formData, setFormData] = useState({
+    firstName: '',
+    middleName: '',
+    lastName: '',
+    suffix: '',
+    birthday: new Date(),
+    birthplace: '',
+    birthCountry: '',
+    sex: 'male',
+    status: 'unknown',
+    nationality: [],
+  });
+  const [nationalityInput, setNationalityInput] = useState('');
+  const [errors, setErrors] = useState({
+    firstName: '',
+    middleName: '',
+    lastName: '',
+    suffix: '',
+    birthday: '',
+    birthplace: '',
+    nationality: '',
+  });
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const result = familyMemberSchema.safeParse(formData);
+    console.log(result);
+    if (!result.success) {
+      const formattedErrors = result.error.format();
+      setErrors({
+        firstName: formattedErrors.firstName?._errors.join(', ') || '',
+        middleName: formattedErrors.middleName?._errors.join(', ') || '',
+        lastName: formattedErrors.lastName?._errors.join(', ') || '',
+        suffix: formattedErrors.suffix?._errors.join(', ') || '',
+        birthday: formattedErrors.birthday?._errors.join(', ') || '',
+        birthplace: formattedErrors.birthplace?._errors.join(', ') || '',
+        nationality: formattedErrors.nationality?._errors.join(', ') || '',
+      });
+      return;
+    }
+    handleAddFamilyMember();
+  };
+
+  const handleAddNationality = () => {
+    if (nationalityInput.trim()) {
+      setFormData((prevData: any) => ({
+        ...prevData,
+        nationality: [...prevData.nationality, nationalityInput.trim()],
+      }));
+      setNationalityInput('');
+    }
+  };
 
   return (
     <div className="absolute top-0 left-0 flex items-center justify-center w-full h-full bg-black/50 z-10">
@@ -20,6 +102,7 @@ const AddFamilyMember = () => {
         exit={{ y: '-15%', opacity: 0 }}
         transition={{ duration: 0.3, ease: 'easeOut' }}
         className="relative flex flex-col gap-4 bg-white rounded-[10px] py-2"
+        onSubmit={handleSubmit}
       >
         <div
           className="absolute top-2 right-2 cursor-pointer"
@@ -44,23 +127,67 @@ const AddFamilyMember = () => {
         </div>
 
         {/* NAME DETAILS */}
-        <div className='grid grid-cols-[1.25fr_1.25fr_1.25fr_0.25fr] mt-4 w-full gap-2 px-4'>
-          <div className='relative flex flex-col'>
+        <div className='flex mt-4 w-full gap-2 px-4'>
+          <div className='relative flex flex-col flex-grow'>
             <label className='absolute -top-5 left-0 text-sm text-gray-600 mb-1 font-semibold'>Full Name</label>
-            <input type="text" placeholder='First Name' className='border rounded px-2 py-1' />
+            <input
+              type="text"
+              placeholder='First Name'
+              className='border flex-1 outline-none hover:bg-white/50 rounded px-2 py-1'
+              value={formData.firstName}
+              onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
+            />
+            {errors.firstName && <span className="absolute -bottom-6 left-0 text-red-500">{errors.firstName}</span>}
           </div>
-          <input type="text" placeholder='Middle Name' className='border rounded px-2 py-1' />
-          <input type="text" placeholder='Last Name' className='border rounded px-2 py-1' />
-          <input type="text" placeholder='Suffix' className='border rounded px-2 py-1' />
+          <input
+            type="text"
+            placeholder='Middle Name (optional)'
+            className='border outline-none hover:bg-white/50 rounded px-2 py-1 flex-grow'
+            value={formData.middleName}
+            onChange={(e) => setFormData({ ...formData, middleName: e.target.value })}
+          />
+          <div className='relative flex-grow'>
+            <input
+              type="text"
+              placeholder='Last Name'
+              className='border w-full outline-none hover:bg-white/50 rounded px-2 py-1 flex-grow'
+              value={formData.lastName}
+              onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
+            />
+            {errors.lastName && <span className="absolute -bottom-6 left-0 text-red-500">{errors.lastName}</span>}
+          </div>
+          <input
+            type="text"
+            placeholder='Suffix'
+            className='border outline-none hover:bg-white/50 w-[80px] rounded px-2 py-1 flex-grow-0'
+            value={formData.suffix}
+            onChange={(e) => setFormData({ ...formData, suffix: e.target.value })}
+          />
         </div>
         {/* BIRTH DETAILS */}
-        <div className='grid grid-cols-[1fr_2fr_1fr] mt-4 w-full gap-2 px-4'>
+        <div className='grid grid-cols-[1fr_2fr_1fr] mt-8 w-full gap-2 px-4'>
           <div className='relative flex flex-col'>
             <label className='absolute -top-5 left-0 text-sm text-gray-600 mb-1 font-semibold'>Birth Details</label>
-            <input type="text" placeholder='Birthday' className='border rounded px-2 py-1' />
+            <DateInput 
+              date={formData.birthday || new Date()}
+              setDate={(date) => setFormData({ ...formData, birthday: date })}
+            />
+            {errors.birthday && <span className="absolute -bottom-6 left-0 text-red-500">{errors.birthday}</span>}
           </div>
-          <input type="text" placeholder='Birthplace' className='border rounded px-2 py-1' />
-          <input type="text" placeholder='Birth Country' className='border rounded px-2 py-1' />
+          <input
+            type="text"
+            placeholder='Birthplace'
+            className='border outline-none rounded px-2 py-1'
+            value={formData.birthplace}
+            onChange={(e) => setFormData({ ...formData, birthplace: e.target.value })}
+          />
+          <input
+            type="text"
+            placeholder='Birth Country'
+            className='border outline-none rounded px-2 py-1'
+            value={formData.birthCountry}
+            onChange={(e) => setFormData({ ...formData, birthCountry: e.target.value })}
+          />
         </div>
 
         {/* SEX */}
@@ -69,11 +196,27 @@ const AddFamilyMember = () => {
 
           <div className='flex flex-col ml-4 gap-2'>
             <label htmlFor="male" className='flex items-center gap-1'>
-              <input type="radio" id="male" name="sex" value="male" className='border rounded' />
+              <input
+                type="radio"
+                id="male"
+                name="sex"
+                value="male"
+                className='border rounded'
+                checked={formData.sex === 'male'}
+                onChange={(e) => setFormData({ ...formData, sex: e.target.value })}
+              />
               Male
             </label>
             <label htmlFor="female" className='flex items-center gap-1'>
-              <input type="radio" id="female" name="sex" value="female" className='border rounded' />
+              <input
+                type="radio"
+                id="female"
+                name="sex"
+                value="female"
+                className='border rounded'
+                checked={formData.sex === 'female'}
+                onChange={(e) => setFormData({ ...formData, sex: e.target.value })}
+              />
               Female
             </label>
           </div>
@@ -85,29 +228,69 @@ const AddFamilyMember = () => {
 
           <div className='flex flex-col ml-4 gap-2'>
             <label htmlFor="living" className='flex items-center gap-1'>
-              <input type="radio" id="living" name="status" value="living" className='border rounded' />
+              <input
+                type="radio"
+                id="living"
+                name="status"
+                value="living"
+                className='border rounded'
+                checked={formData.status === 'living'}
+                onChange={(e) => setFormData({ ...formData, status: e.target.value })}
+              />
               Living
             </label>
             <label htmlFor="deceased" className='flex items-center gap-1'>
-              <input type="radio" id="deceased" name="status" value="deceased" className='border rounded' />
+              <input
+                type="radio"
+                id="deceased"
+                name="status"
+                value="deceased"
+                className='border rounded'
+                checked={formData.status === 'deceased'}
+                onChange={(e) => setFormData({ ...formData, status: e.target.value })}
+              />
               Deceased
+            </label>
+            <label htmlFor="unknown" className='flex items-center gap-1'>
+              <input
+                type="radio"
+                id="unknown"
+                name="status"
+                value="unknown"
+                className='border rounded'
+                checked={formData.status === 'unknown'}
+                onChange={(e) => setFormData({ ...formData, status: e.target.value })}
+              />
+              Unknown
             </label>
           </div>
         </div>
 
         {/* NATIONALITY */}
-        <div className='flex justify-start flex-col items-start gap-2 px-4'>
+        <div className='relative flex justify-start flex-col items-start gap-2 px-4'>
           <label className='text-md font-semibold'>Nationality</label>
-          <input type="text" placeholder='Nationality' className='border rounded px-2 py-1' />
+          <div className='flex gap-2'>
+            <input
+              type="text"
+              placeholder='Add Nationality'
+              className='border rounded px-2 py-1'
+              value={nationalityInput}
+              onChange={(e) => setNationalityInput(e.target.value)}
+            />
+            <button type="button" onClick={handleAddNationality} className='bg-primary text-white px-2 py-1 rounded-md'>+</button>
+          </div>
+          <div className='flex flex-wrap gap-2 mt-2'>
+            {formData.nationality.map((nat, index) => (
+              <span key={index} className='bg-gray-200 px-2 py-1 rounded-md'>{nat}</span>
+            ))}
+          </div>
+          {errors.nationality && <span className="absolute -bottom-6 left-5 text-red-500">{errors.nationality}</span>}
         </div>  
 
         {/* BUTTONS */}
         <div className='flex justify-center px-4 gap-4'>
-          <button onClick={() => toggleAddFamilyModal()} className='bg-white-500 text-black border-1 border-green px-4 py-1 rounded-md'>Cancel</button>
-          <button className='bg-primary text-white px-4 py-1 rounded-md' onClick={(e) => {
-            e.preventDefault();
-          handleAddFamilyMember()
-          }}>Add Member</button> 
+          <button type="button" onClick={() => toggleAddFamilyModal()} className='bg-white-500 text-black border-1 border-green px-4 py-1 rounded-md'>Cancel</button>
+          <button type="submit" className='bg-primary text-white px-4 py-1 rounded-md'>Add Member</button> 
         </div>
       </motion.form>
     </div>
@@ -115,8 +298,50 @@ const AddFamilyMember = () => {
 };
 
 const EditPersonNode = () => {
-  const [selectedPerson, setSelectedPerson] = useState('Add Child');
-  const { toggleEditPersonModal, handleEditPerson } = useModal();
+  const { toggleEditPersonModal, handleEditPerson } = useTree();
+  const [formData, setFormData] = useState({
+    firstName: '',
+    middleName: '',
+    lastName: '',
+    suffix: '',
+    birthday: new Date(),
+    birthplace: '',
+    birthCountry: '',
+    sex: 'male',
+    status: 'unknown',
+  });
+
+  
+  const [errors, setErrors] = useState({
+    firstName: '',
+    middleName: '',
+    lastName: '',
+    suffix: '',
+    birthday: '',
+    birthplace: '',
+    birthCountry: '',
+  });
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const result = editPersonSchema.safeParse(formData);
+    console.log(formData)
+    if (!result.success) {
+      const formattedErrors = result.error.format();
+      console.log(formattedErrors)
+      setErrors({
+        firstName: formattedErrors.firstName?._errors.join(', ') || '',
+        middleName: formattedErrors.middleName?._errors.join(', ') || '',
+        lastName: formattedErrors.lastName?._errors.join(', ') || '',
+        suffix: formattedErrors.suffix?._errors.join(', ') || '',
+        birthday: formattedErrors.birthday?._errors.join(', ') || '',
+        birthplace: formattedErrors.birthplace?._errors.join(', ') || '',
+        birthCountry: formattedErrors.birthCountry?._errors.join(', ') || '',
+      });
+      return;
+    }
+    handleEditPerson();
+  };
 
   return (
     <div className="absolute top-0 left-0 flex items-center justify-center w-full h-full bg-black/50 z-10">
@@ -126,6 +351,7 @@ const EditPersonNode = () => {
         exit={{ y: '-15%', opacity: 0 }}
         transition={{ duration: 0.3, ease: 'easeOut' }}
         className="relative flex flex-col gap-4 bg-white rounded-[10px] p-8"
+        onSubmit={handleSubmit}
       >
         <div
           className="absolute top-2 right-2 cursor-pointer"
@@ -135,23 +361,67 @@ const EditPersonNode = () => {
         </div>
         <div className='text-2xl font-bold'>Edit Person</div>
         {/* NAME DETAILS */}
-        <div className='grid grid-cols-[1.25fr_1.25fr_1.25fr_0.25fr] mt-4 w-full gap-2'>
-          <div className='relative flex flex-col'>
+        <div className='flex mt-4 w-full gap-2'>
+          <div className='relative flex flex-col flex-grow'>
             <label className='absolute -top-5 left-0 text-sm text-gray-600 mb-1 font-semibold'>Full Name</label>
-            <input type="text" placeholder='First Name' className='border rounded px-2 py-1' />
+            <input
+              type="text"
+              placeholder='First Name'
+              className='border outline-none hover:bg-white/50 rounded px-2 py-1'
+              value={formData.firstName}
+              onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
+            />
+            {errors.firstName && <span className="absolute -bottom-6 left-0 text-red-500">{errors.firstName}</span>}
           </div>
-          <input type="text" placeholder='Middle Name' className='border rounded px-2 py-1' />
-          <input type="text" placeholder='Last Name' className='border rounded px-2 py-1' />
-          <input type="text" placeholder='Suffix' className='border rounded px-2 py-1' />
+          <input
+            type="text"
+            placeholder='Middle Name'
+            className='border outline-none hover:bg-white/50 rounded px-2 py-1 flex-grow'
+            value={formData.middleName}
+            onChange={(e) => setFormData({ ...formData, middleName: e.target.value })}
+          />
+          <input
+            type="text"
+            placeholder='Last Name'
+            className='border outline-none hover:bg-white/50 rounded px-2 py-1 flex-grow'
+            value={formData.lastName}
+            onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
+          />
+          <input
+            type="text"
+            placeholder='Suffix'
+            className='border outline-none hover:bg-white/50 w-[80px] rounded px-2 py-1 flex-grow-0'
+            value={formData.suffix}
+            onChange={(e) => setFormData({ ...formData, suffix: e.target.value })}
+          />
         </div>
         {/* BIRTH DETAILS */}
         <div className='grid grid-cols-[1fr_2fr_1fr] mt-8 w-full gap-2'>
           <div className='relative flex flex-col'>
             <label className='absolute -top-5 left-0 text-sm text-gray-600 mb-1 font-semibold'>Birth Details</label>
-            <input type="text" placeholder='Birthday' className='border rounded px-2 py-1' />
+            <DateInput 
+              date={formData.birthday || new Date()}
+              setDate={(date) => {
+                console.log("SET DATE", date)
+                setFormData({ ...formData, birthday: date })
+              }}
+            />
+            {errors.birthday && <span className="absolute -bottom-6 left-0 text-red-500">{errors.birthday}</span>}
           </div>
-          <input type="text" placeholder='Birthplace' className='border rounded px-2 py-1' />
-          <input type="text" placeholder='Birth Country' className='border rounded px-2 py-1' />
+          <input
+            type="text"
+            placeholder='Birthplace'
+            className='border outline-none hover:bg-white/50 rounded px-2 py-1'
+            value={formData.birthplace}
+            onChange={(e) => setFormData({ ...formData, birthplace: e.target.value })}
+          />
+          <input
+            type="text"
+            placeholder='Birth Country'
+            className='border outline-none hover:bg-white/50 rounded px-2 py-1'
+            value={formData.birthCountry}
+            onChange={(e) => setFormData({ ...formData, birthCountry: e.target.value })}
+          />
         </div>
 
         {/* SEX */}
@@ -160,11 +430,27 @@ const EditPersonNode = () => {
 
           <div className='flex flex-col ml-4 gap-2'>
             <label htmlFor="male" className='flex items-center gap-1'>
-              <input type="radio" id="male" name="sex" value="male" className='border rounded' />
+              <input
+                type="radio"
+                id="male"
+                name="sex"
+                value="male"
+                className='border rounded'
+                checked={formData.sex === 'male'}
+                onChange={(e) => setFormData({ ...formData, sex: e.target.value })}
+              />
               Male
             </label>
             <label htmlFor="female" className='flex items-center gap-1'>
-              <input type="radio" id="female" name="sex" value="female" className='border rounded' />
+              <input
+                type="radio"
+                id="female"
+                name="sex"
+                value="female"
+                className='border rounded'
+                checked={formData.sex === 'female'}
+                onChange={(e) => setFormData({ ...formData, sex: e.target.value })}
+              />
               Female
             </label>
           </div>
@@ -176,24 +462,49 @@ const EditPersonNode = () => {
 
           <div className='flex flex-col ml-4 gap-2'>
             <label htmlFor="living" className='flex items-center gap-1'>
-              <input type="radio" id="living" name="status" value="living" className='border rounded' />
+              <input
+                type="radio"
+                id="living"
+                name="status"
+                value="living"
+                className='border rounded'
+                checked={formData.status === 'living'}
+                onChange={(e) => setFormData({ ...formData, status: e.target.value })}
+              />
               Living
             </label>
             <label htmlFor="deceased" className='flex items-center gap-1'>
-              <input type="radio" id="deceased" name="status" value="deceased" className='border rounded' />
+              <input
+                type="radio"
+                id="deceased"
+                name="status"
+                value="deceased"
+                className='border rounded'
+                checked={formData.status === 'deceased'}
+                onChange={(e) => setFormData({ ...formData, status: e.target.value })}
+              />
               Deceased
+            </label>
+            <label htmlFor="unknown" className='flex items-center gap-1'>
+              <input
+                type="radio"
+                id="unknown"
+                name="status"
+                value="unknown"
+                className='border rounded'
+                checked={formData.status === 'unknown'}
+                onChange={(e) => setFormData({ ...formData, status: e.target.value })}
+              />
+              Unknown
             </label>
           </div>
         </div>
 
         {/* BUTTONS */}
         <div className='flex justify-center gap-4'>
-        <button onClick={() => toggleEditPersonModal()} className='bg-red-500 text-white px-4 py-1 rounded-md'>Delete</button>
+          <button onClick={() => toggleEditPersonModal()} className='bg-red-500 text-white px-4 py-1 rounded-md'>Delete</button>
           <button onClick={() => toggleEditPersonModal()} className='bg-white-500 text-black border-1 border-green px-4 py-1 rounded-md'>Cancel</button>
-          <button className='bg-primary text-white px-4 py-1 rounded-md' onClick={(e) => {
-            e.preventDefault();
-          handleEditPerson()
-          }}>Edit Member</button> 
+          <button className='bg-primary text-white px-4 py-1 rounded-md' type='submit'>Edit Member</button> 
         </div>
       </motion.form>
     </div>
@@ -202,12 +513,12 @@ const EditPersonNode = () => {
 
 
 const Page = () => {
-  const {addFamilyMember, toggleAddFamilyModal, editPersonModal} = useModal();
+  const {addFamilyMember, toggleAddFamilyModal, editPersonModal} = useTree();
 
-
+  const loading = false;
   return (
       <div className="relative content | overflow-y-auto">
-        <Content />
+        {loading ? <FamilyTreeSkeleton /> : <Content />}
         <AnimatePresence>
         {addFamilyMember && <AddFamilyMember />}
         {editPersonModal && <EditPersonNode />}

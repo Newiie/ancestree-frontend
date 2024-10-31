@@ -2,10 +2,10 @@
 
 import Header from '@/components/dashboard/Header';
 import React, { useEffect, useState } from 'react';
-import useAuth from '@/hooks/useAuth';
+import useAuth from '@/providers/useAuth';
 import Sidebar from '@/components/dashboard/Sidebar';
 import Content from '@/components/dashboard/Profile/Content';
-import { ProfileProvider } from '@/hooks/ProfileContext';
+import { ProfileProvider } from '@/providers/ProfileProvider';
 
 const Page = () => {
   const { user } = useAuth();
