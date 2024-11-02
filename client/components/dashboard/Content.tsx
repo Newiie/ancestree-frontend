@@ -170,8 +170,8 @@ const Content = () => {
               </div>
               <div className='relative flex gap-[4rem] rounded-sm w-full pl-16 py-2 px-4 bg-[#D4E2CC]'>
                 <div>
-                  <p className='text-lg font-semibold'>John Doe</p>
-                  <p className=''>john@doe.com</p>
+                  <p className='text-[2rem] text-black/80 font-semibold'>John Doe</p>
+                  {/* <p className=''>john@doe.com</p> */}
                 </div>
                 <div className='flex items-center'>
                   <Link href={'/dashboard/FamilyTree'} className={`bg-white hover:bg-btn-secondary text-primary border-1 border-green px-2 py-1 rounded-lg mr-2`}>View Tree</Link>
@@ -217,7 +217,7 @@ const Content = () => {
                       <CarouselContent>
                         {memories.map((item, index) => (
                           <CarouselItem key={index}>
-                            <Image src={item.image} alt='profile' className='w-[550px] object-contain' width={1000} height={1000} />
+                            <Image src={item.image} alt='profile' className='w-full object-contain' width={1000} height={1000} />
                           </CarouselItem>
                         ))}
                         
@@ -283,7 +283,7 @@ const Content = () => {
           {/* RECENT ACTIVITY COLUMN */}
           <div>
             <div>
-              <Image src={'/images/design-1.png'} alt='profile' className='w-[350px] object-cover' width={1000} height={1000} />
+              <Image src={'/images/design-1.png'} alt='profile' className='w-full object-cover' width={1000} height={1000} />
             </div>
             <h2 className='text-lg font-semibold mt-4'>Recent Activity</h2>
             <div className='flex gap-4 '>

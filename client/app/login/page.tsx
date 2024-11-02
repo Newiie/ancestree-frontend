@@ -27,7 +27,6 @@ const Page = () => {
         </div>
 
         <div className="w-full lg:w-[35%] bg-[#658165] flex flex-col justify-center items-center px-[5rem]">
-          <h1 className='text-black mb-[3rem] text-[2rem] font-[500]'>Welcome Back!</h1>
           <LoginForm />
         </div>
       </div>

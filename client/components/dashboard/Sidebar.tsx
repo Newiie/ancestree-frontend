@@ -6,7 +6,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
-import  useAuth  from '@/providers/useAuth';
+import  useAuth  from '@/hooks/useAuth';
 import {usePathname} from 'next/navigation';
 import { BellIcon, BookImageIcon, BookTextIcon, EllipsisVerticalIcon, HeartIcon, HelpCircleIcon, HouseIcon, LogOutIcon, NetworkIcon, SettingsIcon, UserIcon, MenuIcon } from 'lucide-react';  
 
@@ -80,20 +80,20 @@ const Sidebar = () => {
               {!isMinimized && <span className="text-sm text-gray-600">user@email.com</span>}
             </div>
             <PopoverTrigger>
-              <div onClick={toggleMenu} className="p-2">
-                <EllipsisVerticalIcon className="text-gray-500" />
+              <div onClick={toggleMenu} className="p-2 text-sidebar">
+                <EllipsisVerticalIcon  />
               </div>
             </PopoverTrigger>
             <PopoverContent>
-                <p className="p-2 hover:bg-gray-100 cursor-pointer flex gap-2 items-center" onClick={logout}>
+                <p className="p-2 hover:bg-gray-100 cursor-pointer text-sidebar flex gap-2 items-center" onClick={logout}>
                   <LogOutIcon />
                   Logout
                 </p>
-                <p className="p-2 hover:bg-gray-100 cursor-pointer flex gap-2 items-center">
+                <p className="p-2 hover:bg-gray-100 cursor-pointer text-sidebar flex gap-2 items-center">
                   <HelpCircleIcon />
                   Help
                 </p>
-                <p className="p-2 hover:bg-gray-100 cursor-pointer flex gap-2 items-center">
+                <p className="p-2 hover:bg-gray-100 cursor-pointer text-sidebar flex gap-2 items-center">
                   <SettingsIcon />
                   Settings
                 </p>

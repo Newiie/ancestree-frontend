@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
+import useAuth from '@/hooks/useAuth';
 
 interface ProfileProviderType {
   selectedDetail: string;
@@ -14,6 +15,8 @@ const ProfileContext = createContext<ProfileProviderType | undefined>(undefined)
 export const ProfileProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [selectedDetail, setSelectedDetail] = useState('General Information');
   const [profileTabs, setProfileTabs] = useState('Personal Details');
+
+  const { user } = useAuth();
 
   const profileSidebarData = [
     'General Information', 

@@ -2,7 +2,7 @@
 
 import Header from '@/components/dashboard/Header';
 import React, { useEffect, useState } from 'react';
-import useAuth from '@/providers/useAuth';
+import useAuth from '@/hooks/useAuth';
 import Sidebar from '@/components/dashboard/Sidebar';
 import Content from '@/components/dashboard/Content';
 

@@ -1,16 +1,33 @@
 "use client";
 
 import React, { FormEvent, useState, useEffect } from 'react';
-import { KeyRound, Mail, User } from 'lucide-react';
+import { KeyRound, User } from 'lucide-react';
 import authService from '../../services/api/authService';
 import { useRouter } from 'next/navigation';
-import useAuth from '@/providers/useAuth';
+import useAuth from '@/hooks/useAuth';
+import { z } from 'zod';
+
+// Define the schema using Zod
+const registerSchema = z.object({
+  firstName: z.string().min(1, "First name is required"),
+  lastName: z.string().min(1, "Last name is required"),
+  username: z.string().min(1, "Username is required"),
+  password: z.string().min(6, "Password must be at least 6 characters long"),
+  confirmPassword: z.string().min(6, "Confirm password must be at least 6 characters long"),
+}).refine(data => data.password === data.confirmPassword, {
+  message: "Passwords do not match",
+  path: ["confirmPassword"],
+});
 
 const RegisterForm = () => {
   const router = useRouter();
-  const [name, setName] = useState('');
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [formData, setFormData] = useState({
+    firstName: '',
+    lastName: '',
+    username: '',
+    password: '',
+    confirmPassword: '',
+  });
   const [error, setError] = useState<string | null>(null);
   const { user } = useAuth();
 
@@ -23,59 +40,118 @@ const RegisterForm = () => {
   const handleRegister = async (event: FormEvent) => {
     event.preventDefault();
     setError(null);
+
+    // Validate form data using Zod
+    const result = registerSchema.safeParse(formData);
+    if (!result.success) {
+      setError(result.error.errors[0].message);
+      return;
+    }
+
     try {
-      const user = await authService.register({ name, username, password });
-      console.log('Registered user:', user);
-      router.push('/dashboard');
+      const response = await authService.register({
+        firstname: formData.firstName,
+        lastname: formData.lastName,
+        username: formData.username,
+        password: formData.password,
+      });
+      if (response.message == "Registered successfully!") {
+        console.log('Registered user:', user);
+        router.push('/dashboard');
+      }
     } catch (error: any) {
       setError(error.message);
     }
   };
 
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
   return (
-    <form onSubmit={handleRegister} className="flex flex-col gap-[1rem] w-full">
-      {error && <div className="text-red-500">{error}</div>}
+      <div className="bg p-8 rounded-lg bg-gray-100 shadow-md w-full max-w-md">
+        <h1 className='text-primary text-center text-[2rem] font-[500]'>Register Now!</h1>
+        <form onSubmit={handleRegister} className="space-y-4">
+          {error && <div className="text-red-500 text-center">{error}</div>}
+            <div>
+            <label className="block text-sm text-gray-600" htmlFor="username">Username</label>
+            <div className="relative mt-1">
+              <User width={15} height={15} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-primary" />
+              <input
+                type="text"
+                id="username"
+                name="username"
+                className="pl-10 pr-4 py-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+                onChange={handleChange}
+              />
+            </div>
+          </div>
+          <div className="flex gap-4">
+            <div className="flex-1">
+              <label className="block text-sm text-gray-600" htmlFor="firstName">First Name</label>
+              <div className="relative mt-1">
+                <User width={15} height={15} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-primary" />
+                <input
+                  type="text"
+                  id="firstName"
+                  name="firstName"
+                  className="pl-10 pr-4 py-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+                  onChange={handleChange}
+                />
+              </div>
+            </div>
+            <div className="flex-1">
+              <label className="block text-sm text-gray-600" htmlFor="lastName">Last Name</label>
+              <div className="relative mt-1">
+                <User width={15} height={15} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-primary" />
+                <input
+                  type="text"
+                  id="lastName"
+                  name="lastName"
+                  className="pl-10 pr-4 py-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+                  onChange={handleChange}
+                />
+              </div>
+            </div>
+          </div>
 
-      <label className="text-black" htmlFor="username">Username:</label>
-      <div className="relative flex items-center">
-        <User width={15} height={15} className="absolute left-3 text-primary" />
-        <input
-          type="text"
-          id="username"
-          name="username"
-          className="text-primary py-[0.5rem] pl-10 pr-[1rem] border border-gray-300 rounded-[3px] focus:outline-none focus:ring-2 focus:ring-primary w-full"
-          onChange={(e) => setUsername(e.target.value)}
-        />
+          <div className="flex gap-4">
+            <div className="flex-1">
+              <label className="block text-sm text-gray-600" htmlFor="password">Password</label>
+              <div className="relative mt-1">
+                <KeyRound width={15} height={15} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-primary" />
+                <input
+                  type="password"
+                  id="password"
+                  name="password"
+                  className="pl-10 pr-4 py-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+                  onChange={handleChange}
+                />
+              </div>
+            </div>
+            <div className="flex-1">
+              <label className="block text-sm text-gray-600" htmlFor="confirmPassword">Confirm Password</label>
+              <div className="relative mt-1">
+                <KeyRound width={15} height={15} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-primary" />
+                <input
+                  type="password"
+                  id="confirmPassword"
+                  name="confirmPassword"
+                  className="pl-10 pr-4 py-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+                  onChange={handleChange}
+                />
+              </div>
+            </div>
+          </div>
+
+          <button
+            className="w-full py-2 mt-4 text-white font-semibold bg-primary rounded-md hover:bg-hover transition-colors duration-200"
+            type="submit"
+          >
+            Register
+          </button>
+        </form>
       </div>
-
-      <label className="text-black" htmlFor="email">Name:</label>
-      <div className="relative flex items-center">
-        <Mail width={15} height={15} className="absolute left-3 text-primary" />
-        <input
-          type="text"
-          id="email"
-          name="email"
-          className="text-primary py-[0.5rem] pl-10 pr-[1rem] border border-gray-300 rounded-[3px] focus:outline-none focus:ring-2 focus:ring-primary w-full"
-          onChange={(e) => setName(e.target.value)}
-        />
-      </div>
-
-      <label className="text-black" htmlFor="password">Password:</label>
-      <div className="relative flex items-center">
-        <KeyRound width={15} height={15} className="absolute left-3 text-primary" />
-        <input
-          type="password"
-          id="password"
-          name="password"
-          className="text-primary py-[0.5rem] pl-10 pr-[1rem] border border-gray-300 rounded-[3px] focus:outline-none focus:ring-2 focus:ring-primary w-full"
-          onChange={(e) => setPassword(e.target.value)}
-        />
-      </div>
-
-      <button className="py-[0.5rem] text-white px-[1rem] text-[0.9rem] rounded-[3px] bg-primary hover:text-primary hover:bg-hover transition-colors duration-200 mt-[1rem]" type="submit">
-        Register
-      </button>
-    </form>
   );
 };
 

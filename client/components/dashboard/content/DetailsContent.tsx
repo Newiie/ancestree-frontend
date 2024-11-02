@@ -2,13 +2,17 @@ import React from 'react';
 import { useProfile } from '../../../providers/ProfileProvider';
 import { SquarePenIcon, StarIcon } from 'lucide-react';
 import ConnectionCard from './ConnectionCard';
+
+
 const DetailsContent = () => {
   const { selectedDetail, profileTabs } = useProfile();
+
   const listQuotes = [
     "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...",
     "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...",
     "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit..."
   ]
+
   return (
     <div className='p-4 relative'>
       <SquarePenIcon className=' w-5 h-5 cursor-pointer absolute top-4 right-4' />
@@ -61,18 +65,18 @@ const DetailsContent = () => {
                   <p>Hair Color: Black</p>
                   <p>Blood Type: O+</p>
                 </div>
-                <div>
+                {/* <div>
                   <h4 className='font-bold text-lg'>Birth Details</h4>
                   <p>Birth Date: January 01, 2002</p>
                   <p>Birth Place: Cebu City, Cebu, Visayas, PH</p>
                   <p>Birthing Center: Unknown</p>
-                </div>
+                </div> */}
               </div>
-              <div>
+              {/* <div>
                 <h4 className='font-bold text-lg'>Citizenship</h4>
                 <p>Nationality: Filipino</p>
                 <p>Civil Status: Single</p>
-              </div>
+              </div> */}
             </div>
           )
         }

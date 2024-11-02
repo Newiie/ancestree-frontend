@@ -4,7 +4,7 @@ import React, { FormEvent, useState, useEffect } from 'react';
 import { KeyRound, User } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import authService from '../../services/api/authService';
-import useAuth from '@/providers/useAuth';
+import useAuth from '@/hooks/useAuth';
 
 const LoginForm = () => {
   const [username, setUsername] = useState('');
@@ -27,41 +27,47 @@ const LoginForm = () => {
       login(user.username);
       router.push('/dashboard');
     } catch (error: any) {
+      console.log("Error: ", error);
       setError(error.message);
     }
   };
 
   return (
-    <form onSubmit={handleLogin} className="flex flex-col gap-[1rem] w-full">
-      {error && <div className="text-red-500">{error}</div>}
-      <label className="text-black" htmlFor="email">Email:</label>
-      <div className="relative flex items-center">
-        <User width={15} height={15} className="absolute left-3 text-primary" />
-        <input
-          type="text"
-          id="email"
-          name="email"
-          className="text-primary py-[0.5rem] pl-10 pr-[1rem] border border-gray-300 rounded-[3px] focus:outline-none focus:ring-2 focus:ring-primary w-full"
-          onChange={(e) => setUsername(e.target.value)}
-        />
-      </div>
+   
+      <div className="bg p-8 rounded-lg bg-gray-100 shadow-md w-full max-w-md">
+        <h1 className='text-primary text-center text-[2rem] font-[500]'>Welcome Back!</h1>
+        <form onSubmit={handleLogin} className="flex flex-col gap-[1rem] w-full">
+          {error && <div className="text-red-500">{error}</div>}
+          <label className="text-black" htmlFor="email">Email:</label>
+          <div className="relative flex items-center">
+            <User width={15} height={15} className="absolute left-3 text-primary" />
+            <input
+              type="text"
+              id="email"
+              name="email"
+              className="text-primary py-[0.5rem] pl-10 pr-[1rem] border border-gray-300 rounded-[3px] focus:outline-none focus:ring-2 focus:ring-primary w-full"
+              onChange={(e) => setUsername(e.target.value)}
+            />
+          </div>
 
-      <label className="text-black" htmlFor="password">Password:</label>
-      <div className="relative flex items-center">
-        <KeyRound width={15} height={15} className="absolute left-3 text-primary" />
-        <input
-          type="password"
-          id="password"
-          name="password"
-          className="text-primary py-[0.5rem] pl-10 pr-[1rem] border border-gray-300 rounded-[3px] focus:outline-none focus:ring-2 focus:ring-primary w-full"
-          onChange={(e) => setPassword(e.target.value)}
-        />
-      </div>
+          <label className="text-black" htmlFor="password">Password:</label>
+          <div className="relative flex items-center">
+            <KeyRound width={15} height={15} className="absolute left-3 text-primary" />
+            <input
+              type="password"
+              id="password"
+              name="password"
+              className="text-primary py-[0.5rem] pl-10 pr-[1rem] border border-gray-300 rounded-[3px] focus:outline-none focus:ring-2 focus:ring-primary w-full"
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </div>
 
-      <button className="py-[0.5rem] px-[1rem] text-[0.9rem] text-white rounded-[3px] bg-primary hover:text-primary hover:bg-hover transition-colors duration-200 mt-[1rem]" type="submit">
-        Login
-      </button>
-    </form>
+          <button className="py-[0.5rem] px-[1rem] text-[0.9rem] text-white rounded-[3px] bg-primary hover:text-primary hover:bg-hover transition-colors duration-200 mt-[1rem]" type="submit">
+            Login
+          </button>
+        </form>
+      </div> 
+    
   );
 };
 
