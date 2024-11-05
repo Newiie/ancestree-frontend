@@ -1,7 +1,6 @@
 import axios from 'axios';
-import { Credentials, User } from './types';
-
-const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+import { Credentials } from './types';
+import { baseUrl } from '@/lib/config';
 
 const login = async (credentials: { username: string, password: string }): Promise<any> => {
   try {

@@ -5,11 +5,11 @@ const loadState = (): UserState => {
   try {
     const serializedState = window.localStorage.getItem('loggedNoteappUser');
     if (serializedState === null) {
-      return { user: null };
+      return { username: null, id: null, token: null };
     }
-    return { user: JSON.parse(serializedState) };
+    return JSON.parse(serializedState);
   } catch (err) {
-    return { user: null };
+    return { username: null, id: null, token: null };
   }
 };
 

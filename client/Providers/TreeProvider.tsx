@@ -1,4 +1,7 @@
-import React, { createContext, useState, useContext, ReactNode } from 'react';
+import { baseUrl } from '@/lib/config';
+import React, { createContext, useState, useContext, ReactNode, useEffect } from 'react';
+import axios from 'axios';
+import useAuth from '@/hooks/useAuth';
 
 interface TreeContextType {
   addFamilyMember: boolean;
@@ -24,9 +27,20 @@ interface TreeNode {
 }
 
 export const TreeProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+    const { user } = useAuth();
+
     const [addFamilyMember, setAddFamilyMember] = useState(false);
     const [editPersonModal, setEditPersonModal] = useState(false);
     const [selectedNode, setSelectedNode] = useState(null); 
+
+    useEffect(() => {
+        const fetchTreeData = async () => {
+            const response = await axios.get(`${baseUrl}/trees/family-tree/${user?.id}`);
+            console.log("RESPONSE", response);
+        }
+
+        fetchTreeData();
+    }, []);
 
     const [treeData, setTreeData] = useState<TreeNode[]>([
         { id: '1', name: 'Child', 

@@ -14,7 +14,7 @@ const LoginForm = () => {
   const router = useRouter();
 
   useEffect(() => {
-    if (user) {
+    if (user?.id) {
       router.push('/dashboard');
     }
   }, [user, router]);
@@ -23,9 +23,20 @@ const LoginForm = () => {
     event.preventDefault();
     setError(null);
     try {
-      const user = await authService.login({ username, password });
-      login(user.username);
-      router.push('/dashboard');
+      const userResponse = await authService.login({ username, password });
+      console.log("RESPONSE", userResponse);
+      
+      // Ensure userResponse is an object with the expected properties
+      if (userResponse && typeof userResponse === 'object' && 'username' in userResponse && 'id' in userResponse && 'token' in userResponse) {
+        login({
+          username: userResponse.username,
+          id: userResponse.id,
+          token: userResponse.token
+        });
+        router.push('/dashboard');
+      } else {
+        throw new Error('Invalid user data received');
+      }
     } catch (error: any) {
       console.log("Error: ", error);
       setError(error.message);

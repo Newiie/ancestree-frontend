@@ -9,19 +9,16 @@ const FamilyTreeSkeleton = () => {
                 <li>
                     <a href="#">
                         <Skeleton className="w-full h-20" />
-                   
                     </a>
                     <ul>
                         <li>
                             <a href="#">
                                 <Skeleton className="w-full h-20" />
-
                             </a>
                             <ul>
                                 <li>
                                     <a href="#">
                                         <Skeleton className="w-full h-20" />
-
                                     </a>
                                 </li>
                                 <li>
@@ -35,25 +32,21 @@ const FamilyTreeSkeleton = () => {
                         <li>
                             <a href="#">
                                 <Skeleton className="w-full h-20" />
-
                             </a>
                             <ul>
                                 <li>
                                     <a href="#">
                                         <Skeleton className="w-full h-20" />
-
                                     </a>
                                 </li>
                                 <li>
                                     <a href="#">
                                         <Skeleton className="w-full h-20" />
-
                                     </a>
                                 </li>
                                 <li>
                                     <a href="#">
                                         <Skeleton className="w-full h-20" />
-
                                     </a>
                                 </li>
                             </ul>

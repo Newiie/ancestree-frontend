@@ -10,33 +10,7 @@ import { CircleXIcon } from 'lucide-react'
 import { z } from 'zod';
 import { DateInput } from '@/components/forms/DateInput'
 import FamilyTreeSkeleton from './loading'
-
-// Define Zod schema for form validation
-const familyMemberSchema = z.object({
-  firstName: z.string().min(1, "First Name is required"),
-  middleName: z.string().optional(),
-  lastName: z.string().min(1, "Last Name is required"),
-  suffix: z.string().optional(),
-  birthday: z.date().min(new Date(), "Birthday is required"),
-  birthplace: z.string(),
-  birthCountry: z.string(),
-  sex: z.enum(["male", "female"]),
-  status: z.enum(["living", "deceased", "unknown"]),
-  nationality: z.array(z.string()).min(1, "Nationality is required"),
-});
-
-// Define Zod schema for editing a person
-const editPersonSchema = z.object({
-  firstName: z.string().min(1, "First Name is required"),
-  middleName: z.string().optional(),
-  lastName: z.string().min(1, "Last Name is required"),
-  suffix: z.string().optional(),
-  birthday: z.date().min(new Date(), "Birthday is required"),
-  birthplace: z.string(),
-  birthCountry: z.string(),
-  sex: z.enum(["male", "female"]),
-  status: z.enum(["living", "deceased", "unknown"]),
-});
+import { familyMemberSchema, editPersonSchema } from '@/lib/schema';
 
 const AddFamilyMember = () => {
   const [selectedPerson, setSelectedPerson] = useState('Add Child');

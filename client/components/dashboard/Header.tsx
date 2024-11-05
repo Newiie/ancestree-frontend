@@ -3,9 +3,10 @@ import Image from 'next/image'
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux';
 import { RootState } from '@/store/store';
+import useAuth from '@/hooks/useAuth';
 
 const Header = () => {
-    const user = useSelector((state: RootState) => state.user.user);
+    const { user } = useAuth();
     const [isMounted, setIsMounted] = useState(false);
 
     useEffect(() => {
@@ -23,7 +24,7 @@ const Header = () => {
             </div>
      
             {isMounted && (user ? (
-                <p className='text-[1rem] text-black font-semibold'>WELCOME, {user}!</p>
+                <p className='text-[1rem] text-black font-semibold'>WELCOME, {user.username}!</p>
             ) : (
                 <p className='text-[1rem] text-black font-semibold'>WELCOME!</p>
             ))}

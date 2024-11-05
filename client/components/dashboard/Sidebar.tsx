@@ -14,6 +14,7 @@ const Sidebar = () => {
   const [isMinimized, setIsMinimized] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { logout } = useAuth();
+  const {user} = useAuth();
 
   const pathName = usePathname();
 
@@ -42,7 +43,7 @@ const Sidebar = () => {
         {[ 
           { icon: <HouseIcon />, label: 'Home', url: "/dashboard" },
           // { icon: <FaChartBar />, label: 'Analytics', url: "/dashboard/Analytics" },
-          { icon: <UserIcon />, label: 'Profile', url: "/dashboard/profile" },
+          { icon: <UserIcon />, label: 'Profile', url: `/dashboard/profile/${user?.id}` },
           { icon: <BellIcon />, label: 'Notifications', url: "/dashboard/notifications" },
           { icon: <NetworkIcon />, label: 'Family Tree', url: "/dashboard/family-tree" },
           { icon: <HeartIcon />, label: 'Relationships', url: "/dashboard/relationships" },

@@ -5,20 +5,8 @@ import { KeyRound, User } from 'lucide-react';
 import authService from '../../services/api/authService';
 import { useRouter } from 'next/navigation';
 import useAuth from '@/hooks/useAuth';
-import { z } from 'zod';
-
-// Define the schema using Zod
-const registerSchema = z.object({
-  firstName: z.string().min(1, "First name is required"),
-  lastName: z.string().min(1, "Last name is required"),
-  username: z.string().min(1, "Username is required"),
-  password: z.string().min(6, "Password must be at least 6 characters long"),
-  confirmPassword: z.string().min(6, "Confirm password must be at least 6 characters long"),
-}).refine(data => data.password === data.confirmPassword, {
-  message: "Passwords do not match",
-  path: ["confirmPassword"],
-});
-
+import { registerSchema } from '@/lib/schema';
+  
 const RegisterForm = () => {
   const router = useRouter();
   const [formData, setFormData] = useState({
