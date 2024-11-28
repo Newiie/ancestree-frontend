@@ -24,15 +24,13 @@ const ProfileHeader = () => {
 
   useEffect(() => {
     if (userData?.profilePicture) {
-      const base64Image = `data:image/jpeg;base64,${Buffer.from(userData.profilePicture, 'base64').toString('base64')}`;
-      setProfileImage(base64Image);
+      setProfileImage(userData.profilePicture);
     } else {
       setProfileImage('');
     }
 
     if (userData?.backgroundPicture) {
-      const base64Image = `data:image/jpeg;base64,${Buffer.from(userData.backgroundPicture, 'base64').toString('base64')}`;
-      setBackgroundImage(base64Image);
+      setBackgroundImage(userData.backgroundPicture);
     } else {
       setBackgroundImage('');
     }

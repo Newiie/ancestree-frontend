@@ -1,8 +1,8 @@
 import React, { memo, useState } from 'react';
-import ProfileHeader from './content/ProfileHeader';
-import ProfileTabs from './content/ProfileTabs';
-import ProfileSidebar from './content/ProfileSidebar';
-import DetailsContent from './content/DetailsContent';
+// import ProfileHeader from './content/ProfileHeader';
+// import ProfileTabs from './content/ProfileTabs';
+// import ProfileSidebar from './content/ProfileSidebar';
+// import DetailsContent from './content/DetailsContent';
 import { useProfile } from '@/providers/ProfileProvider';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -32,7 +32,7 @@ const progress = [
   {
     title: "Create your first Family Tree",
     description: "Start building your family tree by adding members and exploring potential connections.",
-    completed: true
+    completed: false
   },
   {
     title: "Search for relatives using the Relationships tool",

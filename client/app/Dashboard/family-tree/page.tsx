@@ -2,7 +2,7 @@
 import Content from '@/components/dashboard/FamilyTree/Content'
 import Header from '@/components/dashboard/Header'
 import Sidebar from '@/components/dashboard/Sidebar'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion';
 import MainLayout from '@/components/MainLayout'
 import { useTree } from '@/providers/TreeProvider'
@@ -15,6 +15,8 @@ import { familyMemberSchema, editPersonSchema } from '@/lib/schema';
 const AddFamilyMember = () => {
   const [selectedPerson, setSelectedPerson] = useState('Add Child');
   const { toggleAddFamilyModal, handleAddFamilyMember } = useTree();
+
+
   const [formData, setFormData] = useState({
     firstName: '',
     middleName: '',
@@ -67,6 +69,7 @@ const AddFamilyMember = () => {
       setNationalityInput('');
     }
   };
+
 
   return (
     <div className="absolute top-0 left-0 flex items-center justify-center w-full h-full bg-black/50 z-10">
