@@ -3,7 +3,7 @@ import userReducer, { UserState } from './userSlice';
 
 const loadState = (): UserState => {
   try {
-    const serializedState = window.localStorage.getItem('loggedNoteappUser');
+    const serializedState = window.localStorage.getItem('AncestreeUser');
     if (serializedState === null) {
       return { username: null, id: null, token: null };
     }

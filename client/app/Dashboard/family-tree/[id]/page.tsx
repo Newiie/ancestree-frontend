@@ -22,8 +22,8 @@ const AddFamilyMember = () => {
     middleName: '',
     lastName: '',
     suffix: '',
-    birthday: new Date(),
-    birthplace: '',
+    birthdate: new Date(),
+    birthPlace: '',
     birthCountry: '',
     sex: 'male',
     status: 'unknown',
@@ -35,8 +35,8 @@ const AddFamilyMember = () => {
     middleName: '',
     lastName: '',
     suffix: '',
-    birthday: '',
-    birthplace: '',
+    birthdate: '',
+    birthPlace: '',
     nationality: '',
   });
 
@@ -51,13 +51,13 @@ const AddFamilyMember = () => {
         middleName: formattedErrors.middleName?._errors.join(', ') || '',
         lastName: formattedErrors.lastName?._errors.join(', ') || '',
         suffix: formattedErrors.suffix?._errors.join(', ') || '',
-        birthday: formattedErrors.birthday?._errors.join(', ') || '',
-        birthplace: formattedErrors.birthplace?._errors.join(', ') || '',
+        birthdate: formattedErrors.birthdate?._errors.join(', ') || '',
+        birthPlace: formattedErrors.birthPlace?._errors.join(', ') || '',
         nationality: formattedErrors.nationality?._errors.join(', ') || '',
       });
       return;
     }
-    handleAddFamilyMember();
+    handleAddFamilyMember(formData);
   };
 
   const handleAddNationality = () => {
@@ -78,7 +78,7 @@ const AddFamilyMember = () => {
         animate={{ y: '0%', opacity: 1 }}
         exit={{ y: '-15%', opacity: 0 }}
         transition={{ duration: 0.3, ease: 'easeOut' }}
-        className="relative flex flex-col gap-4 bg-white rounded-[10px] py-2"
+        className="relative flex flex-col gap-2 bg-white w-[500px] rounded-[10px] py-2"
         onSubmit={handleSubmit}
       >
         <div
@@ -104,7 +104,7 @@ const AddFamilyMember = () => {
         </div>
 
         {/* NAME DETAILS */}
-        <div className='flex mt-4 w-full gap-2 px-4'>
+        <div className='flex flex-wrap mt-2 w-full gap-2 px-4'>
           <div className='relative flex flex-col flex-grow'>
             <label className='absolute -top-5 left-0 text-sm text-gray-600 mb-1 font-semibold'>Full Name</label>
             <input
@@ -136,27 +136,27 @@ const AddFamilyMember = () => {
           <input
             type="text"
             placeholder='Suffix'
-            className='border outline-none hover:bg-white/50 w-[80px] rounded px-2 py-1 flex-grow-0'
+            className='border outline-none hover:bg-white/50  rounded px-2 py-1 flex-grow-0'
             value={formData.suffix}
             onChange={(e) => setFormData({ ...formData, suffix: e.target.value })}
           />
         </div>
         {/* BIRTH DETAILS */}
-        <div className='grid grid-cols-[1fr_2fr_1fr] mt-8 w-full gap-2 px-4'>
+        <div className='flex flex-wrap mt-4 w-full gap-2 px-4'>
           <div className='relative flex flex-col'>
             <label className='absolute -top-5 left-0 text-sm text-gray-600 mb-1 font-semibold'>Birth Details</label>
             <DateInput 
-              date={formData.birthday || new Date()}
-              setDate={(date) => setFormData({ ...formData, birthday: date })}
+              date={formData.birthdate || new Date()}
+              setDate={(date) => setFormData({ ...formData, birthdate: date })}
             />
-            {errors.birthday && <span className="absolute -bottom-6 left-0 text-red-500">{errors.birthday}</span>}
+            {errors.birthdate && <span className="absolute -bottom-6 left-0 text-red-500">{errors.birthdate}</span>}
           </div>
           <input
             type="text"
-            placeholder='Birthplace'
+            placeholder='Birth Place'
             className='border outline-none rounded px-2 py-1'
-            value={formData.birthplace}
-            onChange={(e) => setFormData({ ...formData, birthplace: e.target.value })}
+            value={formData.birthPlace}
+            onChange={(e) => setFormData({ ...formData, birthPlace: e.target.value })}
           />
           <input
             type="text"
@@ -171,7 +171,7 @@ const AddFamilyMember = () => {
         <div className='flex flex-col gap-2 px-4'>
           <label className='text-md font-semibold'>Sex</label>
 
-          <div className='flex flex-col ml-4 gap-2'>
+          <div className='flex flex-col ml-4 '>
             <label htmlFor="male" className='flex items-center gap-1'>
               <input
                 type="radio"
@@ -200,10 +200,10 @@ const AddFamilyMember = () => {
         </div>
 
         {/* STATUS */}
-        <div className='flex flex-col gap-2 px-4'>
+        <div className='flex flex-col gap-1 px-4'>
           <label className='text-md font-semibold'>Status</label>
 
-          <div className='flex flex-col ml-4 gap-2'>
+          <div className='flex flex-col ml-4'>
             <label htmlFor="living" className='flex items-center gap-1'>
               <input
                 type="radio"
@@ -275,14 +275,14 @@ const AddFamilyMember = () => {
 };
 
 const EditPersonNode = () => {
-  const { toggleEditPersonModal, handleEditPerson } = useTree();
+  const { toggleEditPersonModal, handleEditPerson, handleDeletePersonNode } = useTree();
   const [formData, setFormData] = useState({
     firstName: '',
     middleName: '',
     lastName: '',
     suffix: '',
     birthday: new Date(),
-    birthplace: '',
+    birthPlace: '',
     birthCountry: '',
     sex: 'male',
     status: 'unknown',
@@ -295,7 +295,7 @@ const EditPersonNode = () => {
     lastName: '',
     suffix: '',
     birthday: '',
-    birthplace: '',
+    birthPlace: '',
     birthCountry: '',
   });
 
@@ -312,12 +312,12 @@ const EditPersonNode = () => {
         lastName: formattedErrors.lastName?._errors.join(', ') || '',
         suffix: formattedErrors.suffix?._errors.join(', ') || '',
         birthday: formattedErrors.birthday?._errors.join(', ') || '',
-        birthplace: formattedErrors.birthplace?._errors.join(', ') || '',
+        birthPlace: formattedErrors.birthPlace?._errors.join(', ') || '',
         birthCountry: formattedErrors.birthCountry?._errors.join(', ') || '',
       });
       return;
     }
-    handleEditPerson();
+    handleEditPerson(formData);
   };
 
   return (
@@ -350,13 +350,13 @@ const EditPersonNode = () => {
             />
             {errors.firstName && <span className="absolute -bottom-6 left-0 text-red-500">{errors.firstName}</span>}
           </div>
-          <input
+          {/* <input
             type="text"
             placeholder='Middle Name'
             className='border outline-none hover:bg-white/50 rounded px-2 py-1 flex-grow'
             value={formData.middleName}
             onChange={(e) => setFormData({ ...formData, middleName: e.target.value })}
-          />
+          /> */}
           <input
             type="text"
             placeholder='Last Name'
@@ -387,10 +387,10 @@ const EditPersonNode = () => {
           </div>
           <input
             type="text"
-            placeholder='Birthplace'
+            placeholder='Birth Place'
             className='border outline-none hover:bg-white/50 rounded px-2 py-1'
-            value={formData.birthplace}
-            onChange={(e) => setFormData({ ...formData, birthplace: e.target.value })}
+            value={formData.birthPlace}
+            onChange={(e) => setFormData({ ...formData, birthPlace: e.target.value })}
           />
           <input
             type="text"
@@ -479,9 +479,9 @@ const EditPersonNode = () => {
 
         {/* BUTTONS */}
         <div className='flex justify-center gap-4'>
-          <button onClick={() => toggleEditPersonModal()} className='bg-red-500 text-white px-4 py-1 rounded-md'>Delete</button>
+          <button onClick={() => handleDeletePersonNode()} className='bg-red-500 text-white px-4 py-1 rounded-md'>Delete</button>
           <button onClick={() => toggleEditPersonModal()} className='bg-white-500 text-black border-1 border-green px-4 py-1 rounded-md'>Cancel</button>
-          <button className='bg-primary text-white px-4 py-1 rounded-md' type='submit'>Edit Member</button> 
+          <button  className='bg-primary text-white px-4 py-1 rounded-md' type='submit'>Edit Member</button> 
         </div>
       </motion.form>
     </div>
@@ -490,12 +490,12 @@ const EditPersonNode = () => {
 
 
 const Page = () => {
-  const {addFamilyMember, toggleAddFamilyModal, editPersonModal} = useTree();
+  const {addFamilyMember, isFetching, editPersonModal} = useTree();
 
-  const loading = false;
+  if (isFetching) return <FamilyTreeSkeleton />;
   return (
       <div className="relative content | overflow-y-auto">
-        {loading ? <FamilyTreeSkeleton /> : <Content />}
+        <Content />
         <AnimatePresence>
         {addFamilyMember && <AddFamilyMember />}
         {editPersonModal && <EditPersonNode />}

@@ -79,17 +79,20 @@ export const ProfileProvider: React.FC<{ children: ReactNode, userId: string }> 
   // SENDS REQUEST FOR UPDATED USER DATA
   const updateUserData = async (data: any) => {
     try {
+      console.log("UPDATE USER DATA", data);
       const { userId, relatedUser, profilePicture, backgroundPicture, ...restData } = data;
       const updatedData = {
         ...restData
       };
+
+      console.log("UPDATED DATA", updatedData);
 
       const headers = {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${user?.user?.token}`
       }
 
-      const response = await axios.put(`${baseUrl}/person/${userId}`, updatedData, { headers });
+      const response = await axios.patch(`${baseUrl}/person/${userId}`, updatedData, { headers });
       console.log("RESPONSE", response);
       if (response.status === 200) {
         await fetchUserData();

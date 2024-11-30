@@ -1,6 +1,6 @@
 export interface Credentials {
-    firstname: string;
-    lastname: string;
+    firstName: string;
+    lastName: string;
     username: string;
     password: string;
 }

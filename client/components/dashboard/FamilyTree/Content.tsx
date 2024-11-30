@@ -4,21 +4,34 @@ import '@/public/style/familytree.css';
 import { InfoIcon, PencilIcon, PlusIcon, UserRoundIcon, ZoomInIcon, ZoomOutIcon } from 'lucide-react';
 import { useTree } from '@/providers/TreeProvider';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useRouter } from 'next/navigation';
 
-const Node = ({ node, selectedNode, setSelectedNode, toggleAddFamilyModal, toggleEditPersonModal }: any) => {
+const Node = ({ 
+    node, 
+    selectedNode, 
+    setSelectedNode, 
+    toggleAddFamilyModal, 
+    toggleEditPersonModal 
+}: any) => {
+    const router = useRouter();
     const [isHover, setIsHover] = useState(false);
-
     return (
-        <li key={node.id}>
+        <li key={node.personNodeId}>
             <a 
                 href="#" 
                 className='relative'
-                onClick={() => setSelectedNode(node.id)}
+                onClick={() => setSelectedNode(node.personNodeId)}
             >
-                <Image src={`/images/familytree/${node.id}.jpg`} alt={node.name} width={100} height={100} />
-                <span>{node.name}</span>
+                <Image src={`${node?.person?.profilePicture || '/images/pirot.png'}`} alt= {`${node?.person?.generalInformation?.firstname} ${node?.person?.generalInformation?.lastname}`} width={100} height={100} />
+                <span>
+                     {node?.person?.generalInformation?.firstname}
+                     {node?.person?.generalInformation?.firstName}
+                     {" "}
+                     {node?.person?.generalInformation?.lastName}
+                     {node?.person?.generalInformation?.lastname}
+                </span>
 
-                {selectedNode === node.id && (
+                {selectedNode === node.personNodeId && (
                     <div className='absolute top-0 -right-[40px] z-10'>
                         <div className='relative flex flex-col gap-1'>
                             <button
@@ -29,7 +42,12 @@ const Node = ({ node, selectedNode, setSelectedNode, toggleAddFamilyModal, toggl
                             </button>
 
                             <button
-                                onClick={() => console.log("View")}
+                                onClick={() => {
+                                    if (node?.person?.relatedUser) {   
+                                        console.log(node?.person?.relatedUser);
+                                        router.push(`/dashboard/profile/${node?.person?.relatedUser}`);
+                                    }
+                                }}
                                 className='absolute top-[31px] right-[-14px] bg-white-500 border border-[#E0E0E0] hover:bg-gray-100 text-[#7C7C7C] px-2 py-1 rounded-[50%] w-8 h-8 flex items-center justify-center'
                             >
                                 <UserRoundIcon size={16} />

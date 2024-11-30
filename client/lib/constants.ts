@@ -1,11 +1,11 @@
 const sectionConfigs = {
     generalInformation: [
-      { name: 'firstname', label: 'First Name' },
-      { name: 'middlename', label: 'Middle Name' },
-      { name: 'lastname', label: 'Last Name' },
+      { name: 'firstName', label: 'First Name' },
+      { name: 'middleName', label: 'Middle Name' },
+      { name: 'lastName', label: 'Last Name' },
       { name: 'suffix', label: 'Suffix', type: 'select', options: ['Jr.', 'Sr.', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X'] },
-      { name: 'birthDate', label: 'Birth Date', type: 'date' },
-      { name: 'deathDate', label: 'Death Date', type: 'date' },
+      { name: 'birthdate', label: 'Birth Date', type: 'date' },
+      { name: 'deathdate', label: 'Death Date', type: 'date' },
       { name: 'birthPlace', label: 'Birth Place' },
       { name: 'birthingCenter', label: 'Birthing Center' },
       { name: 'nationality', label: 'Nationality' },

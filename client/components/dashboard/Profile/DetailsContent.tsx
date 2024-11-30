@@ -25,9 +25,9 @@ const DetailsContent = () => {
     quotes: Array<{ quote: string; isFavorite: boolean }>;
   }>({
     generalInformation: {
-      firstname: '',
-      middlename: '',
-      lastname: '',
+      firstName: '',
+      middleName: '',
+      lastName: '',
       suffix: '',
       birthDate: '',
       birthPlace: '',
@@ -75,9 +75,19 @@ const DetailsContent = () => {
     "Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse..."
   ];
 
+  const deepMerge = (target: any, source: any) => {
+    for (const key of Object.keys(source)) {
+      if (source[key] instanceof Object && key in target) {
+        Object.assign(source[key], deepMerge(target[key], source[key]));
+      }
+    }
+    return { ...target, ...source };
+  };
+
   useEffect(() => {
-    if (!isFetching) {
-      setFormData(userData || {});
+    
+    if (!isFetching && userData) {
+      setFormData((prevFormData) => deepMerge(prevFormData, userData));
       if (userData === null) {
         setIsEditing(true);
       }
@@ -90,9 +100,10 @@ const DetailsContent = () => {
   const errorStyles = 'text-red-500 text-sm mt-1';
 
   const handleEditClick = () => setIsEditing(true);
+  
   const handleCancelClick = () => {
     setIsEditing(false);
-    setFormData(userData); 
+    setFormData((prevFormData) => deepMerge(prevFormData, userData));
     setErrors({});
   };
 
@@ -118,7 +129,6 @@ const DetailsContent = () => {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     const [section, field, index] = name.split('.'); 
-
     setFormData((prev: any) => {
       if (section === 'interests' && index !== undefined) {
         const interests = [...prev.interests];
@@ -152,6 +162,7 @@ const DetailsContent = () => {
   
 
   const renderFields = (fields: { name: string; label: string; type?: string; options?: string[] }[], section: FormDataKeys) => {
+
     if (section === 'interests') {
       return (formData[section] || []).map((interest: { title: string, description: string }, index: number) => (
         <div key={index} className='mb-1'>
@@ -286,7 +297,7 @@ const DetailsContent = () => {
             )}
           </>
         ) : (
-          <p><strong>{field.label}:</strong> {(formData[section] as Record<string, any>)[field.name] || 'Unknown'}</p>
+          <p><strong>{field.label}:</strong> {(formData[section] as Record<string, any>)[field?.name] || 'Unknown'}</p>
         )}
       </div>
     ));

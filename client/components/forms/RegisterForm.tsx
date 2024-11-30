@@ -19,11 +19,11 @@ const RegisterForm = () => {
   const [error, setError] = useState<string | null>(null);
   const { user } = useAuth();
 
-  useEffect(() => {
-    if (user) {
-      router.push('/dashboard');
-    }
-  }, [user, router]);
+  // useEffect(() => {
+  //   if (user) {
+  //     router.push('/dashboard');
+  //   }
+  // }, [user, router]);
 
   const handleRegister = async (event: FormEvent) => {
     event.preventDefault();
@@ -38,8 +38,8 @@ const RegisterForm = () => {
 
     try {
       const response = await authService.register({
-        firstname: formData.firstName,
-        lastname: formData.lastName,
+        firstName: formData.firstName,
+        lastName: formData.lastName,
         username: formData.username,
         password: formData.password,
       });

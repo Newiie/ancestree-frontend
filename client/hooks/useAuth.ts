@@ -23,12 +23,12 @@ const useAuth = () => {
     console.log("USER ON LOGIN", useraccount);
     dispatch(setUser({ username: useraccount.username, id: useraccount.id, token: useraccount.token }));
     const userData = { username: useraccount.username, id: useraccount.id, token: useraccount.token };
-    window.localStorage.setItem('loggedNoteappUser', JSON.stringify(userData));
+    window.localStorage.setItem('AncestreeUser', JSON.stringify(userData));
   };
 
   const logout = () => {
     dispatch(setUser({ username: null, id: null, token: null }));
-    window.localStorage.removeItem('loggedNoteappUser');
+    window.localStorage.removeItem('AncestreeUser');
     router.push('/login');
   };
 

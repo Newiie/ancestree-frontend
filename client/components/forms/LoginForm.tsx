@@ -26,7 +26,6 @@ const LoginForm = () => {
       const userResponse = await authService.login({ username, password });
       console.log("RESPONSE", userResponse);
       
-      // Ensure userResponse is an object with the expected properties
       if (userResponse && typeof userResponse === 'object' && 'username' in userResponse && 'id' in userResponse && 'token' in userResponse) {
         login({
           username: userResponse.username,

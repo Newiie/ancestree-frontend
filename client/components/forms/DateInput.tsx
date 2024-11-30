@@ -15,7 +15,6 @@ import {
 
 export function DateInput({date, setDate}: {date: Date | undefined, setDate: (date: any | undefined) => void}) {
 
-    console.log(date)
   return (
     <Popover>
       <PopoverTrigger asChild>
