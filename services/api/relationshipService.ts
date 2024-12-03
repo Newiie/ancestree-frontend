@@ -1,3 +1,5 @@
+import { baseUrl } from '@/lib/config';
+
 const findSimilarPersons = async (personDetails: { firstName?: string, lastName?: string, middleName?: string, birthdate?: string, birthPlace?: string }) => {
     try {
         const queryParams = new URLSearchParams();
@@ -7,7 +9,7 @@ const findSimilarPersons = async (personDetails: { firstName?: string, lastName?
             }
         }
 
-        const response = await fetch(`http://localhost:3001/api/person/find-person?${queryParams.toString()}`, {
+        const response = await fetch(`${baseUrl}/person/find-person?${queryParams.toString()}`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",

@@ -1,6 +1,7 @@
 import axios from "axios";
 import store from "@/store/store";
 import { selectToken } from "@/store/userSlice";
+import { baseUrl } from '@/lib/config';
 
 const fetchUserData = async (userId: string) => {
     try {
@@ -9,7 +10,7 @@ const fetchUserData = async (userId: string) => {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`
         };
-        const response = await axios.get(`http://localhost:3000/api/person/${userId}`, { headers });
+        const response = await axios.get(`${baseUrl}/person/${userId}`, { headers });
         const data = response.data;
         return data;
     } catch (error) {
@@ -26,7 +27,7 @@ const updateUserData = async (userId: string, data: any) => {
             'Authorization': `Bearer ${token}`
         };
         const response = await axios.patch(
-            `http://localhost:3000/api/person/${userId}`, 
+            `${baseUrl}/person/${userId}`, 
             data, 
             { headers }
         );
@@ -45,7 +46,7 @@ const updateProfileImage = async (userId: string, formData: FormData) => {
             'Authorization': `Bearer ${token}`
         };
         const response = await axios.post(
-            `http://localhost:3000/api/person/${userId}/profile-picture`, 
+            `${baseUrl}/person/${userId}/profile-picture`, 
             formData, 
             { headers }
         );
@@ -67,7 +68,7 @@ const updateBackgroundImage = async (userId: string, formData: FormData) => {
             'Authorization': `Bearer ${token}`
         };
         const response = await axios.post(
-            `http://localhost:3000/api/person/${userId}/background-picture`, 
+            `${baseUrl}/person/${userId}/background-picture`, 
             formData, 
             { headers }
         );
@@ -89,7 +90,7 @@ const sendFriendRequest = async (userId: string) => {
             'Authorization': `Bearer ${token}`
         };
         const response = await axios.post(
-            `http://localhost:3000/api/users/send-friend-request/${userId}`, 
+            `${baseUrl}/users/send-friend-request/${userId}`, 
             {}, 
             { headers }
         );
@@ -108,7 +109,7 @@ const acceptFriendRequest = async (userId: string) => {
             'Authorization': `Bearer ${token}`
         };
         const response = await axios.post(
-            `http://localhost:3000/api/users/accept-friend-request/${userId}`, 
+            `${baseUrl}/users/accept-friend-request/${userId}`, 
             {}, 
             { headers }
         );
@@ -129,7 +130,7 @@ const getFriendList = async () => {
         };
 
         const response = await axios.get(
-            `http://localhost:3000/api/users/friends-list`, 
+            `${baseUrl}/users/friends-list`, 
             { headers }
         );
         const data = response.data;

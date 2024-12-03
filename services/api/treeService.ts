@@ -1,9 +1,10 @@
 import store from "@/store/store";
 import { selectToken } from "@/store/userSlice";
+import { baseUrl } from '@/lib/config';
 
 const fetchTreeData = async (userId: string) => {
     try {
-        const response = await fetch(`http://localhost:3000/api/trees/family-tree/${userId}`, {
+        const response = await fetch(`${baseUrl}/trees/family-tree/${userId}`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -22,7 +23,7 @@ const postAddChild = async (treeId: string, nodeId: string, formData: any) => {
             "generalInformation": formData
         }
         const token = selectToken(store.getState());
-        const response = await fetch(`http://localhost:3000/api/trees/add-child`, {
+        const response = await fetch(`${baseUrl}/trees/add-child`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -46,7 +47,7 @@ const patchEditPersonNode = async (nodeId: string, formData: any) => {
             "generalInformation": formData
         }
 
-        const response = await fetch(`http://localhost:3000/api/trees/update-node/${nodeId}`, {
+        const response = await fetch(`${baseUrl}/trees/update-node/${nodeId}`, {
             method: "PATCH",
             headers: {
                 "Content-Type": "application/json",
@@ -65,7 +66,7 @@ const deletePersonNode = async (nodeId: string ) => {
     try {
         const token = selectToken(store.getState());
 
-        const response = await fetch(`http://localhost:3000/api/trees/delete-node/${nodeId}`, {
+        const response = await fetch(`${baseUrl}/trees/delete-node/${nodeId}`, {
             method: "DELETE",
             headers: {
                 "Content-Type": "application/json",
