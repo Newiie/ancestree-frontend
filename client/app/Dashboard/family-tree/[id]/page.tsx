@@ -11,7 +11,7 @@ import { z } from 'zod';
 import { DateInput } from '@/components/forms/DateInput'
 import FamilyTreeSkeleton from './loading'
 import { familyMemberSchema, editPersonSchema } from '@/lib/schema';
-
+import { TreeProvider } from '@/providers/TreeProvider'
 const AddFamilyMember = () => {
   const [selectedPerson, setSelectedPerson] = useState('Add Child');
   const { toggleAddFamilyModal, handleAddFamilyMember } = useTree();
@@ -488,20 +488,29 @@ const EditPersonNode = () => {
   );
 };
 
-
-const Page = () => {
+const FamilyTreeContent = () => {
   const {addFamilyMember, isFetching, editPersonModal} = useTree();
 
   if (isFetching) return <FamilyTreeSkeleton />;
   return (
-      <div className="relative content | overflow-y-auto">
+    <div className="relative content | overflow-y-auto">
         <Content />
         <AnimatePresence>
         {addFamilyMember && <AddFamilyMember />}
         {editPersonModal && <EditPersonNode />}
       </AnimatePresence>
-      </div>
+    </div>
   )
+}
+
+const Page = ({ params }: { params: { id: string } }) => {
+  const { id } = params; 
+
+  return (
+    <TreeProvider id={id}>
+      <FamilyTreeContent />
+    </TreeProvider>
+  );
 }
 
 export default Page

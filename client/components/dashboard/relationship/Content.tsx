@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import ConnectionCard from '../content/ConnectionCard';
-
+import relationshipService from '@/services/api/relationshipService';
 const FloatingInput = ({
   label,
   type,
@@ -55,6 +55,9 @@ const Content = () => {
     birthdate: ''
   });
 
+  const [isSearching, setIsSearching] = useState<boolean>(false);  
+  const [searchResults, setSearchResults] = useState([]);
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData(prevFormData => ({
@@ -63,9 +66,11 @@ const Content = () => {
     }));
   };
 
-  const handleSearch = () => {
+  const handleSearch = async () => {
     console.log('Searching with data:', formData);
-    // Perform search operation here, e.g., API call
+    const data = await relationshipService.findSimilarPersons(formData);
+    setSearchResults(data);
+    console.log('Similar persons found:', data);
   };
 
   return (
@@ -113,15 +118,9 @@ const Content = () => {
         <div className="p-4">
           <h3 className='text-primary font-bold text-[1.7rem] p-[1rem]'>Results</h3>
           <div className='grid grid-cols-3 gap-4'>
-            <ConnectionCard />
-            <ConnectionCard />
-            <ConnectionCard />
-            <ConnectionCard />
-            <ConnectionCard />
-            <ConnectionCard />
-            <ConnectionCard />
-            <ConnectionCard />
-            <ConnectionCard />
+            {searchResults.map((result : any) => (
+              <ConnectionCard key={result.userId} result={result} />
+            ))}
           </div>
         </div>
       </div>  

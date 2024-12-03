@@ -9,7 +9,14 @@ import { SquarePenIcon } from 'lucide-react';
 
 const ProfileHeader = () => {
   const { user } = useAuth();
-  const { userData, updateProfileImage, updateBackgroundImage } = useProfile();
+  const { 
+    userData, 
+    updateProfileImage, 
+    updateBackgroundImage, 
+    sendFriendRequest, 
+    acceptFriendRequest,
+    userFriends
+  } = useProfile();
 
   const [isProfileHover, setIsProfileHover] = useState<boolean>(false);
   const [isBackgroundHover, setIsBackgroundHover] = useState<boolean>(false);
@@ -86,6 +93,21 @@ const ProfileHeader = () => {
     setIsEditingBackground(false);
   };
 
+  const getButtonLabel = () => {
+    if (userData?.friendsList.includes(user?.id)) return "Connected";
+    if (userData?.friendRequestList.includes(user?.id)) return "Sent Request";
+    if (userFriends?.friendRequest?.includes(userData?.userId)) return "Accept Request";
+    return "Connect";
+  };
+
+  const handleButtonClick = () => {
+    if (userFriends?.friendRequest?.includes(userData?.userId)) {
+      acceptFriendRequest(userData?.userId);
+    } else if (!userData?.friendsList.includes(user?.id)) {
+      sendFriendRequest(userData?.userId);
+    }
+  };
+  
   return (
     <div className='w-full relative bg-white p-4 rounded-lg'>
       <div className='absolute inset-0 h-[13rem] w-full'>
@@ -172,14 +194,34 @@ const ProfileHeader = () => {
         <h1 className='text-xl font-bold mt-2'>{userData?.generalInformation.firstname} {userData?.generalInformation.middlename} {userData?.generalInformation.lastname}</h1>
         <p className='text-gray-700'>ID: {userData?.userId}</p>
         <div className='flex mt-2'>
-          <Link href={'/dashboard/FamilyTree'} className='bg-white hover:bg-btn-secondary text-primary border-1 border-green px-2 py-1 rounded-lg mr-2'>
+          <Link href={'/dashboard/family-tree/' + userData?.userId} className='bg-white hover:bg-btn-secondary text-primary border-1 border-green px-2 py-1 rounded-lg mr-2'>
             View Tree
           </Link>
-          {user?.id !== userData?.userId && (
-            <button className='bg-white hover:bg-btn-secondary cursor-pointer text-primary border-1 border-green px-2 py-1 rounded-lg'>
-              Connect
-            </button>
-          )}
+          {
+            user?.id !== userData?.userId && 
+            (
+              <button
+                onClick={() => {
+                    if (userFriends?.friendRequest?.includes(userData?.userId)) {
+                      acceptFriendRequest(userData?.userId);
+                    } else if (!userData?.friendsList.includes(user?.id)) {
+                      sendFriendRequest(userData?.userId);
+                    }
+                  }
+                }
+                className='bg-white hover:bg-btn-secondary cursor-pointer text-primary border-1 border-green px-2 py-1 rounded-lg'>
+                  {
+                    userData?.friendsList.includes(user?.id) ? 
+                    "Connected" : 
+                    userData?.friendRequestList.includes(user?.id) ? 
+                    "Sent Request" 
+                    : userFriends?.friendRequest?.includes(userData?.userId)
+                    ? "Accept Request":
+                    "Connect"
+                  }
+              </button>
+            )
+          }
         </div>
       </div>
     </div>

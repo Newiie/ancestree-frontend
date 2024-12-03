@@ -4,6 +4,8 @@ import { useRouter } from 'next/navigation';
 import useAuth from '@/hooks/useAuth';
 import axios from 'axios';
 import { headers } from 'next/headers';
+import profileService from '@/services/api/profileService';
+import { profile } from 'console';
 
 interface ProfileProviderType {
   selectedDetail: string;
@@ -17,7 +19,10 @@ interface ProfileProviderType {
   updateUserData: (data: any) => void;
   updateProfileImage: (imageFile: File) => void;
   updateBackgroundImage: (imageFile: File) => void;
+  sendFriendRequest: (userId: string) => void;
+  acceptFriendRequest: (userId: string) => void;
   isFetching: boolean;
+  userFriends: any;
 }
 
 const ProfileContext = createContext<ProfileProviderType | undefined>(undefined);
@@ -27,6 +32,7 @@ export const ProfileProvider: React.FC<{ children: ReactNode, userId: string }> 
   const [profileTabs, setProfileTabs] = useState<string>('Personal Details');
   const [userData, setUserData] = useState<any>(null);
   const [isFetching, setIsFetching] = useState<boolean>(true);
+  const [userFriends, setUserFriends] = useState<any>([]);
   const user = useAuth();
   const router = useRouter();
 
@@ -47,23 +53,21 @@ export const ProfileProvider: React.FC<{ children: ReactNode, userId: string }> 
   const fetchUserData = useCallback(async () => {
     setIsFetching(true);
     try {
-        const response = await fetch(`${baseUrl}/person/${userId}`);
-        const data = await response.json();
-        console.log("DATA", data);
-        
-        if (data.message === "Invalid User ID") {
-            router.push(`/dashboard/profile/`);
+        const response = await profileService.fetchUserData(userId);
+        const friendList = await profileService.getFriendList();
+        console.log("FETCHED USER DATA", response);
+        if (response.message === "Invalid User ID") {
             return; 
         } else {
-            setUserData(data); 
+            setUserData(response); 
+            setUserFriends(friendList);
         }
     } catch (error) {
-        router.push(`/dashboard/profile/`);
         console.error("Error fetching user data:", error);
     } finally {
         setIsFetching(false);
     }
-  }, [userId, router]);
+  }, [userId]);
 
   useEffect(() => {
     if (userId) {
@@ -74,26 +78,35 @@ export const ProfileProvider: React.FC<{ children: ReactNode, userId: string }> 
         setUserData(null);
         router.push("/login");
     }
-  }, [userId, fetchUserData, router]);
+  }, [userId, fetchUserData]);
 
-  // SENDS REQUEST FOR UPDATED USER DATA
+  const sendFriendRequest = async (userId: string) => {
+    try {
+      await profileService.sendFriendRequest(userId);
+      await fetchUserData();
+    }
+    catch (error) {
+      console.error("Error sending friend request:", error);
+    }
+  }
+
+  const acceptFriendRequest = async (userId: string) => {
+    try {
+      await profileService.acceptFriendRequest(userId);
+      await fetchUserData();
+    }
+    catch (error) {
+      console.error("Error accepting friend request:", error);
+    }
+  }
+
   const updateUserData = async (data: any) => {
     try {
-      console.log("UPDATE USER DATA", data);
       const { userId, relatedUser, profilePicture, backgroundPicture, ...restData } = data;
       const updatedData = {
         ...restData
       };
-
-      console.log("UPDATED DATA", updatedData);
-
-      const headers = {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${user?.user?.token}`
-      }
-
-      const response = await axios.patch(`${baseUrl}/person/${userId}`, updatedData, { headers });
-      console.log("RESPONSE", response);
+      const response = await profileService.updateUserData(userId, updatedData);
       if (response.status === 200) {
         await fetchUserData();
       }
@@ -106,17 +119,10 @@ export const ProfileProvider: React.FC<{ children: ReactNode, userId: string }> 
     try {
       const formData = new FormData();
       formData.append('profilePicture', imageFile); 
-  
-      const headers = {
-        'Content-Type': 'multipart/form-data',
-        'Authorization': `Bearer ${user?.user?.token}`
-      };
-  
-      const response = await axios.post(`${baseUrl}/person/${userId}/profile-picture`, formData, { headers });
-      console.log("RESPONSE", response);
-      if (response.status === 200) {
-        await fetchUserData();
-      }
+
+      await profileService.updateProfileImage(userId, formData);
+      await fetchUserData();
+
     } catch (error) {
       console.error("Error updating profile picture:", error);
     }
@@ -126,23 +132,13 @@ export const ProfileProvider: React.FC<{ children: ReactNode, userId: string }> 
     try {
       const formData = new FormData();
       formData.append('backgroundPicture', imageFile);
-
-      const headers = {
-        'Content-Type': 'multipart/form-data',
-        'Authorization': `Bearer ${user?.user?.token}`
-      };
       
-      const response = await axios.post(`${baseUrl}/person/${userId}/background-picture`, formData, { headers });
-      console.log("RESPONSE", response);
-      if (response.status === 200) {
-        await fetchUserData();
-      }
+      await profileService.updateBackgroundImage(userId, formData);
+      await fetchUserData();
     } catch (error) {
       console.error("Error updating background image:", error);
     }
   }
-
-
 
   return (
     <ProfileContext.Provider value={{ 
@@ -153,7 +149,10 @@ export const ProfileProvider: React.FC<{ children: ReactNode, userId: string }> 
       updateUserData,
       updateProfileImage,
       updateBackgroundImage,
-      isFetching
+      sendFriendRequest,
+      acceptFriendRequest,
+      isFetching,
+      userFriends
     }}> 
       {children}
     </ProfileContext.Provider>

@@ -8,7 +8,6 @@ import Content from '@/components/dashboard/Profile/Content';
 import { ProfileProvider } from '@/providers/ProfileProvider';
 
 const Page = ({params}: {params: {id: string}}) => {
-  const { user } = useAuth();
   const [isClient, setIsClient] = useState(false);
 
   const { id } = params;

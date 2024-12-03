@@ -1,3 +1,6 @@
+import store from "@/store/store";
+import { selectToken } from "@/store/userSlice";
+
 const fetchTreeData = async (userId: string) => {
     try {
         const response = await fetch(`http://localhost:3000/api/trees/family-tree/${userId}`, {
@@ -18,14 +21,7 @@ const postAddChild = async (treeId: string, nodeId: string, formData: any) => {
         const childDetails = {
             "generalInformation": formData
         }
-        console.log("CHILD DETAILS", childDetails);
-
-        const user = window.localStorage.getItem('AncestreeUser');
-        const token = JSON.parse(user || '{}').token;
-
-        console.log("USER FROM TOKEN", user);
-        console.log("TOKEN", token);
-
+        const token = selectToken(store.getState());
         const response = await fetch(`http://localhost:3000/api/trees/add-child`, {
             method: "POST",
             headers: {
@@ -45,8 +41,7 @@ const postAddChild = async (treeId: string, nodeId: string, formData: any) => {
 
 const patchEditPersonNode = async (nodeId: string, formData: any) => {
     try {
-        const user = window.localStorage.getItem('AncestreeUser');
-        const token = JSON.parse(user || '{}').token;
+        const token = selectToken(store.getState());
         const body = {
             "generalInformation": formData
         }
@@ -68,12 +63,7 @@ const patchEditPersonNode = async (nodeId: string, formData: any) => {
 
 const deletePersonNode = async (nodeId: string ) => {
     try {
-        const user = window.localStorage.getItem('AncestreeUser');
-        const token = JSON.parse(user || '{}').token;
-
-        console.log("USER FROM TOKEN", user);
-        console.log("TOKEN", token);
-        console.log("NODE ID", nodeId);
+        const token = selectToken(store.getState());
 
         const response = await fetch(`http://localhost:3000/api/trees/delete-node/${nodeId}`, {
             method: "DELETE",

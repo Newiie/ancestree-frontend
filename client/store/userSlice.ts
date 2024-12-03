@@ -25,5 +25,6 @@ const userSlice = createSlice({
   },
 });
 
+export const selectToken = (state: { user: UserState }) => state.user.token;
 export const { setUser } = userSlice.actions;
 export default userSlice.reducer;

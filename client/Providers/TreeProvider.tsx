@@ -29,8 +29,7 @@ interface TreeNode {
   parent?: Array<{ personNodeId: string }>;
 }
 
-export const TreeProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-    const { user } = useAuth();
+export const TreeProvider: React.FC<{ children: ReactNode, id: string }> = ({ children, id }) => {
 
     const [addFamilyMember, setAddFamilyMember] = useState(false);
     const [editPersonModal, setEditPersonModal] = useState(false);
@@ -39,33 +38,12 @@ export const TreeProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     const [isFetching, setIsFetching] = useState(false);
     const [apiEvent, setApiEvent] = useState(false);
 
-    const [treeData, setTreeData] = useState<any>([
-        // { id: '1', name: 'Child', 
-        //     children: [
-        //     { id: '2', name: 'Grandchild', 
-        //         children: [
-        //         { id: '3', name: 'Great Grandchild', children: [], parent: [{ id: '2' }] },
-        //         { id: '4', name: 'Great Grandchild', children: [], parent: [{ id: '2' }] },
-        //         ],
-        //         parent: [{ id: '1' }],
-        //     },
-        //     { id: '5', name: 'Grandchild', children: [
-        //         { id: '6', name: 'Great Grandchild', children: [], parent: [{ id: '5' }] },
-        //         { id: '7', name: 'Great Grandchild', children: [
-        //             { id: '8', name: 'Great Great Grandchild', children: [], parent: [{ id: '7' }]   },
-        //         ],
-        //         parent: [{ id: '5' }],
-        //     }],
-        //     parent: [{ id: '1' }],
-        //     },
-        //     ]
-        // },
-    ]);
+    const [treeData, setTreeData] = useState<any>([]);
 
     useEffect(() => {
-        if (user?.id) {
+        if (id) {
             setIsFetching(true);
-            TreeService.fetchTreeData(user?.id).then((data) => {
+            TreeService.fetchTreeData(id).then((data) => {
                 console.log("DATA TREE", data);
                 console.log("ROOT ", data.familyTree.root);
                 setTreeData([data.familyTree.root]);
@@ -73,7 +51,7 @@ export const TreeProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
                 setIsFetching(false);
             });
         }   
-    }, [apiEvent, user?.id]);
+    }, [apiEvent,id]);
 
 
 
