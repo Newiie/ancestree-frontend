@@ -4,7 +4,7 @@ import ProfileHeader from './ProfileHeader';
 import ProfileTabs from './ProfileTabs';
 import ProfileSidebar from './ProfileSidebar';
 import DetailsContent from './DetailsContent';
-import { useProfile } from '@/providers/ProfileProvider';
+import { useProfile } from '../../../providers/ProfileProvider';
 
 const Content = () => {
   const { profileTabs } = useProfile();

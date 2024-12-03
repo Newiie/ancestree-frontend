@@ -1,17 +1,13 @@
 "use client"
 import Content from '@/components/dashboard/FamilyTree/Content'
-import Header from '@/components/dashboard/Header'
-import Sidebar from '@/components/dashboard/Sidebar'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion';
-import MainLayout from '@/components/MainLayout'
-import { useTree } from '@/providers/TreeProvider'
 import { CircleXIcon } from 'lucide-react'
 import { z } from 'zod';
 import { DateInput } from '@/components/forms/DateInput'
 import FamilyTreeSkeleton from './loading'
 import { familyMemberSchema, editPersonSchema } from '@/lib/schema';
-import { TreeProvider } from '@/providers/TreeProvider'
+import { TreeProvider, useTree } from '../../../../providers/TreeProvider'
 const AddFamilyMember = () => {
   const [selectedPerson, setSelectedPerson] = useState('Add Child');
   const { toggleAddFamilyModal, handleAddFamilyMember } = useTree();

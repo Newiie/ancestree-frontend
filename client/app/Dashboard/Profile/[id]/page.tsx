@@ -1,11 +1,8 @@
 "use client";
 
-import Header from '@/components/dashboard/Header';
 import React, { useEffect, useState } from 'react';
-import useAuth from '@/hooks/useAuth';
-import Sidebar from '@/components/dashboard/Sidebar';
-import Content from '@/components/dashboard/Profile/Content';
-import { ProfileProvider } from '@/providers/ProfileProvider';
+import Content from '../../../../components/dashboard/Profile/Content';
+import { ProfileProvider } from '../../../../providers/ProfileProvider';
 
 const Page = ({params}: {params: {id: string}}) => {
   const [isClient, setIsClient] = useState(false);
