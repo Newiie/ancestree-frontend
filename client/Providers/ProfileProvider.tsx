@@ -74,6 +74,13 @@ export const ProfileProvider: React.FC<{ children: ReactNode, userId: string }> 
       fetchUserData();
     }
 
+    const populateFriendList = async () => {
+      const friendList = await profileService.populateFriendList();
+      console.log("POPULATED FRIEND LIST", friendList);
+    }
+
+    populateFriendList();
+    
     if (userId == null) {
         setUserData(null);
         router.push("/login");

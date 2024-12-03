@@ -139,6 +139,21 @@ const getFriendList = async () => {
     }
 }
 
+const populateFriendList = async () => {
+    try {
+        const friendList = await getFriendList();
+        const populatedFriendList = await Promise.all(friendList.friends.map(async (friend: any) => {
+            const user = await fetchUserData(friend.toString());
+            return { ...friend, user };
+        }));
+
+        console.log("POPULATED FRIEND LIST", populatedFriendList)
+        return populatedFriendList; 
+    } catch (error) {
+        console.error("Error populating friend list:", error);
+    }
+}
+
 const profileService = { 
     fetchUserData, 
     updateUserData, 
@@ -146,7 +161,8 @@ const profileService = {
     updateBackgroundImage, 
     sendFriendRequest, 
     acceptFriendRequest,
-    getFriendList
+    getFriendList,
+    populateFriendList
 };
 
 export default profileService
