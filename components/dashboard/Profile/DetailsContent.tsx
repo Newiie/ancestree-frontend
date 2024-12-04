@@ -362,12 +362,11 @@ const DetailsContent = () => {
             <div>
               <h2 className='text-[1.5rem] font-bold'>Connections</h2>
               <div className='grid grid-cols-3 gap-4'>
-                {/* <ConnectionCard />
-                <ConnectionCard />
-                <ConnectionCard />
-                <ConnectionCard />
-                <ConnectionCard />
-                <ConnectionCard /> */}
+                {
+                  userData?.friendsList.map((friend: any) => ( 
+                    <ConnectionCard key={friend.userId} result={friend} />
+                  ))
+                }
               </div>
             </div>
           )}

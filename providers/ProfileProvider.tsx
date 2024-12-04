@@ -21,6 +21,7 @@ interface ProfileProviderType {
   acceptFriendRequest: (userId: string) => void;
   isFetching: boolean;
   userFriends: any;
+  friendsData: any;
 }
 
 const ProfileContext = createContext<ProfileProviderType | undefined>(undefined);
@@ -31,6 +32,7 @@ export const ProfileProvider: React.FC<{ children: ReactNode, userId: string }> 
   const [userData, setUserData] = useState<any>(null);
   const [isFetching, setIsFetching] = useState<boolean>(true);
   const [userFriends, setUserFriends] = useState<any>([]);
+  const [friendsData, setFriendsData] = useState<any>([]);
   const user = useAuth();
   const router = useRouter();
 
@@ -74,6 +76,7 @@ export const ProfileProvider: React.FC<{ children: ReactNode, userId: string }> 
 
     const populateFriendList = async () => {
       const friendList = await profileService.populateFriendList();
+      setFriendsData(friendList);
       console.log("POPULATED FRIEND LIST", friendList);
     }
 
@@ -157,7 +160,8 @@ export const ProfileProvider: React.FC<{ children: ReactNode, userId: string }> 
       sendFriendRequest,
       acceptFriendRequest,
       isFetching,
-      userFriends
+      userFriends,
+      friendsData
     }}> 
       {children}
     </ProfileContext.Provider>

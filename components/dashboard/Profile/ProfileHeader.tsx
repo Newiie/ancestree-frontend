@@ -204,14 +204,14 @@ const ProfileHeader = () => {
                 onClick={() => {
                     if (userFriends?.friendRequest?.includes(userData?.userId)) {
                       acceptFriendRequest(userData?.userId);
-                    } else if (!userData?.friendsList.includes(user?.id)) {
+                    } else if (!userData?.friendsList.some((friend : any) => friend.userId === user?.id)) {
                       sendFriendRequest(userData?.userId);
                     }
                   }
                 }
                 className='bg-white hover:bg-btn-secondary cursor-pointer text-primary border-1 border-green px-2 py-1 rounded-lg'>
                   {
-                    userData?.friendsList.includes(user?.id) ? 
+                    userData?.friendsList.some((friend : any) => friend.userId === user?.id) ? 
                     "Connected" : 
                     userData?.friendRequestList.includes(user?.id) ? 
                     "Sent Request" 
