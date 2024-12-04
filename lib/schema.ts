@@ -68,7 +68,7 @@ const familyMemberSchema = z.object({
     middleName: z.string().optional(),
     lastName: z.string().min(1, "Last Name is required"),
     suffix: z.string().optional(),
-    birthdate: z.date().min(new Date(), "Birthday is required"),
+    birthdate: z.string().min(1, "Birthday is required"),
     birthPlace: z.string(),
     birthCountry: z.string(),
     sex: z.enum(["male", "female"]),

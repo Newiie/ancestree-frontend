@@ -5,7 +5,8 @@ import React, { useEffect, useState } from 'react';
 import useAuth from '@/hooks/useAuth';
 import Sidebar from '@/components/dashboard/Sidebar';
 import Content from '@/components/dashboard/Content';
-
+import notificationService from '@/services/api/notificationService';
+import { isReadable } from 'stream';
 
 const Page = () => {
     const { user } = useAuth();
@@ -14,32 +15,36 @@ const Page = () => {
     const [selectedTab, setSelectedTab] = useState('All');
 
     const [notifications, setNotifications] = useState([{
-        id: 1,
-        title: 'New Connection Request',
-        message: 'You have a new connection request from John Doe',
-        date: '2024-02-14',
-        read: false,
-        type: 'connection',
-    },
-    {   
-        id: 2,
-        title: 'New Connection Request',
-        message: 'You have a new connection request from John Doe',
-        date: '2024-02-14',
-        read: false,
-        type: 'connection',
+        recipient: '',
+        message: '',
+        type: '',
+        relatedId: '',
+        createdAt: '',
+        isRead: false,
+        notificationId: ''
     }]);
 
     useEffect(() => {
-    setIsClient(true);
+        setIsClient(true);
+        const fetchNotifications = async () => {
+            try {
+                const notifications = await notificationService.fetchNotifications();
+                console.log("NOTIFICATIONS", notifications)
+                setNotifications(notifications);
+            } catch (error) {
+                console.error('Error fetching notifications:', error);
+            }
+        };
+
+        fetchNotifications();
     }, []);
 
     if (!isClient) {
-    return null;  
+        return null;  
     }
 
     if (!user) {
-    return null;  
+        return null;  
     }
 
   return (
@@ -63,9 +68,11 @@ const Page = () => {
                         <div className='flex items-center justify-between w-full'>
                             <div className='flex items-center gap-2'>
                                 <div className='w-2 h-2 bg-primary rounded-full'></div>
-                                <div className='text-lg font-semibold'>{notification.title}</div>
+                                <div className='text-lg font-semibold'>{notification.message}</div>
                             </div>
-                            <div className='text-sm text-muted-foreground'>{notification.date}</div>
+                            <div className='text-sm text-muted-foreground'>
+                                {new Date(notification.createdAt).toISOString().split('T')[0]}
+                            </div>
                         </div>
                     </div>
                 ))}

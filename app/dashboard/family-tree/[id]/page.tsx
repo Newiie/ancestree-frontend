@@ -18,7 +18,7 @@ const AddFamilyMember = () => {
     middleName: '',
     lastName: '',
     suffix: '',
-    birthdate: new Date(),
+    birthdate: '',
     birthPlace: '',
     birthCountry: '',
     sex: 'male',
@@ -141,9 +141,10 @@ const AddFamilyMember = () => {
         <div className='flex flex-wrap mt-4 w-full gap-2 px-4'>
           <div className='relative flex flex-col'>
             <label className='absolute -top-5 left-0 text-sm text-gray-600 mb-1 font-semibold'>Birth Details</label>
-            <DateInput 
-              date={formData.birthdate || new Date()}
-              setDate={(date) => setFormData({ ...formData, birthdate: date })}
+            <input
+              type="date"
+              value={formData.birthdate}
+              onChange={(e) => setFormData({ ...formData, birthdate: e.target.value })}
             />
             {errors.birthdate && <span className="absolute -bottom-6 left-0 text-red-500">{errors.birthdate}</span>}
           </div>
