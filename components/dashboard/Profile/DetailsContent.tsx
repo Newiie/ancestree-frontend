@@ -8,7 +8,7 @@ import { formDataSchema } from '@/lib/schema';
 import { sectionConfigs } from '@/lib/constants';
 
 const DetailsContent = () => {
-  const { selectedDetail, profileTabs, userData, setUserData, updateUserData, isFetching } = useProfile();
+  const { selectedDetail, profileTabs, userData, updateUserData, isFetching } = useProfile();
   const { user } = useAuth();
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [errors, setErrors] = useState<Record<string, string>>({});

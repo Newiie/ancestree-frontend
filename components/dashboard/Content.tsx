@@ -1,8 +1,6 @@
-import React, { memo, useState } from 'react';
-// import ProfileHeader from './content/ProfileHeader';
-// import ProfileTabs from './content/ProfileTabs';
-// import ProfileSidebar from './content/ProfileSidebar';
-// import DetailsContent from './content/DetailsContent';
+import React, { 
+   useState 
+} from 'react';
 import { useProfile } from '@/providers/ProfileProvider';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -18,8 +16,6 @@ import {
   Carousel,
   CarouselContent,
   CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
 } from "@/components/ui/carousel"
 import { type CarouselApi } from "@/components/ui/carousel"
 
@@ -134,6 +130,7 @@ const ActivityCard = () => {
 
 
 const Content = () => {
+  const { userData } = useProfile();
   const [api, setApi] = React.useState<CarouselApi>()
   const [current, setCurrent] = React.useState(0)
   const [count, setCount] = React.useState(0)
@@ -158,24 +155,23 @@ const Content = () => {
       <div className='bg-[#DFDFDF] text-black p-6'>
         <div className='bg-white rounded-[4px] p-4 gap-[2rem] grid grid-cols-[3fr_1fr]'>
           <div>
-            <div>
+            {/* <div>
               <Image src={'/images/AnceTREE-thumb-1.png'} alt='profile' className='w-[350px] object-cover' width={1000} height={1000} />
               <p className='ml-4 text-sm'>Unraveling  Ancestral Lineages through Genealogy</p>
-            </div>
+            </div> */}
             {/* PROFILE DETAILS */}
             <div className='relative flex items-center ml-12 mt-12'>
         
               <div className='absolute z-10 -top-[28px] -left-[40px] p-2 bg-[#D4E2CC] rounded-full w-[max-content]'>
-                <Image src={'/images/doge.png'} alt='profile' className='w-[80px] bg-white h-[80px] rounded-full object-cover' width={100} height={100} />
+                <Image src={`${userData?.profilePicture ? userData?.profilePicture : '/images/doge.png'}`} alt='profile' className='w-[80px] bg-white h-[80px] rounded-full object-cover' width={100} height={100} />
               </div>
               <div className='relative flex gap-[4rem] rounded-sm w-full pl-16 py-2 px-4 bg-[#D4E2CC]'>
                 <div>
-                  <p className='text-[2rem] text-black/80 font-semibold'>John Doe</p>
-                  {/* <p className=''>john@doe.com</p> */}
-                </div>
+                  <p className='text-[2rem] text-black/80 font-semibold'>{userData?.generalInformation.firstName} {userData?.generalInformation.lastName}</p>
+                </div>+
                 <div className='flex items-center'>
-                  <Link href={'/dashboard/FamilyTree'} className={`bg-white hover:bg-btn-secondary text-primary border-1 border-green px-2 py-1 rounded-lg mr-2`}>View Tree</Link>
-                  <Link href={'/dashboard/Connections'} className={`bg-white hover:bg-btn-secondary  text-primary border-1 border-green px-2 py-1 rounded-lg`}>Connections</Link>
+                  <Link href={`/dashboard/family-tree/${userData?.userId}`} className={`bg-white hover:bg-btn-secondary text-primary border-1 border-green px-2 py-1 rounded-lg mr-2`}>View Tree</Link>
+                  {/* <Link href={'/dashboard/Connections'} className={`bg-white hover:bg-btn-secondary  text-primary border-1 border-green px-2 py-1 rounded-lg`}>Connections</Link> */}
                 </div>
                 <EllipsisIcon className='absolute top-2 right-4 cursor-pointer' />
               </div>
