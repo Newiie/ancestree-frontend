@@ -146,7 +146,7 @@ export default function Home() {
           transition={{delay: 0.9, duration: 3, ease: "easeInOut" }}
           className="absolute inset-0 z-10 w-full ml-auto flex flex-col items-center justify-center"
         >
-          <h1 className="text-[5rem] text-black font-semibold">
+          <h1 className="text-[5rem] leading-[4rem] text-black font-semibold">
             Sign up for a FREE <span className="text-primary">ANCESTREE</span> account
           </h1>
           <motion.p
