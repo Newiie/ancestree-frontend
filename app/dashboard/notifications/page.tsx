@@ -55,7 +55,7 @@ const Page = () => {
 
             <h1 className='text-2xl font-bold mb-4'>Notifications</h1>
             <div className='flex items-center  border-b-1 border-primary'>
-                {["All", "Unread", "Connections"].map((item, index) => (
+                {["All"].map((item, index) => (
                     <div key={index} onClick={() => {
                         console.log(item)
                         setSelectedTab(item)
@@ -71,7 +71,7 @@ const Page = () => {
                                 <div className='text-lg font-semibold'>{notification.message}</div>
                             </div>
                             <div className='text-sm text-muted-foreground'>
-                                {new Date(notification.createdAt).toISOString().split('T')[0]}
+                                {notification.createdAt ? new Date(notification.createdAt).toISOString().split('T')[0] : 'Invalid Date'}
                             </div>
                         </div>
                     </div>

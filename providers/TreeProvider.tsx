@@ -79,8 +79,8 @@ export const TreeProvider: React.FC<{ children: ReactNode, id: string }> = ({ ch
     }
 
     const handleDeletePersonNode = async () => {
-        setEditPersonModal(false);
         await TreeService.deletePersonNode(selectedNode);
+        toggleEditPersonModal();
         setApiEvent(!apiEvent);
     };
 

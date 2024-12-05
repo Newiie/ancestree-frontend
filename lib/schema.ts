@@ -82,7 +82,7 @@ const editPersonSchema = z.object({
     middleName: z.string(),
     lastName: z.string(),
     suffix: z.string(),
-    birthday: z.date(),
+    birthdate: z.string().min(1, "Birthday is required"),
     birthPlace: z.string(),
     birthCountry: z.string(),
     sex: z.enum(["male", "female"]),

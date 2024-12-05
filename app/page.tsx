@@ -14,7 +14,7 @@ export default function Home() {
   const welcomeRef = useRef(null);
 
   // Track if each section is in view
-  const isSearchInView = useInView(searchRef, { once: true });
+  const isSearchInView = useInView(searchRef, { once: true,  });
   const isRecordsInView = useInView(recordsRef, { once: true });
   const isFamilyTreeInView = useInView(familyTreeRef, { once: true });
   const isSignupInView = useInView(signupRef, { once: true });
@@ -23,7 +23,7 @@ export default function Home() {
   return (
     <div className="landing-page | relative snap-y snap-mandatory h-screen overflow-y-scroll">
         <NavBar />
-      <div className="snap-start h-screen">
+      <div className="snap-start h-[101vh]">
         <div className="relative rounded-[3px]">
           <video className="absolute top-0 left-0 h-screen w-full object-cover" autoPlay loop muted>
             <source src="/videos/backgroundHome.mp4" type="video/mp4" />
@@ -61,7 +61,7 @@ export default function Home() {
       </div>
 
       {/* Search Family Section */}
-      <div className="relative snap-start h-screen overflow-x-hidden">
+      <div className="relative snap-start h-[101vh] overflow-x-hidden">
         <video className="h-full w-full object-cover" autoPlay loop muted>
           <source src="/videos/1.mp4" type="video/mp4" />
         </video>
@@ -77,7 +77,7 @@ export default function Home() {
             <motion.p
               initial={{ opacity: 0 }}
               animate={isSearchInView ? { opacity: 1 } : { opacity: 0 }}
-              transition={{ delay: 0.5, duration: 1 }}
+              transition={{ delay: 0.5, duration: 3 }}
               className="text-[2rem] text-black"
             >
               Discover your roots and explore your family history through our comprehensive search tools.
@@ -87,7 +87,7 @@ export default function Home() {
       </div>
 
       {/* View Records Section */}
-      <div className="relative snap-start h-screen overflow-x-hidden">
+      <div className="relative snap-start h-[101vh] overflow-x-hidden">
         <video className="h-full w-full object-cover" autoPlay loop muted>
           <source src="/videos/2.mp4" type="video/mp4" />
         </video>
@@ -102,7 +102,7 @@ export default function Home() {
           <motion.p
             initial={{ opacity: 0 }}
             animate={isRecordsInView ? { opacity: 1 } : { opacity: 0 }}
-            transition={{ delay: 0.5, duration: 1 }}
+            transition={{ delay: 0.5, duration: 3 }}
             className="text-[2rem] text-black"
           >
             Find valuable documents that can guide you in tracing your family history and exploring your ancestral roots.
@@ -111,7 +111,7 @@ export default function Home() {
       </div>
 
       {/* Create Family Tree Section */}
-      <div className="relative snap-start h-screen overflow-x-hidden">
+      <div className="relative snap-start h-[102vh] overflow-x-hidden">
         <video className="h-full w-full object-cover" autoPlay loop muted>
           <source src="/videos/3.mp4" type="video/mp4" />
         </video>
@@ -126,7 +126,7 @@ export default function Home() {
           <motion.p
             initial={{ opacity: 0 }}
             animate={isFamilyTreeInView ? { opacity: 1 } : { opacity: 0 }}
-            transition={{ delay: 0.5, duration: 1 }}
+            transition={{ delay: 0.5, duration: 3 }}
             className="text-[2rem] text-black"
           >
             Explore your family tree and discover your ancestors.
@@ -135,15 +135,15 @@ export default function Home() {
       </div>
 
       {/* Signup Section */}
-      <div className="relative snap-start h-screen">
+      <div className="relative snap-start h-[101vh]">
         <video className="h-full w-full object-cover" autoPlay loop muted>
           <source src="/videos/4.mp4" type="video/mp4" />
         </video>
         <motion.div
           ref={signupRef}
           initial={{ opacity: 0, y: -200 }}
-          animate={isSignupInView ? { opacity: 1, y: 0 } : { opacity: 0, y: -200 }}
-          transition={{ duration: 2, ease: "easeInOut" }}
+          animate={isSignupInView ? { opacity: 1, y: 0 } : { opacity: 0, y: -300 }}
+          transition={{delay: 0.9, duration: 3, ease: "easeInOut" }}
           className="absolute inset-0 z-10 w-full ml-auto flex flex-col items-center justify-center"
         >
           <h1 className="text-[5rem] text-black font-semibold">
@@ -152,7 +152,7 @@ export default function Home() {
           <motion.p
             initial={{ opacity: 0 }}
             animate={isSignupInView ? { opacity: 1 } : { opacity: 0 }}
-            transition={{ delay: 0.5, duration: 1 }}
+            transition={{ duration: 3 }}
             className="text-[2rem] pb-[1rem] text-black"
           >
             Join us and begin your ancestral journey today!

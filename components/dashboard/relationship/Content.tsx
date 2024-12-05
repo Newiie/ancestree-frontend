@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import ConnectionCard from '../content/ConnectionCard';
 import relationshipService from '@/services/api/relationshipService';
+import Loading from './Loading';
 const FloatingInput = ({
   label,
   type,
@@ -68,13 +69,16 @@ const Content = () => {
 
   const handleSearch = async () => {
     console.log('Searching with data:', formData);
+    setIsSearching(true);
+    setSearchResults([]);
     const data = await relationshipService.findSimilarPersons(formData);
     setSearchResults(data);
+    setIsSearching(false);
     console.log('Similar persons found:', data);
   };
 
   return (
-    <div className='bg-[#DFDFDF]  p-[1.5rem] h-[fit-content] rounded-[4px]'>
+    <div className='bg-[#DFDFDF]  p-[1.5rem] h-full rounded-[4px]'>
       <div className='bg-white rounded-[4px]'>
         <h2 className='text-primary font-bold text-[1.7rem] p-[1rem]'>Relationship</h2>
         <div className='bg-gradient-linear-navigation p-[1rem]  grid grid-cols-[40%_60%]'>
@@ -121,6 +125,24 @@ const Content = () => {
             {searchResults.map((result : any) => (
               <ConnectionCard key={result.userId} result={result} />
             ))}
+
+            {
+              searchResults.length == 0 && !isSearching && (
+                <div className='flex flex-col gap-4 px-4 justify-center h-[100%]'>
+                  <p className='text-[1.2rem] text-gray-500'>No results found</p>
+                </div>
+              )
+            }
+            {
+              isSearching && (
+                <div className='flex gap-4 w-full'>
+                  <Loading />
+                  <Loading />
+                  <Loading />
+                </div>
+              )
+            }
+            
           </div>
         </div>
       </div>  

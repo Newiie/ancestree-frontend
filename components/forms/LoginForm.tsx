@@ -48,7 +48,7 @@ const LoginForm = () => {
         <h1 className='text-primary text-center text-[2rem] font-[500]'>Welcome Back!</h1>
         <form onSubmit={handleLogin} className="flex flex-col gap-[1rem] w-full">
           {error && <div className="text-red-500">{error}</div>}
-          <label className="text-black" htmlFor="email">Email:</label>
+          <label className="text-black" htmlFor="email">Username:</label>
           <div className="relative flex items-center">
             <User width={15} height={15} className="absolute left-3 text-primary" />
             <input

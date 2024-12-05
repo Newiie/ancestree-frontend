@@ -278,7 +278,7 @@ const EditPersonNode = () => {
     middleName: '',
     lastName: '',
     suffix: '',
-    birthday: new Date(),
+    birthdate: '',
     birthPlace: '',
     birthCountry: '',
     sex: 'male',
@@ -291,7 +291,7 @@ const EditPersonNode = () => {
     middleName: '',
     lastName: '',
     suffix: '',
-    birthday: '',
+    birthdate: '',
     birthPlace: '',
     birthCountry: '',
   });
@@ -308,7 +308,7 @@ const EditPersonNode = () => {
         middleName: formattedErrors.middleName?._errors.join(', ') || '',
         lastName: formattedErrors.lastName?._errors.join(', ') || '',
         suffix: formattedErrors.suffix?._errors.join(', ') || '',
-        birthday: formattedErrors.birthday?._errors.join(', ') || '',
+        birthdate: formattedErrors.birthdate?._errors.join(', ') || '',
         birthPlace: formattedErrors.birthPlace?._errors.join(', ') || '',
         birthCountry: formattedErrors.birthCountry?._errors.join(', ') || '',
       });
@@ -324,7 +324,7 @@ const EditPersonNode = () => {
         animate={{ y: '0%', opacity: 1 }}
         exit={{ y: '-15%', opacity: 0 }}
         transition={{ duration: 0.3, ease: 'easeOut' }}
-        className="relative flex flex-col gap-4 bg-white rounded-[10px] p-8"
+        className="relative flex flex-col gap-2 bg-white w-[500px] rounded-[10px] py-2"
         onSubmit={handleSubmit}
       >
         <div
@@ -335,52 +335,53 @@ const EditPersonNode = () => {
         </div>
         <div className='text-2xl font-bold'>Edit Person</div>
         {/* NAME DETAILS */}
-        <div className='flex mt-4 w-full gap-2'>
+        <div className='flex flex-wrap mt-2 w-full gap-2 px-4'>
           <div className='relative flex flex-col flex-grow'>
             <label className='absolute -top-5 left-0 text-sm text-gray-600 mb-1 font-semibold'>Full Name</label>
             <input
               type="text"
               placeholder='First Name'
-              className='border outline-none hover:bg-white/50 rounded px-2 py-1'
+              className='border flex-1 outline-none hover:bg-white/50 rounded px-2 py-1'
               value={formData.firstName}
               onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
             />
             {errors.firstName && <span className="absolute -bottom-6 left-0 text-red-500">{errors.firstName}</span>}
           </div>
-          {/* <input
+          <input
             type="text"
-            placeholder='Middle Name'
+            placeholder='Middle Name (optional)'
             className='border outline-none hover:bg-white/50 rounded px-2 py-1 flex-grow'
             value={formData.middleName}
             onChange={(e) => setFormData({ ...formData, middleName: e.target.value })}
-          /> */}
-          <input
-            type="text"
-            placeholder='Last Name'
-            className='border outline-none hover:bg-white/50 rounded px-2 py-1 flex-grow'
-            value={formData.lastName}
-            onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
           />
+          <div className='relative flex-grow'>
+            <input
+              type="text"
+              placeholder='Last Name'
+              className='border w-full outline-none hover:bg-white/50 rounded px-2 py-1 flex-grow'
+              value={formData.lastName}
+              onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
+            />
+            {errors.lastName && <span className="absolute -bottom-6 left-0 text-red-500">{errors.lastName}</span>}
+          </div>
           <input
             type="text"
             placeholder='Suffix'
-            className='border outline-none hover:bg-white/50 w-[80px] rounded px-2 py-1 flex-grow-0'
+            className='border outline-none hover:bg-white/50  rounded px-2 py-1 flex-grow-0'
             value={formData.suffix}
             onChange={(e) => setFormData({ ...formData, suffix: e.target.value })}
           />
         </div>
         {/* BIRTH DETAILS */}
-        <div className='grid grid-cols-[1fr_2fr_1fr] mt-8 w-full gap-2'>
+        <div className='flex flex-wrap mt-4 w-full gap-2 px-4'>
           <div className='relative flex flex-col'>
-            <label className='absolute -top-5 left-0 text-sm text-gray-600 mb-1 font-semibold'>Birth Details</label>
-            <DateInput 
-              date={formData.birthday || new Date()}
-              setDate={(date) => {
-                console.log("SET DATE", date)
-                setFormData({ ...formData, birthday: date })
-              }}
+            <label className='absolute -top-5 left-0 text-sm text-gray-600 mb-1 font-semibold'>Birth Date</label>
+            <input
+              type="date"
+              value={formData.birthdate}
+              onChange={(e) => setFormData({ ...formData, birthdate: e.target.value })}
             />
-            {errors.birthday && <span className="absolute -bottom-6 left-0 text-red-500">{errors.birthday}</span>}
+            {errors.birthdate && <span className="absolute -bottom-6 left-0 text-red-500">{errors.birthdate}</span>}
           </div>
           <input
             type="text"
@@ -399,10 +400,10 @@ const EditPersonNode = () => {
         </div>
 
         {/* SEX */}
-        <div className='flex flex-col gap-2'>
+        <div className='flex flex-col gap-2 px-4'>
           <label className='text-md font-semibold'>Sex</label>
 
-          <div className='flex flex-col ml-4 gap-2'>
+          <div className='flex flex-col ml-4'>
             <label htmlFor="male" className='flex items-center gap-1'>
               <input
                 type="radio"
@@ -431,10 +432,10 @@ const EditPersonNode = () => {
         </div>
 
         {/* STATUS */}
-        <div className='flex flex-col gap-2'>
+        <div className='flex flex-col gap-2 px-4'>
           <label className='text-md font-semibold'>Status</label>
 
-          <div className='flex flex-col ml-4 gap-2'>
+          <div className='flex flex-col ml-4 '>
             <label htmlFor="living" className='flex items-center gap-1'>
               <input
                 type="radio"

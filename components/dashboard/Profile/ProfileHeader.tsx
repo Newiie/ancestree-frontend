@@ -33,13 +33,13 @@ const ProfileHeader = () => {
     if (userData?.profilePicture) {
       setProfileImage(userData.profilePicture);
     } else {
-      setProfileImage('');
+      setProfileImage('/images/background_placeholder.png');
     }
 
     if (userData?.backgroundPicture) {
       setBackgroundImage(userData.backgroundPicture);
     } else {
-      setBackgroundImage('');
+      setBackgroundImage('/images/background_placeholder.png');
     }
   }, [userData]);
 
@@ -121,22 +121,27 @@ const ProfileHeader = () => {
             alt='Background'
             layout='fill'
             objectFit='cover'
-            className='rounded-t-lg'
+            className='rounded-t-lg cursor-pointer'
           />
           <div className='absolute inset-0 h-[13rem] w-full bg-black opacity-30 rounded-t-lg'></div>
           {isBackgroundHover && (
             <>
-              <SquarePenIcon
-                className='absolute top-2 right-2 text-black w-5 h-5 cursor-pointer'
-                onClick={() => document.getElementById('backgroundFileInput')?.click()}
-              />
+              <div className='absolute top-2 right-2 p-2 hover:bg-black/20 transition-colors duration-400 rounded-full '>
+
+                <SquarePenIcon
+                  className='text-white cursor-pointer'
+                  width={20}
+                  height={20}
+                  onClick={() => document.getElementById('backgroundFileInput')?.click()}
+                  />
+              </div>
               <input
                 id="backgroundFileInput"
                 type="file"
                 accept="image/*"
                 onChange={handleBackgroundImageChange}
                 className="hidden"
-              />
+                />
             </>
           )}
         </div>
@@ -162,14 +167,19 @@ const ProfileHeader = () => {
             alt='Profile'
             width={100}
             height={100}
-            className='w-24 h-24 z-10 rounded-full border-4 border-white'
+            className='w-24 h-24 z-10 rounded-full cursor-pointer border-4 border-white'
           />
           {isProfileHover && user?.id === userData?.userId && (
             <>
+            <div className=' absolute -bottom-3 -right-2 p-2 hover:bg-black/20 transition-colors duration-400 rounded-full '>
               <SquarePenIcon
-                className='text-black z-20 w-5 h-5 cursor-pointer absolute bottom-0 right-0'
-                onClick={() => document.getElementById('profileFileInput')?.click()}
-              />
+                  className='text-black/60 hover:text-black z-20 cursor-pointer'
+                  width={20}
+                  height={20}
+                  onClick={() => document.getElementById('profileFileInput')?.click()}
+                />
+              </div>
+            
               <input
                 id="profileFileInput"
                 type="file"
@@ -194,7 +204,7 @@ const ProfileHeader = () => {
         <h1 className='text-xl font-bold mt-2'>{userData?.generalInformation.firstname} {userData?.generalInformation.middlename} {userData?.generalInformation.lastname}</h1>
         <p className='text-gray-700'>ID: {userData?.userId}</p>
         <div className='flex mt-2'>
-          <Link href={'/dashboard/family-tree/' + userData?.userId} className='bg-white hover:bg-btn-secondary text-primary border-1 border-green px-2 py-1 rounded-lg mr-2'>
+          <Link href={'/dashboard/family-tree/' + userData?.userId} className='bg-white hover:bg-btn-secondary transition-colors duration-300 text-primary border-1 border-green px-2 py-1 rounded-lg mr-2'>
             View Tree
           </Link>
           {
@@ -209,7 +219,7 @@ const ProfileHeader = () => {
                     }
                   }
                 }
-                className='bg-white hover:bg-btn-secondary cursor-pointer text-primary border-1 border-green px-2 py-1 rounded-lg'>
+                className='bg-primary hover:bg-primary/70 transition-colors duration-300  cursor-pointer text-white border-1 hover:border-white border-green px-2 py-1 rounded-lg'>
                   {
                     userData?.friendsList.some((friend : any) => friend.userId === user?.id) ? 
                     "Connected" : 

@@ -168,9 +168,9 @@ const Content = () => {
               <div className='relative flex gap-[4rem] rounded-sm w-full pl-16 py-2 px-4 bg-[#D4E2CC]'>
                 <div>
                   <p className='text-[2rem] text-black/80 font-semibold'>{userData?.generalInformation.firstName} {userData?.generalInformation.lastName}</p>
-                </div>+
+                </div>
                 <div className='flex items-center'>
-                  <Link href={`/dashboard/family-tree/${userData?.userId}`} className={`bg-white hover:bg-btn-secondary text-primary border-1 border-green px-2 py-1 rounded-lg mr-2`}>View Tree</Link>
+                  <Link href={`/dashboard/family-tree/${userData?.userId}`} className={`bg-white hover:bg-btn-secondary text-primary border-1 transition-colors duration-200 border-green px-2 py-1 rounded-lg mr-2`}>View Tree</Link>
                   {/* <Link href={'/dashboard/Connections'} className={`bg-white hover:bg-btn-secondary  text-primary border-1 border-green px-2 py-1 rounded-lg`}>Connections</Link> */}
                 </div>
                 <EllipsisIcon className='absolute top-2 right-4 cursor-pointer' />
@@ -222,7 +222,7 @@ const Content = () => {
                     <div className='flex justify-center w-4/5 mx-auto mt-4 gap-[2px] items-center'>
                       {
                         memories.map((item, index) => (
-                          <div key={index} className=' h-[8px] flex-1 rounded-full' style={{ backgroundColor: `${current === index ? '#1B5A1B' : 'rgba(27, 90, 27, 0.42)' }` }}></div>
+                          <div key={index} className=' h-[4px] flex-1 rounded-full' style={{ backgroundColor: `${current === index ? '#1B5A1B' : 'rgba(27, 90, 27, 0.42)' }` }}></div>
                         ))
                       }
                     </div>

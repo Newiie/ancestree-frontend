@@ -48,7 +48,7 @@ const Sidebar = () => {
           { icon: <NetworkIcon />, label: 'Family Tree', url: `/dashboard/family-tree/${user?.id}` },
           { icon: <HeartIcon />, label: 'Relationships', url: "/dashboard/relationships" },
           { icon: <BookTextIcon />, label: 'My records', url: "/dashboard/my-records" },
-          { icon: <BookImageIcon />, label: 'Gallery', url: "/dashboard/gallery" },
+          // { icon: <BookImageIcon />, label: 'Gallery', url: "/dashboard/gallery" },
         ].map((item) => (
           <Link
             href={item.url}
