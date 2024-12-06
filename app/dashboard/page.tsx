@@ -24,11 +24,9 @@ const Page = () => {
   }
 
   return (
-    <ProfileProvider userId={user.id as string}> 
-      <div className="content | bg-[#DFDFDF] overflow-y-auto">
-        <Content />
-      </div>
-    </ProfileProvider>
+    <div className="content | bg-[#DFDFDF] overflow-y-auto">
+      <Content />
+    </div>
   );
 };
 

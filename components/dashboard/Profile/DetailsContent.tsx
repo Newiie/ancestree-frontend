@@ -278,7 +278,7 @@ const DetailsContent = () => {
               <input
                 type='date'
                 name={`${section}.${field.name}`}
-                value={(formData[section] as Record<string, any>)[field.name] || ''}
+                value={new Date((formData[section] as Record<string, any>)[field.name]).toISOString().split('T')[0] || ''}
                 onChange={handleInputChange}
                 className={inputStyles}
               />

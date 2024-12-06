@@ -9,13 +9,14 @@ import {
 import  useAuth  from '@/hooks/useAuth';
 import {usePathname} from 'next/navigation';
 import { BellIcon, BookImageIcon, BookTextIcon, EllipsisVerticalIcon, HeartIcon, HelpCircleIcon, HouseIcon, LogOutIcon, NetworkIcon, SettingsIcon, UserIcon, MenuIcon } from 'lucide-react';  
+import { useProfile } from '@/providers/ProfileProvider';
 
 const Sidebar = () => {
   const [isMinimized, setIsMinimized] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { logout } = useAuth();
-  const {user} = useAuth();
-
+  const { user } = useAuth();
+  const { userData } = useProfile();
   const pathName = usePathname();
 
   const dashboardRegex = /^\/Dashboard/i;
@@ -70,15 +71,15 @@ const Sidebar = () => {
         <div className="mt-auto pt-4 border-t border-gray-300">
           <div className="flex items-center">
             <Image
-                src={'/images/doge.png'}
+                src={`${userData?.generalInformation?.profilePicture ? userData?.generalInformation?.profilePicture : "/images/doge.png"}`}
                 alt='Profile'
                 width={100}
                 height={100}
                 className='w-10 h-10 rounded-full border-4 border-white'
               />
             <div className="flex flex-col flex-grow">
-              {!isMinimized && <span className="font-bold text-gray-800">Username User</span>}
-              {!isMinimized && <span className="text-sm text-gray-600">user@email.com</span>}
+              {!isMinimized && <span className="font-bold text-gray-800">{userData?.generalInformation?.firstName} {userData?.generalInformation?.lastName}</span>}
+              {/* {!isMinimized && <span className="text-sm text-gray-600">user@email.com</span>} */}
             </div>
             <PopoverTrigger>
               <div onClick={toggleMenu} className="p-2 text-sidebar">
