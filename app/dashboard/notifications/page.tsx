@@ -7,8 +7,10 @@ import Sidebar from '@/components/dashboard/Sidebar';
 import Content from '@/components/dashboard/Content';
 import notificationService from '@/services/api/notificationService';
 import { isReadable } from 'stream';
+import { useRouter } from 'next/navigation';
 
 const Page = () => {
+    const router = useRouter();
     const { user } = useAuth();
     const [isClient, setIsClient] = useState(false);
 
@@ -47,6 +49,18 @@ const Page = () => {
         return null;  
     }
 
+    const handleReadNotification = async (
+        notificationId : string, 
+        relatedId : string,
+        type : string
+    ) => {
+        try {
+            await notificationService.readNotification(notificationId)
+            router.push(`/dashboard/profile/${relatedId}`);
+        } catch (error) {
+            console.error('Error marking notification as read:', error);
+        }
+    }
   return (
       <div className="content | overflow-y-auto">
         <div className='bg-[#DFDFDF] text-black h-full p-6'>
@@ -63,8 +77,11 @@ const Page = () => {
                 ))}
             </div>
             <div className='mt-4'>
-                {notifications.map((notification, index) => (
-                    <div key={index} className='flex items-center text-muted-foreground gap-4 border-b border-gray-300 p-2 hover:text-black hover:bg-gray-200 cursor-pointer duration-300'>
+                {notifications.map((notification) => (
+                    <div 
+                    key={notification.notificationId} 
+                    onClick={() => handleReadNotification(notification.notificationId, notification.relatedId, notification.type)}
+                    className='flex items-center text-muted-foreground gap-4 border-b border-gray-300 p-2 hover:text-black hover:bg-gray-200 cursor-pointer duration-300'>
                         <div className='flex items-center justify-between w-full'>
                             <div className='flex items-center gap-2'>
                                 <div className='w-2 h-2 bg-primary rounded-full'></div>
