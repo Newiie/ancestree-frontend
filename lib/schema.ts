@@ -62,7 +62,6 @@ const registerSchema = z.object({
     path: ["confirmPassword"],
 });
 
-// Define Zod schema for form validation
 const familyMemberSchema = z.object({
     firstName: z.string().min(1, "First Name is required"),
     middleName: z.string().optional(),
@@ -76,7 +75,6 @@ const familyMemberSchema = z.object({
     nationality: z.array(z.string()).min(1, "Nationality is required"),
 });
   
-  // Define Zod schema for editing a person
 const editPersonSchema = z.object({
     firstName: z.string(),
     middleName: z.string(),

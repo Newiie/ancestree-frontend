@@ -12,7 +12,7 @@ interface TreeContextType {
   editPersonModal: boolean;
   setEditPersonModal: (value: boolean) => void;
   setTreeData: (data: any) => void;
-  handleAddFamilyMember: (formData: any) => void;
+  handleAddFamilyMember: (selectedPerson: string, formData: any) => void;
   handleEditPerson: (formData: any) => void;
   selectedNode: any;
   handleDeletePersonNode: () => Promise<void>;
@@ -61,12 +61,16 @@ export const TreeProvider: React.FC<{ children: ReactNode, id: string }> = ({ ch
         setApiEvent(!apiEvent);
     }
 
-    const handleAddFamilyMember = async (formData: any) => {
+    const handleAddFamilyMember = async (selectedPerson: string,formData: any) => {
         toggleAddFamilyModal();
         console.log("SELECTED NODE", selectedNode);
         console.log("treeData", treeData);
         console.log("FORM DATA", formData);
-        await TreeService.postAddChild(treeId, selectedNode, formData);
+        if (selectedPerson === "Add Child") {
+            await TreeService.postAddChild(treeId, selectedNode, formData);
+        } else {
+            await TreeService.postAddParent(treeId, selectedNode, formData);
+        }
         setApiEvent(!apiEvent);
     };
 

@@ -3,15 +3,13 @@ import Content from '@/components/dashboard/FamilyTree/Content'
 import React, { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion';
 import { CircleXIcon } from 'lucide-react'
-import { z } from 'zod';
-import { DateInput } from '@/components/forms/DateInput'
 import FamilyTreeSkeleton from './loading'
 import { familyMemberSchema, editPersonSchema } from '@/lib/schema';
 import { TreeProvider, useTree } from '../../../../providers/TreeProvider'
+
 const AddFamilyMember = () => {
   const [selectedPerson, setSelectedPerson] = useState('Add Child');
   const { toggleAddFamilyModal, handleAddFamilyMember } = useTree();
-
 
   const [formData, setFormData] = useState({
     firstName: '',
@@ -53,7 +51,7 @@ const AddFamilyMember = () => {
       });
       return;
     }
-    handleAddFamilyMember(formData);
+    handleAddFamilyMember(selectedPerson, formData);
   };
 
   const handleAddNationality = () => {

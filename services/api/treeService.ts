@@ -39,6 +39,28 @@ const postAddChild = async (treeId: string, nodeId: string, formData: any) => {
     }
 }    
 
+const postAddParent = async (treeId: string, nodeId: string, formData: any) => {
+    try {
+        const parentDetails = {
+            "generalInformation": formData
+        }
+        const token = selectToken(store.getState());
+        const response = await fetch(`${baseUrl}/trees/add-parent`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`,
+                "X-Tree-Id": treeId
+            },
+            body: JSON.stringify({ nodeId, parentDetails }),
+        });
+        const data = await response.json();
+        return data;   
+    } catch (error) {
+        console.error("Error fetching tree data:", error);
+    }
+}
+
 
 const patchEditPersonNode = async (nodeId: string, formData: any) => {
     try {
@@ -85,7 +107,8 @@ const TreeService = {
     fetchTreeData,
     postAddChild,
     deletePersonNode,
-    patchEditPersonNode
+    patchEditPersonNode,
+    postAddParent
 };
 
 export default TreeService
