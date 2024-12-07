@@ -61,6 +61,7 @@ export const ProfileProvider: React.FC<{ children: ReactNode, userId: string }> 
         } else {
             setUserData(response); 
             setUserFriends(friendList);
+            console.log("USER FRIENDS", friendList);
         }
     } catch (error) {
         console.error("Error fetching user data:", error);

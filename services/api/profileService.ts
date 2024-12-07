@@ -1,6 +1,6 @@
 import axios from "axios";
 import store from "@/store/store";
-import { selectToken } from "@/store/userSlice";
+import { selectToken, selectId } from "@/store/userSlice";
 import { baseUrl } from '@/lib/config';
 
 const fetchUserData = async (userId: string) => {
@@ -123,6 +123,7 @@ const acceptFriendRequest = async (userId: string) => {
 const getFriendList = async () => {
     try {
         const token = selectToken(store.getState());
+        const id = selectId(store.getState());
 
         const headers = {
             'Content-Type': 'application/json',
@@ -130,7 +131,7 @@ const getFriendList = async () => {
         };
 
         const response = await axios.get(
-            `${baseUrl}/users/friends-list`, 
+            `${baseUrl}/users/friends-list/${id}`, 
             { headers }
         );
         const data = response.data;

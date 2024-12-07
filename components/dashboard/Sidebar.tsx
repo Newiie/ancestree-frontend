@@ -69,9 +69,9 @@ const Sidebar = () => {
       </ul>
       <Popover>
         <div className="mt-auto pt-4 border-t border-gray-300">
-          <div className="flex items-center">
+          <div className="flex gap-2 items-center">
             <Image
-                src={`${userData?.generalInformation?.profilePicture ? userData?.generalInformation?.profilePicture : "/images/doge.png"}`}
+                src={`${userData?.profilePicture ? userData?.profilePicture : "/images/doge.png"}`}
                 alt='Profile'
                 width={100}
                 height={100}
