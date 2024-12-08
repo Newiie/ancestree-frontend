@@ -67,7 +67,7 @@ const familyMemberSchema = z.object({
     middleName: z.string().optional(),
     lastName: z.string().min(1, "Last Name is required"),
     suffix: z.string().optional(),
-    birthdate: z.string().min(1, "Birthday is required"),
+    birthdate: z.string().optional(),
     birthPlace: z.string(),
     birthCountry: z.string(),
     sex: z.enum(["male", "female"]),
@@ -76,15 +76,20 @@ const familyMemberSchema = z.object({
 });
   
 const editPersonSchema = z.object({
-    firstName: z.string(),
+    firstName: z.string().min(1, "First Name is required"),
     middleName: z.string(),
-    lastName: z.string(),
+    lastName: z.string().min(1, "Last Name is required"),
     suffix: z.string(),
-    birthdate: z.string().min(1, "Birthday is required"),
+    birthdate: z.string().optional(),
     birthPlace: z.string(),
     birthCountry: z.string(),
     sex: z.enum(["male", "female"]),
     status: z.enum(["living", "deceased", "unknown"]),
 });
 
-export { formDataSchema, registerSchema, familyMemberSchema, editPersonSchema };
+const connectPersonSchema = z.object({
+    userId: z.string(),
+    personId: z.string(),
+});
+
+export { formDataSchema, registerSchema, familyMemberSchema, editPersonSchema, connectPersonSchema };

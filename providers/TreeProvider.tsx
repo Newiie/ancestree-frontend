@@ -10,13 +10,17 @@ interface TreeContextType {
   toggleEditPersonModal: () => void;
   treeData: any;
   editPersonModal: boolean;
+  showConnectPersonModal: boolean;
   setEditPersonModal: (value: boolean) => void;
+  setShowConnectPersonModal: (value: boolean) => void;
+  toggleConnectPersonModal: () => void;
   setTreeData: (data: any) => void;
   handleAddFamilyMember: (selectedPerson: string, formData: any) => void;
   handleEditPerson: (formData: any) => void;
   selectedNode: any;
   handleDeletePersonNode: () => Promise<void>;
   setSelectedNode: (node: any) => void;
+  handleConnectPersonToUser: (userId: string) => void;
   isFetching: boolean;
 }
 
@@ -33,6 +37,7 @@ export const TreeProvider: React.FC<{ children: ReactNode, id: string }> = ({ ch
 
     const [addFamilyMember, setAddFamilyMember] = useState(false);
     const [editPersonModal, setEditPersonModal] = useState(false);
+    const [showConnectPersonModal, setShowConnectPersonModal] = useState(false);
     const [selectedNode, setSelectedNode] = useState<string>(""); 
     const [treeId, setTreeId] = useState<string>("");
     const [isFetching, setIsFetching] = useState(false);
@@ -44,16 +49,13 @@ export const TreeProvider: React.FC<{ children: ReactNode, id: string }> = ({ ch
         if (id) {
             setIsFetching(true);
             TreeService.fetchTreeData(id).then((data) => {
-                console.log("DATA TREE", data);
-                console.log("ROOT ", data.familyTree.root);
+                console.log("FETCHED TREE DATA", data.familyTree.root);
                 setTreeData([data.familyTree.root]);
                 setTreeId(data.familyTree.treeId);
                 setIsFetching(false);
             });
         }   
     }, [apiEvent,id]);
-
-
 
     const handleEditPerson = async (formData: any) => {
         toggleEditPersonModal();
@@ -63,9 +65,6 @@ export const TreeProvider: React.FC<{ children: ReactNode, id: string }> = ({ ch
 
     const handleAddFamilyMember = async (selectedPerson: string,formData: any) => {
         toggleAddFamilyModal();
-        console.log("SELECTED NODE", selectedNode);
-        console.log("treeData", treeData);
-        console.log("FORM DATA", formData);
         if (selectedPerson === "Add Child") {
             await TreeService.postAddChild(treeId, selectedNode, formData);
         } else {
@@ -73,6 +72,11 @@ export const TreeProvider: React.FC<{ children: ReactNode, id: string }> = ({ ch
         }
         setApiEvent(!apiEvent);
     };
+
+    const handleConnectPersonToUser = async (userId: string) => {
+        await TreeService.postConnectPersonToUser(userId, selectedNode);
+        setApiEvent(!apiEvent);
+    }
 
     const toggleAddFamilyModal = () => {
         setAddFamilyMember(!addFamilyMember);
@@ -82,19 +86,35 @@ export const TreeProvider: React.FC<{ children: ReactNode, id: string }> = ({ ch
         setEditPersonModal(!editPersonModal);
     }
 
+    const toggleConnectPersonModal = () => {
+        setShowConnectPersonModal(!showConnectPersonModal);
+    }
+
     const handleDeletePersonNode = async () => {
         await TreeService.deletePersonNode(selectedNode);
-        toggleEditPersonModal();
         setApiEvent(!apiEvent);
     };
 
     return (
     <TreeContext.Provider value={{ 
-        addFamilyMember, toggleAddFamilyModal, handleDeletePersonNode,
-        treeData, setTreeData, 
-        handleAddFamilyMember, toggleEditPersonModal, handleEditPerson,
-        editPersonModal, setEditPersonModal,
-        selectedNode, setSelectedNode, isFetching }}>
+        addFamilyMember, 
+        toggleAddFamilyModal, 
+        handleDeletePersonNode,
+        treeData,
+        setTreeData, 
+        handleAddFamilyMember, 
+        toggleEditPersonModal, 
+        handleEditPerson,
+        editPersonModal, 
+        setEditPersonModal,
+        selectedNode, 
+        setSelectedNode, 
+        isFetching,
+        showConnectPersonModal, 
+        setShowConnectPersonModal,
+        toggleConnectPersonModal,
+        handleConnectPersonToUser
+    }}>
         {children}
     </TreeContext.Provider>
     );

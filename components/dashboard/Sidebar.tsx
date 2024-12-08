@@ -44,7 +44,7 @@ const Sidebar = () => {
         {[ 
           { icon: <HouseIcon />, label: 'Home', url: "/dashboard" },
           // { icon: <FaChartBar />, label: 'Analytics', url: "/dashboard/Analytics" },
-          { icon: <UserIcon />, label: 'Profile', url: `/dashboard/profile/${user?.id}` },
+          { icon: <UserIcon />, label: 'Profile', url: user?.id ? `/dashboard/profile/${user.id}` : '/dashboard/profile' },
           { icon: <BellIcon />, label: 'Notifications', url: "/dashboard/notifications" },
           { icon: <NetworkIcon />, label: 'Family Tree', url: `/dashboard/family-tree/${user?.id}` },
           { icon: <HeartIcon />, label: 'Relationships', url: "/dashboard/relationships" },
@@ -54,7 +54,7 @@ const Sidebar = () => {
           <Link
             href={item.url}
             key={item.label}
-            className={`flex px-2 py-[6px] rounded-[0.6rem] items-center text-[1.2rem] text-sidebar ${ (pathName ==  "/Dashboard/" + item.label) ?  "bg-gradient-linear-green-white": "hover:bg-gradient-linear-green-white"} cursor-pointer h-[3rem] overflow-none`}
+            className={`flex px-2 py-[6px] rounded-[0.6rem] items-center text-[1.2rem] text-sidebar ${ (pathName ==  "/dashboard/" + item.label) ?  "bg-gradient-linear-green-white": "hover:bg-gradient-linear-green-white "} transition-colors duration-400 cursor-pointer h-[3rem] overflow-none`}
           >
             <div className="flex-shrink-0  w-[1.5rem] h-[1.5rem] mr-3">
               {item.icon}

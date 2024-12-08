@@ -8,21 +8,6 @@ import Content from '@/components/dashboard/Content';
 import { ProfileProvider } from '@/providers/ProfileProvider';
 
 const Page = () => {
-  const { user } = useAuth();
-  const [isClient, setIsClient] = useState(false);
-
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
-
-  if (!isClient) {
-    return null;  
-  }
-
-  if (!user) {
-    return null;  
-  }
-
   return (
     <div className="content | bg-[#DFDFDF] overflow-y-auto">
       <Content />

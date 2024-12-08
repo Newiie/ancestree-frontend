@@ -88,18 +88,18 @@ const monthlyUpdates = [
 ]
 
 const ActivityCard = () => {
-  const titles = ["Tree Activity", "Connection Activity"];
+  const titles = ["Tree ", "Connection "];
 
   const [isActive, setIsActive] = useState(titles[0]);
   return (
 
-      <div className='flex flex-col items-center'>
+        <div className='flex flex-col items-center'>
           <div className='grid grid-cols-2 text-center rounded-t-2xl w-full bg-[#EAF1E5] justify-between items-center'>
             {
-            titles.map((title, index) => (
-              <p key={index} className={`text-lg cursor-pointer  font-semibold py-2 px-4 rounded-t-2xl ${isActive === title ? ' border-1 border-b-0 border-[#649F4F] bg-[#D4E2CC] text-primary' : 'text-gray-500'}`} onClick={() => setIsActive(title)}>{title}</p>
-            ))
-          }
+              titles.map((title, index) => (
+                <p key={index} className={`text-lg cursor-pointer  font-semibold py-2 px-4 rounded-t-2xl ${isActive === title ? ' border-1 border-b-0 border-[#649F4F] bg-[#D4E2CC] text-primary' : 'text-gray-500'}`} onClick={() => setIsActive(title)}>{title}</p>
+              ))
+            }
         </div>
         <div className='bg-[#EAF1E5] p-4 border-1 border-[#649F4F] '>
         {
