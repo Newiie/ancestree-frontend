@@ -13,8 +13,8 @@ import {
     SheetTitle,
     SheetTrigger,
 } from "@/components/ui/sheet"
-
-  
+import { selectId } from '@/store/userSlice';
+import store from '@/store/store';
 const Node = ({ 
     node, 
     selectedNode, 
@@ -25,7 +25,7 @@ const Node = ({
     handleDeletePersonNode
 }: any) => {
     const router = useRouter();
-
+    const { userId } = useTree();
     function capitalizeFirstLetter(text: string) {
         if (!text) return ''; 
         return text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
@@ -51,7 +51,10 @@ const Node = ({
                     <div className='absolute top-0 -right-[40px] z-10'>
                         <div className='relative flex flex-col gap-1'>
                             <button
-                                onClick={() => toggleAddFamilyModal()}
+                                onClick={() => {
+                                    if (selectId(store.getState()) !== userId) return;
+                                    toggleAddFamilyModal()
+                                }}
                                 className='absolute top-0 right-[2px] bg-white-500 border border-[#E0E0E0] hover:bg-gray-100 text-[#7C7C7C] px-2 py-1 rounded-[50%] w-8 h-8 flex items-center justify-center'
                             >
                                 <PlusIcon size={16} />
@@ -73,7 +76,10 @@ const Node = ({
                             </button>
 
                             <button
-                                onClick={() => toggleEditPersonModal()}
+                                onClick={() => {
+                                    if (selectId(store.getState()) !== userId) return;
+                                    toggleEditPersonModal()
+                                }}
                                 className='absolute top-[67px] right-[-14px] bg-white-500 border border-[#E0E0E0] hover:bg-gray-100 text-[#7C7C7C] px-2 py-1 rounded-[50%] w-8 h-8 flex items-center justify-center'
                             >
                                 <PencilIcon size={16} />
@@ -204,15 +210,14 @@ const Node = ({
                                             )
                                         }
 
-                                        <button 
+                                        {(selectId(store.getState()) === userId) &&<button 
                                         className='mt-4 bg-white hover:bg-red-50 text-red-500 border border-red-300 px-4 py-1 rounded-[3px]'
                                         onClick={() => {
-                                            console.log(node);
                                             handleDeletePersonNode()
                                         }}
                                         >
                                             Delete Person
-                                        </button>
+                                        </button>}
                                     </div>  
                                 </SheetContent>
                             </Sheet>

@@ -3,6 +3,8 @@ import React, { createContext, useState, useContext, ReactNode, useEffect } from
 import axios from 'axios';
 import useAuth from '@/hooks/useAuth';
 import TreeService from '@/services/api/treeService';
+import { set } from 'zod';
+import { setUser } from '@/store/userSlice';
 
 interface TreeContextType {
   addFamilyMember: boolean;
@@ -22,6 +24,7 @@ interface TreeContextType {
   setSelectedNode: (node: any) => void;
   handleConnectPersonToUser: (userId: string) => void;
   isFetching: boolean;
+  userId: string;
 }
 
 const TreeContext = createContext<TreeContextType | undefined>(undefined);
@@ -38,6 +41,7 @@ export const TreeProvider: React.FC<{ children: ReactNode, id: string }> = ({ ch
     const [addFamilyMember, setAddFamilyMember] = useState(false);
     const [editPersonModal, setEditPersonModal] = useState(false);
     const [showConnectPersonModal, setShowConnectPersonModal] = useState(false);
+    const [userId, setUserId] = useState<string>('');
     const [selectedNode, setSelectedNode] = useState<string>(""); 
     const [treeId, setTreeId] = useState<string>("");
     const [isFetching, setIsFetching] = useState(false);
@@ -48,6 +52,7 @@ export const TreeProvider: React.FC<{ children: ReactNode, id: string }> = ({ ch
     useEffect(() => {
         if (id) {
             setIsFetching(true);
+            setUserId(id);
             TreeService.fetchTreeData(id).then((data) => {
                 console.log("FETCHED TREE DATA", data.familyTree.root);
                 setTreeData([data.familyTree.root]);
@@ -98,6 +103,7 @@ export const TreeProvider: React.FC<{ children: ReactNode, id: string }> = ({ ch
     return (
     <TreeContext.Provider value={{ 
         addFamilyMember, 
+        userId,
         toggleAddFamilyModal, 
         handleDeletePersonNode,
         treeData,
