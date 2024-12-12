@@ -93,21 +93,7 @@ const ProfileHeader = () => {
     setIsEditingBackground(false);
   };
 
-  const getButtonLabel = () => {
-    if (userData?.friendsList.includes(user?.id)) return "Connected";
-    if (userData?.friendRequestList.includes(user?.id)) return "Sent Request";
-    if (userFriends?.friendRequest?.includes(userData?.userId)) return "Accept Request";
-    return "Connect";
-  };
 
-  const handleButtonClick = () => {
-    if (userFriends?.friendRequest?.includes(userData?.userId)) {
-      acceptFriendRequest(userData?.userId);
-    } else if (!userData?.friendsList.includes(user?.id)) {
-      sendFriendRequest(userData?.userId);
-    }
-  };
-  
   return (
     <div className='w-full relative bg-white p-4 rounded-lg'>
       <div className='absolute inset-0 h-[13rem] w-full'>

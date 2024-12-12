@@ -15,7 +15,8 @@ const AddFamilyMember = () => {
   const [selectedPerson, setSelectedPerson] = useState('Add Child');
   const { 
     toggleAddFamilyModal, 
-    handleAddFamilyMember
+    handleAddFamilyMember,
+    selectedNode
    } = useTree();
 
   const [formData, setFormData] = useState({
@@ -29,7 +30,9 @@ const AddFamilyMember = () => {
     sex: 'male',
     status: 'unknown',
     nationality: [],
+    profilePicture: null as File | null,
   });
+  const [picturePreview, setPicturePreview] = useState<string | null>(null);
   const [nationalityInput, setNationalityInput] = useState('');
   const [errors, setErrors] = useState({
     firstName: '',
@@ -39,12 +42,76 @@ const AddFamilyMember = () => {
     birthdate: '',
     birthPlace: '',
     nationality: '',
+    profilePicture: '',
   });
+
+  const handlePictureChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      // Validate file type
+      const validTypes = ['image/jpeg', 'image/png', 'image/gif'];
+      if (!validTypes.includes(file.type)) {
+        setErrors(prev => ({
+          ...prev,
+          profilePicture: 'Invalid file type. Please upload JPEG, PNG, or GIF.',
+        }));
+        return;
+      }
+
+      // Validate file size (5MB max)
+      const maxSize = 5 * 1024 * 1024;
+      if (file.size > maxSize) {
+        setErrors(prev => ({
+          ...prev,
+          profilePicture: 'File too large. Maximum size is 5MB.',
+        }));
+        return;
+      }
+
+      // Update form data with file
+      setFormData(prev => ({ ...prev, profilePicture: file }));
+
+      // Create preview
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPicturePreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleRemovePicture = () => {
+    setFormData(prev => ({ ...prev, profilePicture: null }));
+    setPicturePreview(null);
+  };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    
+    // Create FormData object to handle file upload
+    console.log("FORM DATA", formData);
+    const submitData = new FormData();
+
+    // Add nodeId to FormData
+    submitData.append('nodeId', selectedNode);
+
+    // Add general information
+    Object.entries(formData).forEach(([key, value]) => {
+      if (key === 'profilePicture' && value instanceof File) {
+        submitData.append('generalInformation[profilePicture]', value);
+      } else if (key === 'nationality' && Array.isArray(value)) {
+        submitData.append('generalInformation[nationality]', JSON.stringify(value));
+      } else if (typeof value === 'string') {
+        submitData.append(`generalInformation[${key}]`, value);
+      }
+    });
+
+    // Add vital information
+    if (formData.sex) {
+      submitData.append('vitalInformation[sex]', formData.sex);
+    }
+
     const result = familyMemberSchema.safeParse(formData);
-    console.log(result);
     if (!result.success) {
       const formattedErrors = result.error.format();
       setErrors({
@@ -55,22 +122,23 @@ const AddFamilyMember = () => {
         birthdate: formattedErrors.birthdate?._errors.join(', ') || '',
         birthPlace: formattedErrors.birthPlace?._errors.join(', ') || '',
         nationality: formattedErrors.nationality?._errors.join(', ') || '',
+        profilePicture: formattedErrors.profilePicture?._errors.join(', ') || '',
       });
       return;
     }
-    handleAddFamilyMember(selectedPerson, formData);
+    handleAddFamilyMember(selectedPerson, submitData);
   };
 
   const handleAddNationality = () => {
     if (nationalityInput.trim()) {
       setFormData((prevData: any) => ({
         ...prevData,
-        nationality: [...prevData.nationality, nationalityInput.trim()],
+        nationality: prevData.nationality ? [...prevData.nationality, nationalityInput.trim()] : [nationalityInput.trim()],
+        profilePicture: prevData.profilePicture || ''
       }));
       setNationalityInput('');
     }
   };
-
 
   return (
     <div className="absolute top-0 left-0 flex items-center justify-center w-full h-full bg-black/50 z-10">
@@ -202,10 +270,10 @@ const AddFamilyMember = () => {
         </div>
 
         {/* STATUS */}
-        <div className='flex flex-col gap-1 px-4'>
+        <div className='flex flex-col gap-2 px-4'>
           <label className='text-md font-semibold'>Status</label>
 
-          <div className='flex flex-col ml-4'>
+          <div className='flex flex-col ml-4 '>
             <label htmlFor="living" className='flex items-center gap-1'>
               <input
                 type="radio"
@@ -266,6 +334,45 @@ const AddFamilyMember = () => {
           {errors.nationality && <span className="absolute -bottom-6 left-5 text-red-500">{errors.nationality}</span>}
         </div>  
 
+        {/* PROFILE PICTURE */}
+        <div className='flex flex-col gap-2 px-4'>
+          <label className='text-md font-semibold'>Profile Picture</label>
+          <div className='flex items-center gap-4'>
+            <input
+              type="file"
+              accept="image/jpeg,image/png,image/gif"
+              onChange={handlePictureChange}
+              className='hidden'
+              id="profilePicture"
+            />
+            <label
+              htmlFor="profilePicture"
+              className='bg-primary hover:bg-primary/70 transition-colors duration-300 text-white px-4 py-2 rounded-md cursor-pointer'
+            >
+              Upload Picture
+            </label>
+            {picturePreview && (
+              <div className='relative'>
+                <img
+                  src={picturePreview}
+                  alt="Profile Preview"
+                  className='w-20 h-20 object-cover rounded-full'
+                />
+                <button
+                  type="button"
+                  onClick={handleRemovePicture}
+                  className='absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center hover:bg-red-600'
+                >
+                  ×
+                </button>
+              </div>
+            )}
+          </div>
+          {errors.profilePicture && (
+            <span className="text-red-500 text-sm">{errors.profilePicture}</span>
+          )}
+        </div>
+
         {/* BUTTONS */}
         <div className='flex justify-center px-4 gap-4'>
           <button type="button" onClick={() => toggleAddFamilyModal()} className='bg-white-500 text-black border-1 border-green px-4 py-1 rounded-md'>Cancel</button>
@@ -288,9 +395,10 @@ const EditPersonNode = () => {
     birthCountry: '',
     sex: 'male',
     status: 'unknown',
+    profilePicture: null as File | null,
   });
+  const [picturePreview, setPicturePreview] = useState<string | null>(null);
 
-  
   const [errors, setErrors] = useState({
     firstName: '',
     middleName: '',
@@ -299,15 +407,72 @@ const EditPersonNode = () => {
     birthdate: '',
     birthPlace: '',
     birthCountry: '',
+    profilePicture: '',
   });
+
+  const handlePictureChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      // Validate file type
+      const validTypes = ['image/jpeg', 'image/png', 'image/gif'];
+      if (!validTypes.includes(file.type)) {
+        setErrors(prev => ({
+          ...prev,
+          profilePicture: 'Invalid file type. Please upload JPEG, PNG, or GIF.',
+        }));
+        return;
+      }
+
+      // Validate file size (5MB max)
+      const maxSize = 5 * 1024 * 1024;
+      if (file.size > maxSize) {
+        setErrors(prev => ({
+          ...prev,
+          profilePicture: 'File too large. Maximum size is 5MB.',
+        }));
+        return;
+      }
+
+      // Update form data with file
+      setFormData(prev => ({ ...prev, profilePicture: file }));
+
+      // Create preview
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPicturePreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleRemovePicture = () => {
+    setFormData(prev => ({ ...prev, profilePicture: null }));
+    setPicturePreview(null);
+  };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    
+    // Create FormData object to handle file upload
+    const submitData = new FormData();
+
+    // Add general information
+    Object.entries(formData).forEach(([key, value]) => {
+      if (key === 'profilePicture' && value instanceof File) {
+        submitData.append('generalInformation[profilePicture]', value);
+      } else if (typeof value === 'string') {
+        submitData.append(`generalInformation[${key}]`, value);
+      }
+    });
+
+    // Add vital information
+    if (formData.sex) {
+      submitData.append('vitalInformation[sex]', formData.sex);
+    }
+
     const result = editPersonSchema.safeParse(formData);
-    console.log(formData)
     if (!result.success) {
       const formattedErrors = result.error.format();
-      console.log(formattedErrors)
       setErrors({
         firstName: formattedErrors.firstName?._errors.join(', ') || '',
         middleName: formattedErrors.middleName?._errors.join(', ') || '',
@@ -316,10 +481,11 @@ const EditPersonNode = () => {
         birthdate: formattedErrors.birthdate?._errors.join(', ') || '',
         birthPlace: formattedErrors.birthPlace?._errors.join(', ') || '',
         birthCountry: formattedErrors.birthCountry?._errors.join(', ') || '',
+        profilePicture: '',
       });
       return;
     }
-    handleEditPerson(formData);
+    handleEditPerson(submitData);
   };
 
   return (
@@ -408,7 +574,7 @@ const EditPersonNode = () => {
         <div className='flex flex-col gap-2 px-4'>
           <label className='text-md font-semibold'>Sex</label>
 
-          <div className='flex flex-col ml-4'>
+          <div className='flex flex-col ml-4 '>
             <label htmlFor="male" className='flex items-center gap-1'>
               <input
                 type="radio"
@@ -480,6 +646,45 @@ const EditPersonNode = () => {
           </div>
         </div>
 
+        {/* PROFILE PICTURE */}
+        <div className='flex flex-col gap-2 px-4'>
+          <label className='text-md font-semibold'>Profile Picture</label>
+          <div className='flex items-center gap-4'>
+            <input
+              type="file"
+              accept="image/jpeg,image/png,image/gif"
+              onChange={handlePictureChange}
+              className='hidden'
+              id="editProfilePicture"
+            />
+            <label
+              htmlFor="editProfilePicture"
+              className='bg-primary hover:bg-primary/70 transition-colors duration-300 text-white px-4 py-2 rounded-md cursor-pointer'
+            >
+              Upload Picture
+            </label>
+            {picturePreview && (
+              <div className='relative'>
+                <img
+                  src={picturePreview}
+                  alt="Profile Preview"
+                  className='w-20 h-20 object-cover rounded-full'
+                />
+                <button
+                  type="button"
+                  onClick={handleRemovePicture}
+                  className='absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center hover:bg-red-600'
+                >
+                  ×
+                </button>
+              </div>
+            )}
+          </div>
+          {errors.profilePicture && (
+            <span className="text-red-500 text-sm">{errors.profilePicture}</span>
+          )}
+        </div>
+
         {/* BUTTONS */}
         <div className='flex justify-center gap-4'>
           <button onClick={() => toggleEditPersonModal()} className='bg-white-500 text-black border-1 border-green px-4 py-1 rounded-md'>Cancel</button>
@@ -489,7 +694,6 @@ const EditPersonNode = () => {
     </div>
   );
 };
-
 
 const ConnectPersonModal = () => {
   const { 
@@ -554,6 +758,7 @@ const FamilyTreeContent = () => {
   } = useTree();
 
   if (isFetching) return <FamilyTreeSkeleton />;
+
   return (
     <div className="relative content | overflow-y-auto">
         <Content />

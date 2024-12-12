@@ -50,7 +50,6 @@ const formDataSchema = z.object({
     })).optional(),
 });
 
-
 const registerSchema = z.object({
     firstName: z.string().min(1, "First name is required"),
     lastName: z.string().min(1, "Last name is required"),
@@ -73,8 +72,9 @@ const familyMemberSchema = z.object({
     sex: z.enum(["male", "female"]),
     status: z.enum(["living", "deceased", "unknown"]),
     nationality: z.array(z.string()).min(1, "Nationality is required"),
+    profilePicture: z.any().optional(), // File validation will be handled in the component
 });
-  
+
 const editPersonSchema = z.object({
     firstName: z.string().min(1, "First Name is required"),
     middleName: z.string(),
@@ -85,6 +85,7 @@ const editPersonSchema = z.object({
     birthCountry: z.string(),
     sex: z.enum(["male", "female"]),
     status: z.enum(["living", "deceased", "unknown"]),
+    profilePicture: z.any().optional(), // File validation will be handled in the component
 });
 
 const connectPersonSchema = z.object({

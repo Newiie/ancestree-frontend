@@ -17,48 +17,17 @@ const fetchTreeData = async (userId: string) => {
     }
 }
 
-const postAddChild = async (treeId: string, nodeId: string, formData: any) => {
-    try {
-        const childDetails = {
-            "generalInformation": formData,
-            "vitalInformation": {
-                "sex": formData.sex
-            }
-        }
-        const token = selectToken(store.getState());
-        const response = await fetch(`${baseUrl}/trees/add-child`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${token}`,
-                "X-Tree-Id": treeId
-            },
-            body: JSON.stringify({ nodeId, childDetails }),
-        });
-        const data = await response.json();
-        return data;   
-    } catch (error) {
-        console.error("Error fetching tree data:", error);
-    }
-}    
 
-const postAddParent = async (treeId: string, nodeId: string, formData: any) => {
+const postAddParent = async (treeId: string, formData: any) => {
     try {
-        const parentDetails = {
-            "generalInformation": formData,
-            "vitalInformation": {
-                "sex": formData.sex
-            }
-        }
         const token = selectToken(store.getState());
         const response = await fetch(`${baseUrl}/trees/add-parent`, {
             method: "POST",
             headers: {
-                "Content-Type": "application/json",
                 "Authorization": `Bearer ${token}`,
                 "X-Tree-Id": treeId
             },
-            body: JSON.stringify({ nodeId, parentDetails }),
+            body: formData,
         });
         const data = await response.json();
         return data;   
@@ -67,24 +36,34 @@ const postAddParent = async (treeId: string, nodeId: string, formData: any) => {
     }
 }
 
-
-const patchEditPersonNode = async (nodeId: string, formData: any) => {
+const postAddChild = async (treeId: string, formData: FormData) => {
     try {
         const token = selectToken(store.getState());
-        const body = {
-            "generalInformation": formData,
-            "vitalInformation": {
-                "sex": formData.sex
-            }
-        }
+        const response = await fetch(`${baseUrl}/trees/add-child`, {
+            method: "POST",
+            headers: {
+                "Authorization": `Bearer ${token}`,
+                "X-Tree-Id": treeId
+            },
+            body: formData,
+        });
+        const data = await response.json();
+        return data;   
+    } catch (error) {
+        console.error("Error fetching tree data:", error);
+    }
+}    
 
+
+const patchEditPersonNode = async (nodeId: string, formData: FormData) => {
+    try {
+        const token = selectToken(store.getState());
         const response = await fetch(`${baseUrl}/trees/update-node/${nodeId}`, {
             method: "PATCH",
             headers: {
-                "Content-Type": "application/json",
                 "Authorization": `Bearer ${token}`,
             },
-            body: JSON.stringify(body),
+            body: formData,
         });
         const data = await response.json();
         return data;   
@@ -146,7 +125,6 @@ const acceptConnectionRequest = async (nodeId: string) => {
         console.error("Error fetching tree data:", error);
     }
 }
-
 
 const TreeService = { 
     fetchTreeData,

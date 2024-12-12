@@ -70,10 +70,11 @@ export const TreeProvider: React.FC<{ children: ReactNode, id: string }> = ({ ch
 
     const handleAddFamilyMember = async (selectedPerson: string,formData: any) => {
         toggleAddFamilyModal();
+        console.log("FORM DATA", formData);
         if (selectedPerson === "Add Child") {
-            await TreeService.postAddChild(treeId, selectedNode, formData);
+            await TreeService.postAddChild(treeId, formData);
         } else {
-            await TreeService.postAddParent(treeId, selectedNode, formData);
+            await TreeService.postAddParent(treeId, formData);
         }
         setApiEvent(!apiEvent);
     };
