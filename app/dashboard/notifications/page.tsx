@@ -3,6 +3,7 @@
 import Header from '@/components/dashboard/Header';
 import React, { useEffect, useState } from 'react';
 import useAuth from '@/hooks/useAuth';
+import useError from '@/hooks/useError'; // Import the useError hook
 import Sidebar from '@/components/dashboard/Sidebar';
 import Content from '@/components/dashboard/Content';
 import notificationService from '@/services/api/notificationService';
@@ -19,6 +20,7 @@ import {
 const Page = () => {
     const router = useRouter();
     const { user } = useAuth();
+    const { setError } = useError(); // Use the setError function from the useError hook
     const [isClient, setIsClient] = useState(false);
     const [selectedTab, setSelectedTab] = useState('All');
     const [apiEvent, setApiEvent] = useState(false);
@@ -39,8 +41,13 @@ const Page = () => {
                 const notifications = await notificationService.fetchNotifications();
                 console.log("NOTIFICATIONS", notifications)
                 setNotifications(notifications);
-            } catch (error) {
-                console.error('Error fetching notifications:', error);
+            } catch (error: any) {
+                setError(error.message);
+                // if (error.message === "token expired") {
+                //     setError(error.message); 
+                // } else {
+                //     console.error('Error fetching notifications:', error);
+                // }
             }
         };
 

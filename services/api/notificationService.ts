@@ -14,10 +14,16 @@ const notificationService = {
                     "Authorization": `Bearer ${token}`,
                 },
             });
+            
+            if (response.status === 401) {
+                throw new Error("token expired");
+            }
+            
             const data = await response.json();
             return data;
         } catch (error) {
             console.error("Error fetching notifications:", error);
+            throw error;
         }
     },
     readNotification: async (notificationId: string) => {
@@ -31,13 +37,18 @@ const notificationService = {
                 method: "PATCH",
                 headers: headers,
             });
+            
+            if (response.status === 401) {
+                throw new Error("token expired");
+            }
+            
             const data = await response.json();
             return data;
         } catch (error) {
-            console.error("Error fetching notifications:", error);
+            console.error("Error reading notification:", error);
+            throw error;
         }
     }
 };
-
 
 export default notificationService;
