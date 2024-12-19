@@ -7,7 +7,7 @@ import MainLayout from "@/components/MainLayout";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Ancestree",
+  title: "AncesTREE",
   description: "Connect your family Tree",
   icons: {
     icon: "./favicon.ico",
