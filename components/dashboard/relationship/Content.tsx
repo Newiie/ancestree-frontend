@@ -2,50 +2,7 @@ import React, { useState } from 'react';
 import ConnectionCard from '../content/ConnectionCard';
 import relationshipService from '@/services/api/relationshipService';
 import Loading from './Loading';
-const FloatingInput = ({
-  label,
-  type,
-  name,
-  id,
-  value,
-  onChange,
-}: {
-  label: string;
-  type: string;
-  name: string;
-  id: string;
-  value: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-}) => {
-  const [isFocused, setIsFocused] = useState(false);
-
-  const handleFocus = () => setIsFocused(true);
-  const handleBlur = () => setIsFocused(false);
-
-  const isActive = isFocused || value.length > 0;
-
-  return (
-    <div className="relative mt-4">
-      <input
-        className={`py-2 px-4 border-1 border-primary rounded-[4px] shadow-md w-full peer focus:outline-none`}
-        type={type}
-        name={name}
-        id={id}
-        value={value}
-        onChange={onChange}
-        onFocus={handleFocus}
-        onBlur={handleBlur}
-      />
-      <label
-        className={`absolute left-4 transition-all duration-300 ease-in-out 
-          ${(isActive || name === 'birthdate') ? 'top-[-20px] text-[0.8rem] text-primary' : 'top-[50%] text-[1rem] text-gray-500 translate-y-[-50%]'}`}
-        htmlFor={id}
-      >
-        {label}
-      </label>
-    </div>
-  );
-};
+import { Input } from '@/components/ui/input';
 
 const Content = () => {
   const [formData, setFormData] = useState({
@@ -100,14 +57,14 @@ const Content = () => {
             </div>
 
             <div className='grid grid-cols-3 gap-x-[1rem] gap-y-[1rem] mt-[2rem]'>
-              <FloatingInput label="First Name" type="text" name="firstName" id="first-name" value={formData.firstName} onChange={handleInputChange} />
-              <FloatingInput label="Middle Name" type="text" name="middleName" id="middle-name" value={formData.middleName} onChange={handleInputChange} />
-              <FloatingInput label="Last Name" type="text" name="lastName" id="last-name" value={formData.lastName} onChange={handleInputChange} />
+              <Input label="First Name" type="text" name="firstName" id="first-name" value={formData.firstName} onChange={handleInputChange} />
+              <Input label="Middle Name" type="text" name="middleName" id="middle-name" value={formData.middleName} onChange={handleInputChange} />
+              <Input label="Last Name" type="text" name="lastName" id="last-name" value={formData.lastName} onChange={handleInputChange} />
             </div>
 
             <div className='grid grid-cols-[calc(70%-1rem)_30%] gap-x-[1rem] mt-[2rem]'>
-              <FloatingInput label="Birth Place" type="text" name="birthPlace" id="birthPlace" value={formData.birthPlace} onChange={handleInputChange} />
-              <FloatingInput label="Birthdate" type="date" name="birthdate" id="birthdate" value={formData.birthdate} onChange={handleInputChange} />
+              <Input label="Birth Place" type="text" name="birthPlace" id="birthPlace" value={formData.birthPlace} onChange={handleInputChange} />
+              <Input label="Birthdate" type="date" name="birthdate" id="birthdate" value={formData.birthdate} onChange={handleInputChange} />
             </div>
 
             <div className='flex gap-[1rem] mt-[2rem]'>

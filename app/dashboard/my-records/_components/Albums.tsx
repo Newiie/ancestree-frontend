@@ -29,23 +29,22 @@ const Albums = () => {
         <div>
             <AlertDialog>
                 <AlertDialogTrigger>
-                    <button className='px-2 py-1 rounded-lg flex items-center gap-2 border border-primary shadow-sm bg-btn-inactive text-primary transition duration-200 hover:text-white hover:bg-btn-primary'>
+                    <span className='px-2 py-1 rounded-lg flex items-center gap-2 border border-primary shadow-sm bg-btn-inactive text-primary transition duration-200 hover:text-white hover:bg-btn-primary'>
                         <CirclePlus size={16} />
                         Add New Album
-                    </button>
+                    </span>
                 </AlertDialogTrigger>
                 <AlertDialogContent>
                     <AlertDialogHeader>
-                        <AlertDialogTitle>New Album Name:</AlertDialogTitle>
+                        <AlertDialogTitle>Create New Album</AlertDialogTitle>
                         <AlertDialogDescription>
-                            Enter the name of the new album
+                            Give your album a name to help you organize your records
                         </AlertDialogDescription>
                         <Input
+                            label="Album Name"
                             type="text"
-                            placeholder="Enter album name"
                             value={albumName}
                             onChange={(e) => setAlbumName(e.target.value)}
-                            className="mt-4"
                         />
                     </AlertDialogHeader>
                     <AlertDialogFooter>

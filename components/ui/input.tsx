@@ -1,21 +1,41 @@
 import * as React from "react"
 import { cn } from "@/lib/utils"
 
-export interface InputProps
-  extends React.InputHTMLAttributes<HTMLInputElement> {}
+export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+  label?: string;
+}
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ className, type, ...props }, ref) => {
+  ({ className, type, label, ...props }, ref) => {
+    const [isFocused, setIsFocused] = React.useState(false);
+    const isActive = isFocused || (props.value && props.value.toString().length > 0);
+
     return (
-      <input
-        type={type}
-        className={cn(
-          "flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
-          className
+      <div className="relative mt-4">
+        <input
+          type={type}
+          className={cn(
+            "py-2 px-4 mt-2 border-[1px] border-primary rounded-[4px] shadow-md w-full peer focus:outline-none",
+            className
+          )}
+          ref={ref}
+          onFocus={() => setIsFocused(true)}
+          onBlur={() => setIsFocused(false)}
+          {...props}
+        />
+        {label && (
+          <label
+            className={cn(
+              "absolute left-4 transition-all duration-300 ease-in-out",
+              isActive 
+                ? "top-[-10px] left-0 text-[0.8rem] text-primary" 
+                : "top-[50%] text-[1rem] text-gray-500 translate-y-[-50%]"
+            )}
+          >
+            {label}
+          </label>
         )}
-        ref={ref}
-        {...props}
-      />
+      </div>
     )
   }
 )
