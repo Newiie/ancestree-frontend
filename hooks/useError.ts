@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import useAuth from '@/hooks/useAuth';
+
 const useError = () => {
     const { logout } = useAuth();
     const [error, setError] = useState<string | null>(null)

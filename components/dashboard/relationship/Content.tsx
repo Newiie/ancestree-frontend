@@ -9,7 +9,7 @@ const Content = () => {
     firstName: '',
     middleName: '',
     lastName: '',
-    birthPlace: '',
+    birthPlace: '', 
     birthdate: ''
   });
 
