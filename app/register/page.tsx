@@ -1,7 +1,7 @@
 import NavBar from '@/components/common/NavBar';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
-
+import Terms from './_components/Terms';
 const RegisterForm = dynamic(() => import('@/components/forms/RegisterForm'), { ssr: false });
 
 const Page = () => {
@@ -25,10 +25,10 @@ const Page = () => {
         </div>
 
         <div className="w-full lg:w-[35%] bg-[#658165] flex flex-col justify-center items-center px-[5rem]">
-      
           <RegisterForm />
         </div>
       </div>
+      <Terms />
     </div>
   );
 };

@@ -43,13 +43,11 @@ const Sidebar = () => {
       <ul className="space-y-2 flex-grow overflow-y-auto">
         {[ 
           { icon: <HouseIcon />, label: 'Home', url: "/dashboard" },
-          // { icon: <FaChartBar />, label: 'Analytics', url: "/dashboard/Analytics" },
           { icon: <UserIcon />, label: 'Profile', url: user?.id ? `/dashboard/profile/${user.id}` : '/dashboard/profile' },
           { icon: <BellIcon />, label: 'Notifications', url: "/dashboard/notifications" },
           { icon: <NetworkIcon />, label: 'Family Tree', url: `/dashboard/family-tree/${user?.id}` },
           { icon: <HeartIcon />, label: 'Relationships', url: "/dashboard/relationships" },
           { icon: <BookTextIcon />, label: 'My records', url: "/dashboard/my-records" },
-          // { icon: <BookImageIcon />, label: 'Gallery', url: "/dashboard/gallery" },
         ].map((item) => (
           <Link
             href={item.url}
@@ -79,7 +77,6 @@ const Sidebar = () => {
               />
             <div className="flex flex-col flex-grow">
               {!isMinimized && <span className="font-bold text-gray-800">{userData?.generalInformation?.firstName} {userData?.generalInformation?.lastName}</span>}
-              {/* {!isMinimized && <span className="text-sm text-gray-600">user@email.com</span>} */}
             </div>
             <PopoverTrigger>
               <div onClick={toggleMenu} className="p-2 text-sidebar">

@@ -20,7 +20,7 @@ import {
 const Page = () => {
     const router = useRouter();
     const { user } = useAuth();
-    const { setError } = useError(); // Use the setError function from the useError hook
+    const { setError } = useError(); 
     const [isClient, setIsClient] = useState(false);
     const [selectedTab, setSelectedTab] = useState('All');
     const [apiEvent, setApiEvent] = useState(false);

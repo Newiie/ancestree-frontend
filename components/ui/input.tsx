@@ -29,7 +29,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
               "absolute left-4 transition-all duration-300 ease-in-out",
               (isActive || label === 'Birthdate')
                 ? "top-[-10px] left-0 text-[0.8rem] text-primary" 
-                : "top-[50%] text-[1rem] text-gray-500 translate-y-[-50%]"
+                : "top-[54%]  text-[1rem] text-gray-500 translate-y-[-50%]"
             )}
           >
             {label}

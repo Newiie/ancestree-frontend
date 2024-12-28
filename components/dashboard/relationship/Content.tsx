@@ -63,7 +63,12 @@ const Content = () => {
             </div>
 
             <div className='grid grid-cols-[calc(70%-1rem)_30%] gap-x-[1rem] mt-[2rem]'>
-              <Input label="Birth Place" type="text" name="birthPlace" id="birthPlace" value={formData.birthPlace} onChange={handleInputChange} />
+              <Input label="Birth Place" 
+                type="text" 
+                name="birthPlace"
+                id="birthPlace"
+                value={formData.birthPlace}
+                onChange={handleInputChange} />
               <Input label="Birthdate" type="date" name="birthdate" id="birthdate" value={formData.birthdate} onChange={handleInputChange} />
             </div>
 

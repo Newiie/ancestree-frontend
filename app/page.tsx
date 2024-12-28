@@ -1,5 +1,5 @@
 "use client"
-import NavBar from "@/components/common/NavBar";
+
 import Image from "next/image";
 import Link from "next/link";
 import { motion, useInView } from 'framer-motion';
@@ -22,7 +22,7 @@ export default function Home() {
 
   return (
     <div className="landing-page | relative snap-y snap-mandatory h-screen overflow-y-scroll">
-        <NavBar />
+        
       <div className="snap-start h-[101vh]">
         <div className="relative rounded-[3px]">
           <video className="absolute top-0 left-0 h-screen w-full object-cover" autoPlay loop muted>
