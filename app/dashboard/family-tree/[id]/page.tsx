@@ -387,20 +387,71 @@ const AddFamilyMember = () => {
   );
 };
 
+const findNodeRecursively = (nodes: any[], personNodeId: string): any | null => {
+  for (const node of nodes) {
+    if (node.personNodeId === personNodeId) {
+      return node;
+    }
+    
+    // Recursively search children
+    if (node.children && node.children.length > 0) {
+      const foundInChildren = findNodeRecursively(node.children, personNodeId);
+      if (foundInChildren) return foundInChildren;
+    }
+  }
+  return null;
+};
+
 const EditPersonNode = () => {
-  const { toggleEditPersonModal, handleEditPerson, isFetching, selectedNode, handleDeletePersonNode } = useTree();
-  const [formData, setFormData] = useState({
-    firstName: '',
-    middleName: '',
-    lastName: '',
-    suffix: '',
-    birthdate: '',
-    birthPlace: '',
-    birthCountry: '',
-    sex: 'male',
-    status: 'unknown',
-    profilePicture: null as File | null,
+  const { 
+    toggleEditPersonModal, 
+    handleEditPerson, 
+    isFetching, 
+    selectedNode, 
+    handleDeletePersonNode,
+    treeData 
+  } = useTree();
+
+  // Find the actual node from treeData using selectedNode (personNodeId)
+  const currentNode = findNodeRecursively(treeData, selectedNode);
+  console.log("CURRENT NODE", currentNode)
+
+  // Initialize formData with default values and update with found node data
+  const [formData, setFormData] = useState(() => {
+    // If currentNode exists, pre-populate the form
+    if (currentNode) {
+      const person = currentNode.person?.generalInformation || {};
+      const vitalInfo = currentNode.person?.vitalInformation || {};
+
+      return {
+        firstName: person.firstName || '',
+        middleName: person.middleName || '',
+        lastName: person.lastName || '',
+        suffix: person.suffix || '',
+        birthdate: person.birthdate ? person.birthdate.slice(0, 10) : '',
+        birthPlace: person.birthPlace || '',
+        birthCountry: person.birthCountry || '',
+        sex: vitalInfo.sex || 'male',
+        status: person.status || 'unknown',
+        profilePicture: null as File | null,
+      };
+    }
+    
+    // Default values if no currentNode
+    return {
+      firstName: '',
+      middleName: '',
+      lastName: '',
+      suffix: '',
+      birthdate: '',
+      birthPlace: '',
+      birthCountry: '',
+      sex: 'male',
+      status: 'unknown',
+      profilePicture: null as File | null,
+    };
   });
+
   const [picturePreview, setPicturePreview] = useState<string | null>(null);
 
   const [errors, setErrors] = useState({
@@ -693,7 +744,10 @@ const EditPersonNode = () => {
 
         {/* BUTTONS */}
         <div className='flex justify-center gap-4'>
-          <button onClick={() => toggleEditPersonModal()} className='bg-white-500 text-black border-1 border-green px-4 py-1 rounded-md'>Cancel</button>
+          <button type='button'
+          onClick={() => toggleEditPersonModal()} 
+          className='bg-white-500 text-black border-1 border-green px-4 py-1 rounded-md'>
+            Cancel</button>
           <button disabled={isFetching} type="submit" className='bg-primary hover:bg-primary/70 transition-colors duration-300 text-white px-4 py-1 rounded-md'>{isFetching ? 'Submitting...' : 'Save'}</button> 
         </div>
       </motion.form>
