@@ -197,7 +197,7 @@ const Content = () => {
         <div>
           {/* PROFILE DETAILS */}
           <div className='relative flex flex-col sm:flex-row items-center ml-0 sm:ml-12 mt-4 sm:mt-12'>
-            <div className='absolute z-10 left-0 lg:-top-[28px] lg:-left-[40px] p-2 bg-[#D4E2CC] rounded-full w-[80px] h-[80px] lg:w-[max-content] block'>
+            <div className='absolute z-10 left-0 lg:-top-[28px] lg:-left-[40px] p-2 bg-[#D4E2CC] rounded-full w-[80px] h-[80px] lg:h-[max-content] lg:w-[max-content] block'>
               <Image 
                 src={`${userData?.profilePicture ? userData?.profilePicture : '/images/doge.png'}`} 
                 alt='profile' 
