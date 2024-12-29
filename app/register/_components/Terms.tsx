@@ -27,7 +27,7 @@ const Terms = () => {
   };
 
   return (
-    <div onClick={handleMinimize} className={`absolute z-20 ${minimize ? 'hidden' : 'block'} top-0 left-0 w-full bg-black/20 h-screen flex justify-center items-center`}>
+    <div className={`absolute z-20 ${minimize ? 'hidden' : 'block'} top-0 left-0 w-full bg-black/20 h-screen flex justify-center items-center`}>
         <div className="bg-[#D9E4D4] max-w-3xl mx-auto p-6">
         <h4 className="text-2xl font-semibold mb-4">AncesTREE: TERMS AND CONDITIONS</h4>
         <div 
