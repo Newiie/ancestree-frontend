@@ -5,11 +5,11 @@ const loadState = (): UserState => {
   try {
     const serializedState = window.localStorage.getItem('AncestreeUser');
     if (serializedState === null) {
-      return { username: null, id: null, token: null };
+      return { username: null, id: null, token: null, isCompleted: false };
     }
     return JSON.parse(serializedState);
   } catch (err) {
-    return { username: null, id: null, token: null };
+    return { username: null, id: null, token: null, isCompleted: false };
   }
 };
 
