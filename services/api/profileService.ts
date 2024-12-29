@@ -18,7 +18,6 @@ const fetchUserData = async (userId: string) => {
     }
 }
 
-
 const updateUserData = async (userId: string, data: any) => {
     try {
         const token = selectToken(store.getState());
@@ -156,6 +155,24 @@ const populateFriendList = async () => {
     }
 }
 
+const updateUserProgress = async (stepTitle: string) => {
+    try {
+        const token = selectToken(store.getState());
+        const headers = {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        };
+        const response = await axios.patch(
+            `${baseUrl}/users/progress/${stepTitle}`, 
+            {}, 
+            { headers }
+        );
+        return response.data;
+    } catch (error) {
+        console.error("Error updating user progress:", error);
+    }
+};
+
 const profileService = { 
     fetchUserData, 
     updateUserData, 
@@ -164,7 +181,8 @@ const profileService = {
     sendFriendRequest, 
     acceptFriendRequest,
     getFriendList,
-    populateFriendList
+    populateFriendList,
+    updateUserProgress
 };
 
 export default profileService

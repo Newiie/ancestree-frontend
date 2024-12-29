@@ -10,13 +10,15 @@ import {
   connectPersonSchema,
  } from '@/lib/schema';
 import { TreeProvider, useTree } from '../../../../providers/TreeProvider'
+import Image from 'next/image'
 
 const AddFamilyMember = () => {
   const [selectedPerson, setSelectedPerson] = useState('Add Child');
   const { 
     toggleAddFamilyModal, 
     handleAddFamilyMember,
-    selectedNode
+    selectedNode,
+    isFetching
    } = useTree();
 
   const [formData, setFormData] = useState({
@@ -353,9 +355,11 @@ const AddFamilyMember = () => {
             </label>
             {picturePreview && (
               <div className='relative'>
-                <img
+                <Image
                   src={picturePreview}
                   alt="Profile Preview"
+                  width={80}
+                  height={80}
                   className='w-20 h-20 object-cover rounded-full'
                 />
                 <button
@@ -376,7 +380,7 @@ const AddFamilyMember = () => {
         {/* BUTTONS */}
         <div className='flex justify-center px-4 gap-4'>
           <button type="button" onClick={() => toggleAddFamilyModal()} className='bg-white-500 text-black border-1 border-green px-4 py-1 rounded-md'>Cancel</button>
-          <button type="submit" className='bg-primary hover:bg-primary/70 transition-colors duration-300 text-white px-4 py-1 rounded-md'>Add Member</button> 
+          <button disabled={isFetching} type="submit" className='bg-primary hover:bg-primary/70 transition-colors duration-300 text-white px-4 py-1 rounded-md'>{isFetching ? 'Submitting...' : 'Save'}</button> 
         </div>
       </motion.form>
     </div>
@@ -384,7 +388,7 @@ const AddFamilyMember = () => {
 };
 
 const EditPersonNode = () => {
-  const { toggleEditPersonModal, handleEditPerson, handleDeletePersonNode } = useTree();
+  const { toggleEditPersonModal, handleEditPerson, isFetching, selectedNode, handleDeletePersonNode } = useTree();
   const [formData, setFormData] = useState({
     firstName: '',
     middleName: '',
@@ -665,9 +669,11 @@ const EditPersonNode = () => {
             </label>
             {picturePreview && (
               <div className='relative'>
-                <img
+                <Image
                   src={picturePreview}
                   alt="Profile Preview"
+                  width={80}
+                  height={80}
                   className='w-20 h-20 object-cover rounded-full'
                 />
                 <button
@@ -688,7 +694,7 @@ const EditPersonNode = () => {
         {/* BUTTONS */}
         <div className='flex justify-center gap-4'>
           <button onClick={() => toggleEditPersonModal()} className='bg-white-500 text-black border-1 border-green px-4 py-1 rounded-md'>Cancel</button>
-          <button  className='bg-primary hover:bg-primary/70 transition-colors duration-300 text-white px-4 py-1 rounded-md' type='submit'>Edit Member</button> 
+          <button disabled={isFetching} type="submit" className='bg-primary hover:bg-primary/70 transition-colors duration-300 text-white px-4 py-1 rounded-md'>{isFetching ? 'Submitting...' : 'Save'}</button> 
         </div>
       </motion.form>
     </div>

@@ -26,11 +26,12 @@ const LoginForm = () => {
       const userResponse = await authService.login({ username, password });
       console.log("RESPONSE", userResponse);
       
-      if (userResponse && typeof userResponse === 'object' && 'username' in userResponse && 'id' in userResponse && 'token' in userResponse) {
+      if (userResponse && typeof userResponse === 'object' && 'username' in userResponse && 'id' in userResponse && 'token' in userResponse && 'isCompleted' in userResponse) {
         login({
           username: userResponse.username,
           id: userResponse.id,
-          token: userResponse.token
+          token: userResponse.token,
+          isCompleted: userResponse.isCompleted || false
         });
         router.push('/dashboard');
       } else {

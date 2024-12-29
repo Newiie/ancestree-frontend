@@ -4,12 +4,14 @@ export interface UserState {
   username: string | null | undefined;
   id: string | null | undefined;
   token: string | null | undefined;
+  isCompleted: boolean;
 }
 
 const initialState: UserState = {
     username: null,
     id: null,
-    token: null
+    token: null,
+    isCompleted: false
 };
 
 const userSlice = createSlice({
@@ -21,6 +23,7 @@ const userSlice = createSlice({
       state.username = action.payload.username;
       state.id = action.payload.id;
       state.token = action.payload.token;
+      state.isCompleted = action.payload.isCompleted || false;
     }
   },
 });

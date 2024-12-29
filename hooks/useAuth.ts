@@ -21,13 +21,13 @@ const useAuth = () => {
 
   const login = (useraccount: UserState) => {
     console.log("USER ON LOGIN", useraccount);
-    dispatch(setUser({ username: useraccount.username, id: useraccount.id, token: useraccount.token }));
-    const userData = { username: useraccount.username, id: useraccount.id, token: useraccount.token };
+    dispatch(setUser({ username: useraccount.username, id: useraccount.id, token: useraccount.token, isCompleted: useraccount.isCompleted || false }));
+    const userData = { username: useraccount.username, id: useraccount.id, token: useraccount.token, isCompleted: useraccount.isCompleted || false };
     window.localStorage.setItem('AncestreeUser', JSON.stringify(userData));
   };
 
   const logout = () => {
-    dispatch(setUser({ username: null, id: null, token: null }));
+    dispatch(setUser({ username: null, id: null, token: null, isCompleted: false }));
     window.localStorage.removeItem('AncestreeUser');
     router.push('/login');
   };

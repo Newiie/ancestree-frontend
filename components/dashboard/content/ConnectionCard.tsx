@@ -2,10 +2,14 @@ import React from 'react'
 import { EllipsisIcon } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
+import profileService from '@/services/api/profileService';
 
 const ConnectionCard = ({ result }: { result: any }) => {
   return (
-    <Link href={`/dashboard/profile/${result.userId}`} className='relative flex items-center gap-4  p-4 bg-white rounded-lg cursor-pointer border border-gray-200 shadow-sm hover:shadow-md transition duration-200'>
+    <Link 
+      onClick={() => profileService.updateUserProgress("View search results and connect with relatives")}
+      href={`/dashboard/profile/${result.userId}`} 
+      className='relative flex items-center gap-4 p-4 bg-white rounded-lg cursor-pointer border border-gray-200 shadow-sm hover:shadow-md transition duration-200'>
         <Image 
           src={result.profilePicture ? result.profilePicture : "/images/doge.png"} 
           alt='profile' 

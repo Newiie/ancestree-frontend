@@ -117,6 +117,8 @@ export const ProfileProvider: React.FC<{ children: ReactNode, userId: string }> 
       };
       const response = await profileService.updateUserData(userId, updatedData);
       if (response.status === 200) {
+        // Mark the "Update profile details" step as completed
+        await profileService.updateUserProgress("Update profile details");
         await fetchUserData();
       }
     } catch (error) {

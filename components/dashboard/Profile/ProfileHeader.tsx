@@ -6,6 +6,8 @@ import Link from 'next/link';
 import { useProfile } from '../../../providers/ProfileProvider';
 import useAuth from '@/hooks/useAuth';
 import { SquarePenIcon } from 'lucide-react';
+import updateService from '@/services/api/updateService';
+import { UpdateType } from '@/services/api/updateService';
 
 const ProfileHeader = () => {
   const { user } = useAuth();
@@ -199,9 +201,17 @@ const ProfileHeader = () => {
               <button
                 onClick={() => {
                     if (userFriends?.friendRequest?.includes(userData?.userId)) {
+                      // When accepting a friend request
                       acceptFriendRequest(userData?.userId);
+                      
+                      // Create an update for the logged-in user
+                      updateService.acceptConnectionRequest(userData?.name || 'User');
                     } else if (!userData?.friendsList.some((friend : any) => friend.userId === user?.id)) {
+                      // When sending a friend request
                       sendFriendRequest(userData?.userId);
+                      
+                      // Create an update for the logged-in user
+                      updateService.sendConnectionRequest(userData?.name || 'User');
                     }
                   }
                 }

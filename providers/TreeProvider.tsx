@@ -1,5 +1,5 @@
 import { baseUrl } from '@/lib/config';
-import React, { createContext, useState, useContext, ReactNode, useEffect } from 'react';
+import React, { createContext, useState, useContext, ReactNode, useEffect, useRef } from 'react';
 import axios from 'axios';
 import useAuth from '@/hooks/useAuth';
 import TreeService from '@/services/api/treeService';
@@ -25,6 +25,7 @@ interface TreeContextType {
   handleConnectPersonToUser: (userId: string) => void;
   isFetching: boolean;
   userId: string;
+  selectedPerson: React.MutableRefObject<string>;
 }
 
 const TreeContext = createContext<TreeContextType | undefined>(undefined);
@@ -46,7 +47,7 @@ export const TreeProvider: React.FC<{ children: ReactNode, id: string }> = ({ ch
     const [treeId, setTreeId] = useState<string>("");
     const [isFetching, setIsFetching] = useState(false);
     const [apiEvent, setApiEvent] = useState(false);
-
+    const selectedPerson = useRef("");
     const [treeData, setTreeData] = useState<any>([]);
 
     useEffect(() => {
@@ -63,18 +64,21 @@ export const TreeProvider: React.FC<{ children: ReactNode, id: string }> = ({ ch
     }, [apiEvent,id]);
 
     const handleEditPerson = async (formData: any) => {
-        toggleEditPersonModal();
+        setIsFetching(true);
         await TreeService.patchEditPersonNode(selectedNode, formData);
+        toggleEditPersonModal();
         setApiEvent(!apiEvent);
     }
 
     const handleAddFamilyMember = async (selectedPerson: string,formData: any) => {
-        toggleAddFamilyModal();
+        setIsFetching(true);
         console.log("FORM DATA", formData);
         if (selectedPerson === "Add Child") {
             await TreeService.postAddChild(treeId, formData);
+            toggleAddFamilyModal();
         } else {
             await TreeService.postAddParent(treeId, formData);
+            toggleAddFamilyModal();
         }
         setApiEvent(!apiEvent);
     };
@@ -104,6 +108,7 @@ export const TreeProvider: React.FC<{ children: ReactNode, id: string }> = ({ ch
     return (
     <TreeContext.Provider value={{ 
         addFamilyMember, 
+        selectedPerson,
         userId,
         toggleAddFamilyModal, 
         handleDeletePersonNode,

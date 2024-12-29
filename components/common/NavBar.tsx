@@ -4,7 +4,7 @@ import Image from 'next/image'
 
 const NavBar = () => {
   return (
-    <div className="flex justify-between py-[0.5rem] px-[2rem] bg-white fixed top-0 w-full z-50">
+    <div className="flex justify-between py-[0.5rem] px-[2rem] bg-white fixed top-0 w-full z-10">
 
       <div className='flex gap-[1rem] items-center'>
         <Image src={"/images/favicon.ico"} alt='logo' height={35} width={35} />

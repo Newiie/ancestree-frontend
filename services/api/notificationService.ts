@@ -1,7 +1,7 @@
 import { baseUrl } from "@/lib/config";
 import { selectToken } from "@/store/userSlice";
 import store from "@/store/store";
-
+import profileService from "./profileService";
 const notificationService = {
     fetchNotifications: async () => {
         try {
@@ -43,6 +43,7 @@ const notificationService = {
             }
             
             const data = await response.json();
+            await profileService.updateUserProgress("Stay informed with Notifications");
             return data;
         } catch (error) {
             console.error("Error reading notification:", error);

@@ -79,6 +79,7 @@ const Node = ({
                                 onClick={() => {
                                     if (selectId(store.getState()) !== userId) return;
                                     toggleEditPersonModal()
+                                    console.log("SECLECTED NODE", selectedNode);
                                 }}
                                 className='absolute top-[67px] right-[-14px] bg-white-500 border border-[#E0E0E0] hover:bg-gray-100 text-[#7C7C7C] px-2 py-1 rounded-[50%] w-8 h-8 flex items-center justify-center'
                             >
@@ -267,7 +268,6 @@ const Node = ({
         </li>
     );
 };
-
 
 const Content = () => {
 

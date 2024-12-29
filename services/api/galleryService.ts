@@ -1,6 +1,9 @@
 import { baseUrl } from '@/lib/config';
 import { selectToken, selectId } from "@/store/userSlice";
 import store from "@/store/store";
+import updateService from './updateService';
+import { UpdateType } from './updateService';
+import profileService from './profileService';
 
 const getAlbums = async () => {
     try {
@@ -62,6 +65,16 @@ const addAlbum = async (album: any) => {
             throw new Error(`Error adding album: ${response.status} ${response.statusText}`);
         }
         const data = await response.json();
+        
+        // Create an update when an album is added
+        if (response.ok) {
+            // Use the photosAdded method with a count of 1
+            await updateService.photosAdded(1);
+            
+            // Update user progress for adding family photos
+            await profileService.updateUserProgress("Upload and manage your family records");
+        }
+        
         return data;
     } catch (error) {
         throw error;
@@ -104,6 +117,16 @@ const uploadPhoto = async (albumId: string | string[], photoData: FormData) => {
             throw new Error(`Error adding photo to album: ${response.status} ${response.statusText}`);
         }
         const data = await response.json();
+        
+        // Create an update when a photo is uploaded
+        if (response.ok) {
+            // Use the photosAdded method with a count of 1
+            await updateService.photosAdded(1);
+            
+            // Update user progress for adding family photos
+            await profileService.updateUserProgress("Add family photos to the Gallery");
+        }
+        
         return data;
     } catch (error) {
         throw error;
