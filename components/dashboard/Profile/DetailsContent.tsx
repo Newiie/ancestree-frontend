@@ -32,7 +32,7 @@ const DetailsContent = () => {
       birthDate: '',
       birthPlace: '',
       birthingCenter: '',
-      nationality: '',
+      nationality: [] as string[],
       civilStatus: ''
     },
     address: {
@@ -66,6 +66,8 @@ const DetailsContent = () => {
       { quote: '', isFavorite: false }
     ]
   });
+
+  const [tempArrayInput, setTempArrayInput] = useState<{[key: string]: string}>({});
 
   type FormDataKeys = keyof typeof formData;
   
@@ -128,21 +130,53 @@ const DetailsContent = () => {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    const [section, field, index] = name.split('.'); 
-    setFormData((prev: any) => {
-      if (section === 'interests' && index !== undefined) {
-        const interests = [...prev.interests];
-        interests[parseInt(index)][field] = value;
-        return { ...prev, interests };
+    const nameParts = name.split('.');
+
+    setFormData((prevData) => {
+      const updatedData = { ...prevData };
+      
+      // Handle nested array inputs (like interests.0.title)
+      if (nameParts.length === 3) {
+        const [section, indexStr, field] = nameParts;
+        const index = parseInt(indexStr, 10);
+        
+        // Create a copy of the current section array
+        const updatedSection = [...(updatedData[section as FormDataKeys] as any || [])];
+        
+        // Update the specific item in the array
+        updatedSection[index] = {
+          ...updatedSection[index],
+          [field]: value
+        };
+        
+        // Update the entire section
+        updatedData[section as FormDataKeys]  = updatedSection as any;
+        
+        return updatedData;
       }
       
-      return {
-        ...prev,
-        [section]: {
-          ...prev[section],
-          [field]: value,
-        },
-      };
+      // Original single-level input handling
+      const [section, field] = nameParts;
+      const currentValue = updatedData[section as FormDataKeys] as any;
+
+      // Check if the field is an array type
+      if (sectionConfigs[section as FormDataKeys]?.find(f => f.name === field && f.type === 'array')) {
+        // If the current value is not an array, convert it to an array
+        if (!Array.isArray(currentValue[field])) {
+          currentValue[field] = currentValue[field] ? [currentValue[field]] : [];
+        }
+        
+        // Update temp input for this field
+        setTempArrayInput(prev => ({
+          ...prev,
+          [field]: value
+        }));
+      } else {
+        // Regular input handling
+        currentValue[field] = value;
+      }
+
+      return updatedData;
     });
   };
 
@@ -159,43 +193,112 @@ const DetailsContent = () => {
     }));
   };
 
-  
+  const handleAddArrayItem = (section: FormDataKeys, field: string) => {
+    const inputValue = tempArrayInput[field]?.trim();
+    if (inputValue) {
+      setFormData((prevData) => {
+        const updatedData = { ...prevData };
+        const currentSection = updatedData[section];
+
+        // Type guard to ensure we're working with an object that can have array fields
+        if (typeof currentSection === 'object' && currentSection !== null) {
+          // Type assertion to handle array fields
+          const currentSectionWithArrays = currentSection as Record<string, any>;
+
+          // Ensure the field is an array
+          if (!Array.isArray(currentSectionWithArrays[field])) {
+            currentSectionWithArrays[field] = [];
+          }
+
+          // Add the new item if it's not already in the array
+          if (!currentSectionWithArrays[field].includes(inputValue)) {
+            currentSectionWithArrays[field].push(inputValue);
+          }
+        }
+
+        return updatedData;
+      });
+
+      // Reset the input after adding
+      setTempArrayInput((prev) => ({
+        ...prev,
+        [field]: ''
+      }));
+    }
+  };
 
   const renderFields = (fields: { name: string; label: string; type?: string; options?: string[] }[], section: FormDataKeys) => {
 
     if (section === 'interests') {
-      return (formData[section] || []).map((interest: { title: string, description: string }, index: number) => (
-        <div key={index} className='mb-1'>
-          {isEditing ? (
-            <div className='flex gap-2'>
-              <div className='flex flex-col'>
-                <label htmlFor={`${section}.${index}.title`}>Title:</label>
-                <input
-                  type='text'
-                  className={inputStyles}
-                  name={`${section}.${index}.title`}
-                  value={interest?.title || ''}
-                  onChange={handleInputChange}
-                  placeholder='Title'
-                />
-              </div>
-              <div className='flex flex-col w-full'>
-                <label htmlFor={`${section}.${index}.description`}>Description:</label>
-                <input
-                  type='text'
-                  className={inputStyles}
-                  name={`${section}.${index}.description`}
-                  value={interest?.description || ''}
-                  onChange={handleInputChange}
-                  placeholder='Description'
-                />
-              </div>
+      return (
+        <>
+          {(formData[section] || []).map((interest: { title: string, description: string }, index: number) => (
+            <div key={index} className='mb-1'>
+              {isEditing ? (
+                <div className='flex gap-2'>
+                  <div className='flex flex-col'>
+                    <label htmlFor={`${section}.${index}.title`}>Title:</label>
+                    <input
+                      type='text'
+                      className={inputStyles}
+                      name={`${section}.${index}.title`}
+                      value={interest?.title || ''}
+                      onChange={handleInputChange}
+                      placeholder='Title'
+                    />
+                  </div>
+                  <div className='flex flex-col w-full'>
+                    <label htmlFor={`${section}.${index}.description`}>Description:</label>
+                    <input
+                      type='text'
+                      className={inputStyles}
+                      name={`${section}.${index}.description`}
+                      value={interest?.description || ''}
+                      onChange={handleInputChange}
+                      placeholder='Description'
+                    />
+                  </div>
+                  <button 
+                    type='button' 
+                    className='text-red-500 self-end'
+                    onClick={() => {
+                      const updatedInterests = [...(formData[section] || [])];
+                      updatedInterests.splice(index, 1);
+                      setFormData(prev => ({
+                        ...prev,
+                        [section]: updatedInterests
+                      }));
+                    }}
+                  >
+                    Remove
+                  </button>
+                </div>
+              ) : (
+                <p><strong>{interest.title}:</strong> {interest.description || 'No Description'}</p>
+              )}
             </div>
-          ) : (
-            <p><strong>{interest.title}:</strong> {interest.description || 'No Description'}</p>
+          ))}
+          
+          {isEditing && (
+            <button 
+              type='button' 
+              className={`${buttonStyles} mt-2`}
+              name='interests.addInterest'
+              onClick={() => {
+                setFormData(prev => ({
+                  ...prev,
+                  interests: [
+                    ...(prev.interests || []), 
+                    { title: '', description: '' }
+                  ]
+                }));
+              }}
+            >
+              Add Interest
+            </button>
           )}
-        </div>
-      ));
+        </>
+      );
     }
 
     if (section === 'personalContact') {
@@ -262,7 +365,60 @@ const DetailsContent = () => {
       <div key={field.name} className='mb-1'>
         {isEditing ? (
           <>
-            {field.type === 'select' ? (
+            {field.type === 'array' ? (
+            <div>
+              
+
+              {/* Input and button to add new item */}
+              <div className="flex gap-2 items-center mt-2">
+                <input
+                  type="text"
+                  name={`${section}.${field.name}`}
+                  value={tempArrayInput[field.name] || ''}
+                  onChange={handleInputChange}
+                  className={`${inputStyles} flex-grow`}
+                  placeholder={`Add ${field.label}`}
+                />
+                <button
+                  type="button"
+                  onClick={() => handleAddArrayItem(section, field.name)}
+                  className="bg-primary hover:bg-primary/70 transition-colors duration-300 text-white px-2 py-1 rounded-md"
+                >
+                  +
+                </button>
+              </div>
+              {/* Display existing items */}
+              <div className="mb-2">
+                <strong>{field.label}:</strong>
+                <div className="flex flex-wrap gap-2 mt-1">
+                  {(formData[section] as Record<string, any>)[field.name]?.map((item: string, index: number) => (
+                    <span key={index} className="flex items-center bg-gray-200 px-2 py-1 rounded-md text-sm">
+                      {item}
+                      <button 
+                        type="button"
+                        onClick={() => {
+                          const updatedItems = [...(formData[section] as Record<string, any>)[field.name]];
+                          updatedItems.splice(index, 1);
+                          setFormData(prevData => ({
+                            ...prevData,
+                            [section]: {
+                              ...(prevData[section] as Record<string, any>),
+                              [field.name]: updatedItems
+                            }
+                          }));
+                        }}
+                        className="ml-2 text-red-500 hover:text-red-700"
+                      >
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                      </button>
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </div>
+            ) : field.type === 'select' ? (
               <select
                 name={`${section}.${field.name}`}
                 value={(formData[section] as Record<string, any>)[field.name] || ''}
@@ -278,7 +434,9 @@ const DetailsContent = () => {
               <input
                 type='date'
                 name={`${section}.${field.name}`}
-                value={(formData[section] as Record<string, any>)[field.name] || ''}
+                value={typeof (formData[section] as Record<string, any>)[field.name] === 'string' 
+                  ? (formData[section] as Record<string, any>)[field.name].slice(0, 10) 
+                  : (formData[section] as Record<string, any>)[field.name] || ''}
                 // value={new Date((formData[section] as Record<string, any>)[field.name]).toISOString().split('T')[0] || ''}
                 onChange={handleInputChange}
                 className={inputStyles}
@@ -287,7 +445,9 @@ const DetailsContent = () => {
               <input
                 type='text'
                 name={`${section}.${field.name}`}
-                value={(formData[section] as Record<string, any>)[field.name] || ''}
+                value={Array.isArray((formData[section] as Record<string, any>)[field.name]) 
+                  ? (formData[section] as Record<string, any>)[field.name].join(', ') 
+                  : (formData[section] as Record<string, any>)[field.name] || ''}
                 onChange={handleInputChange}
                 className={inputStyles}
                 placeholder={field.label}
@@ -297,9 +457,20 @@ const DetailsContent = () => {
               <p className={errorStyles}>{errors[`${section}.${field.name}`]}</p>
             )}
           </>
-        ) : (
-          <p><strong>{field.label}:</strong> {(formData[section] as Record<string, any>)[field?.name] || 'Unknown'}</p>
-        )}
+        ) : field.type === 'array' ? (
+            <div>
+              <strong>{field.label}:</strong>
+              <div className='flex flex-wrap gap-2 mt-1'>
+                {(formData[section] as Record<string, any>)[field.name]?.map((item: string, index: number) => (
+                  <span key={index} className='bg-gray-200 px-2 py-1 rounded-md text-sm'>{item}</span>
+                ))}
+              </div>
+            </div>
+          ) : (
+            <p><strong>{field.label}:</strong> {Array.isArray((formData[section] as Record<string, any>)[field.name]) 
+                    ? (formData[section] as Record<string, any>)[field.name].join(', ') 
+                    : (formData[section] as Record<string, any>)[field.name] || 'Unknown'}</p>
+          )}
       </div>
     ));
   };
@@ -312,7 +483,7 @@ const DetailsContent = () => {
   );
 
   return (
-    <div className='p-4 relative'>
+    <div className='p-4 sm:p-6 relative'>
       {isFetching ? (
         <p>Loading...</p>
       ) : (
@@ -324,58 +495,74 @@ const DetailsContent = () => {
             />
           )}
 
-          {profileTabs === 'Personal Details' && (
-            <>
-              <h2 className='text-xl font-bold'>{selectedDetail}</h2>
-              <div className='mt-4'>
-                {selectedDetail === 'General Information' && renderSection('generalInformation', 'General Information')}
-                {selectedDetail === 'Addresses' && renderSection('address', 'Current Address')}
-                {selectedDetail === 'Vital Information' && renderSection('vitalInformation', 'Physical Attributes')}
-                {selectedDetail === 'Personal Interests' && renderSection('interests', 'Interests')}
-                {selectedDetail === 'Contact Information' && (
-                  <>
-                    {renderSection('personalContact', 'Personal Contact')}
-                    {renderSection('emergencyContact', 'Emergency Contact')}
-                  </>
-                )}
-              </div>
-            </>
-          )}
+          <div className={`${isEditing ? 'pb-20' : ''}`}>
+            {profileTabs === 'Personal Details' && (
+              <>
+                <h2 className='text-lg sm:text-xl font-bold'>{selectedDetail}</h2>
+                <div className='mt-4'>
+                  {selectedDetail === 'General Information' && renderSection('generalInformation', 'General Information')}
+                  {selectedDetail === 'Addresses' && renderSection('address', 'Current Address')}
+                  {selectedDetail === 'Vital Information' && renderSection('vitalInformation', 'Physical Attributes')}
+                  {selectedDetail === 'Personal Interests' && renderSection('interests', 'Interests')}
+                  {selectedDetail === 'Contact Information' && (
+                    <div className='space-y-4'>
+                      {renderSection('personalContact', 'Personal Contact')}
+                      {renderSection('emergencyContact', 'Emergency Contact')}
+                    </div>
+                  )}
+                </div>
+              </>
+            )}
 
-          {profileTabs === 'Profile Memo' && (
-            <div>
-              <h2 className='text-[1.5rem] font-bold'>Profile Memo</h2>
-              <p className='text-center text-[2.5rem] w-[60%] mx-auto'>
-                &quot;{formData.quotes.map((quote) => {
-                  if (quote.isFavorite) {
-                    return quote.quote;
+            {profileTabs === 'Profile Memo' && (
+              <div className='space-y-4'>
+                <h2 className='text-xl sm:text-2xl font-bold'>Profile Memo</h2>
+                <p className='text-center text-base sm:text-2xl md:text-[2.5rem] w-full md:w-[60%] mx-auto'>
+                  &quot;{formData.quotes.find((quote) => quote.isFavorite)?.quote || 'No Profile Memo'}&quot;
+                </p>
+                <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
+                  <div>
+                    <h4 className='text-lg font-bold mb-2'>About Me</h4>
+                    {renderFields(sectionConfigs['aboutMe'], 'aboutMe')}
+                  </div>
+                  <div>
+                    <h4 className='text-lg font-bold mb-2'>Quotes</h4>
+                    {renderFields(sectionConfigs['quotes'], 'quotes')}
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {profileTabs === 'Connections' && (
+              <div>
+                <h2 className='text-xl sm:text-2xl font-bold mb-4'>Connections</h2>
+                <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4'>
+                  {
+                    userData?.friendsList.map((friend: any) => ( 
+                      <ConnectionCard key={friend.userId} result={friend} />
+                    ))
                   }
-                }) || 'No Profile Memo'}&quot;
-              </p>
-              <h4 className='text-[1.2rem] font-bold'>About Me</h4>
-              {renderFields(sectionConfigs['aboutMe'], 'aboutMe')}
-              <h4 className='text-[1.2rem] font-bold'>Quotes</h4>
-              {renderFields(sectionConfigs['quotes'], 'quotes')}
-            </div>
-          )}
-
-          {profileTabs === 'Connections' && (
-            <div>
-              <h2 className='text-[1.5rem] font-bold'>Connections</h2>
-              <div className='grid grid-cols-3 gap-4'>
-                {
-                  userData?.friendsList.map((friend: any) => ( 
-                    <ConnectionCard key={friend.userId} result={friend} />
-                  ))
-                }
+                </div>
               </div>
-            </div>
-          )}
+            )}
+          </div>
 
           {isEditing && (
-            <div className='flex justify-end gap-4 mt-8'>
-              <button className={`${buttonStyles} bg-red-500`} onClick={handleCancelClick}>Cancel</button>
-              <button className={`${buttonStyles} bg-blue-500`} onClick={handleSaveClick}>Save</button>
+            <div className='fixed bottom-0 left-0 right-0 bg-white shadow-lg p-4 z-50'>
+              <div className='flex justify-end gap-4 max-w-4xl mx-auto'>
+                <button 
+                  className={`${buttonStyles} bg-red-500 w-full sm:w-auto`} 
+                  onClick={handleCancelClick}
+                >
+                  Cancel
+                </button>
+                <button 
+                  className={`${buttonStyles} bg-blue-500 w-full sm:w-auto`} 
+                  onClick={handleSaveClick}
+                >
+                  Save
+                </button>
+              </div>
             </div>
           )}
         </>

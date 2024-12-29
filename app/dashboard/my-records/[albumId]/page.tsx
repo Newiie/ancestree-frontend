@@ -1,7 +1,7 @@
 "use client"
 import React, { useState, useEffect } from 'react'
 import ImageContainer from '../_components/ImageContainer'
-import { PencilIcon, ImagePlusIcon, X } from 'lucide-react'
+import { PencilIcon, ImagePlusIcon, X, ArrowLeft } from 'lucide-react'
 import { Input } from '@/components/ui/input'
 import { AlertDialog, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger, AlertDialogCancel } from '@/components/ui/alert-dialog'
 import { CirclePlus } from 'lucide-react'
@@ -74,14 +74,54 @@ const FolderPage = () => {
     }
   };
 
+  const handleGoBack = () => {
+    router.push('/dashboard/my-records');
+  };
+
   return (
     <div className="content | overflow-y-auto">
-      <div className='bg-[#DFDFDF] text-black h-full p-6'>
+      <div className='bg-[#DFDFDF] text-black h-full p-4 sm:p-6'>
         <div className='w-full p-4 h-full bg-gray-100 rounded-lg shadow-md'>
-          <h1 className='text-2xl font-bold mb-4'>{album?.name}</h1>
+          <div className='flex items-center gap-4 mb-4'>
+            <button 
+              onClick={handleGoBack} 
+              className='
+                p-2 
+                rounded-full 
+                hover:bg-gray-200 
+                transition 
+                duration-300 
+                flex 
+                items-center 
+                justify-center
+              '
+              aria-label="Go back to albums"
+            >
+              <ArrowLeft size={24} />
+            </button>
+            <h1 className='text-xl sm:text-2xl font-bold'>{album?.name}</h1>
+          </div>
           <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
             <AlertDialogTrigger>
-              <span className='px-2 py-1 rounded-lg flex items-center gap-2 border border-primary shadow-sm bg-btn-inactive text-primary transition duration-200 hover:text-white hover:bg-btn-primary'>
+              <span className='
+                text-sm 
+                sm:text-base 
+                px-2 
+                py-1 
+                rounded-lg 
+                flex 
+                items-center 
+                gap-2 
+                border 
+                border-primary 
+                shadow-sm 
+                bg-btn-inactive 
+                text-primary 
+                transition 
+                duration-200 
+                hover:text-white 
+                hover:bg-btn-primary
+              '>
                 <ImagePlusIcon size={16} />
                 Add Photo
               </span>
@@ -124,18 +164,36 @@ const FolderPage = () => {
                 <button 
                   onClick={handleUploadPhoto}
                   disabled={!selectedFile || isFetching}
-                  className='bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary/80 transition duration-300 disabled:bg-primary/50 disabled:text-white/50 disabled:cursor-not-allowed'
+                  className='
+                    w-full 
+                    sm:w-auto 
+                    bg-primary 
+                    text-white 
+                    px-4 
+                    py-2 
+                    rounded-lg 
+                    hover:bg-primary/80 
+                    transition 
+                    duration-300 
+                    disabled:bg-primary/50 
+                    disabled:text-white/50 
+                    disabled:cursor-not-allowed
+                  '
                 >
                   {isFetching ? "Uploading..." : "Upload Photo"}
                 </button>
               </AlertDialogFooter>    
             </AlertDialogContent>
           </AlertDialog>
-          <div className='flex flex-wrap gap-4 py-4'>
+          <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 py-4'>
             {
               album?.photos?.length > 0 ? album.photos.map((photo: any) => (
                 <ImageContainer key={photo.key} photo={photo} />
-              )) : <p>No photos in this album</p>
+              )) : (
+                <div className='col-span-full text-center text-gray-500 py-8'>
+                  No photos in this album
+                </div>
+              )
             } 
           </div>
         </div>

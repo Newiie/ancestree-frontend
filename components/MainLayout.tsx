@@ -5,9 +5,10 @@ import { Provider } from 'react-redux';
 import  store from '@/store/store'; 
 
 const MainLayout = ({ children }: { children: React.ReactNode }) => {
+
   return (
     <Provider store={store}>
-      <NavBar />
+     <NavBar />
       {children}
     </Provider>
   );

@@ -24,7 +24,7 @@ export default function CustomDomainLayout(props: React.PropsWithChildren<{}>) {
 
     return (
         <ProfileProvider userId={user.id as string}> 
-            <div className="grid grid-rows-[auto_1fr] grid-cols-[auto_1fr] h-screen">
+            <div className="grid grid-rows-[auto_1fr]  grid-cols-[1fr] md:grid-cols-[auto_1fr]  h-screen">
                 <Header  />
                 <Sidebar />
                 {props.children}

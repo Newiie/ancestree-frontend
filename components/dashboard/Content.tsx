@@ -192,57 +192,66 @@ const Content = () => {
   }, [api])
 
   return (
-    <div className='bg-[#DFDFDF] text-black p-6'>
-      <div className='bg-white rounded-[4px] p-4 gap-[2rem] '>
+    <div className='bg-[#DFDFDF] text-black p-4 sm:p-6'>
+      <div className='bg-white rounded-[4px] p-4 gap-[2rem]'>
         <div>
-          {/* <div>
-            <Image src={'/images/AnceTREE-thumb-1.png'} alt='profile' className='w-[350px] object-cover' width={1000} height={1000} />
-            <p className='ml-4 text-sm'>Unraveling  Ancestral Lineages through Genealogy</p>
-          </div> */}
           {/* PROFILE DETAILS */}
-          <div className='relative flex items-center ml-12 mt-12'>
-
-            <div className='absolute z-10 -top-[28px] -left-[40px] p-2 bg-[#D4E2CC] rounded-full w-[max-content]'>
-              <Image src={`${userData?.profilePicture ? userData?.profilePicture : '/images/doge.png'}`} alt='profile' className='w-[80px] bg-white h-[80px] rounded-full object-cover' width={100} height={100} />
+          <div className='relative flex flex-col sm:flex-row items-center ml-0 sm:ml-12 mt-4 sm:mt-12'>
+            <div className='absolute z-10 left-0 lg:-top-[28px] lg:-left-[40px] p-2 bg-[#D4E2CC] rounded-full w-[80px] h-[80px] lg:w-[max-content] block'>
+              <Image 
+                src={`${userData?.profilePicture ? userData?.profilePicture : '/images/doge.png'}`} 
+                alt='profile' 
+                className='w-[80px] bg-white h-[80px] rounded-full object-cover' 
+                width={100} 
+                height={100} 
+              />
             </div>
-            <div className='relative flex gap-[4rem] rounded-sm w-full pl-16 py-2 px-4 bg-[#D4E2CC]'>
-              <div>
-                <p className='text-[2rem] text-black/80 font-semibold'>{userData?.generalInformation.firstName} {userData?.generalInformation.lastName}</p>
+            <div className='relative flex flex-col sm:flex-row gap-4 sm:gap-[4rem] rounded-sm w-full sm:pl-16 py-2 px-4 bg-[#D4E2CC]'>
+              <div className='text-center sm:text-left'>
+                <p className='text-xl sm:text-[2rem] text-black/80 font-semibold'>
+                  {userData?.generalInformation.firstName} {userData?.generalInformation.lastName}
+                </p>
               </div>
-              <div className='flex items-center'>
-                <Link href={`/dashboard/family-tree/${userData?.userId}`} className={`bg-white hover:bg-btn-secondary text-primary border-1 transition-colors duration-200 border-green px-2 py-1 rounded-lg mr-2`}>View Tree</Link>
-                {/* <Link href={'/dashboard/Connections'} className={`bg-white hover:bg-btn-secondary  text-primary border-1 border-green px-2 py-1 rounded-lg`}>Connections</Link> */}
+              <div className='flex justify-center sm:justify-start items-center'>
+                <Link 
+                  href={`/dashboard/family-tree/${userData?.userId}`} 
+                  className={`bg-white hover:bg-btn-secondary text-primary border-1 transition-colors duration-200 border-green px-2 py-1 rounded-lg mr-2`}
+                >
+                  View Tree
+                </Link>
               </div>
-              <EllipsisIcon className='absolute top-2 right-4 cursor-pointer' />
+              <EllipsisIcon className='absolute top-2 right-4 cursor-pointer hidden sm:block' />
             </div>
           </div>
 
-          <div className='grid grid-cols-2 gap-4'>
+          <div className='grid grid-cols-1 md:grid-cols-2 gap-4 mt-4'>
             {/* FIRST COLUMN */}
-            <div>
+            <div className='space-y-4'>
               {/* ACCOUNT PROGRESS */}
-              <Accordion type="single" collapsible>
+              <Accordion type="single" collapsible className='w-full'>
                 <AccordionItem value="item-1">
-                  <AccordionTrigger>Welcome to AncesTREE ! To get started, click here to show tasks and and complete account progress.  </AccordionTrigger>
+                  <AccordionTrigger className='text-sm sm:text-base'>
+                    Welcome to AncesTREE! To get started, click here to show tasks and complete account progress.
+                  </AccordionTrigger>
                   <AccordionContent>
-                    {
-                      progressSteps.map((item, index) => (
-                        <div key={index} className='flex ml-16 pl-3 flex-col justify-center relative'>
-                          <div className={`absolute top-[5px] z-10 -left-4 h-[1rem] w-[1rem] border-1 border-[#174317] rounded-full ${item.completed ? 'bg-[#519F49]' : 'bg-white'}`}></div>
-                          {index != progressSteps.length - 1 && <div className='absolute top-[5px] -left-[9px] h-full w-[1px] bg-[#434343]'></div>}
-                          <p className='text-lg text-[#434343] font-semibold'>{index + 1}. {item.title}</p>
-                          <p className='text-sm pl-4 text-black'>{item.description}</p>
-                        </div>
-                      ))
-                    }
-                    <p className='text-[#1B5A1B] font-bold text-xl ml-16 mt-4'>Well Done! You can now go through the app and start tracing your roots.</p>
+                    {progressSteps.map((item, index) => (
+                      <div key={index} className='flex ml-4 sm:ml-16 pl-3 flex-col justify-center relative'>
+                        <div className={`absolute top-[5px] z-10 -left-4 h-[1rem] w-[1rem] border-1 border-[#174317] rounded-full ${item.completed ? 'bg-[#519F49]' : 'bg-white'}`}></div>
+                        {index != progressSteps.length - 1 && <div className='absolute top-[5px] -left-[9px] h-full w-[1px] bg-[#434343]'></div>}
+                        <p className='text-sm sm:text-lg text-[#434343] font-semibold'>{index + 1}. {item.title}</p>
+                        <p className='text-xs sm:text-sm pl-4 text-black'>{item.description}</p>
+                      </div>
+                    ))}
+                    <p className='text-base sm:text-xl text-[#1B5A1B] font-bold ml-4 sm:ml-16 mt-4'>
+                      Well Done! You can now go through the app and start tracing your roots.
+                    </p>
                   </AccordionContent>
                 </AccordionItem>
               </Accordion>
 
               {/* MEMORIES CAROUSEL */}
-              <div className='bg-[#EAF1E5] h-[max-content] rounded-lg mt-4 p-4'>
-                <h2 className='text-2xl text-[#1B5A1B] font-semibold'>Memories</h2>
+              <div className='bg-[#EAF1E5] h-[max-content] rounded-lg p-4'>
+                <h2 className='text-xl sm:text-2xl text-[#1B5A1B] font-semibold'>Memories</h2>
                 <Carousel
                   setApi={setApi}
                   opts={{
@@ -250,15 +259,15 @@ const Content = () => {
                     align: 'center',
                     slidesToScroll: 1,
                   }}
-                  className=" mx-auto"
+                  className="mx-auto"
                 >
                   <CarouselContent className="flex gap-4 px-4">
                     {memoryPhotos.map((item, index) => (
                       <CarouselItem 
                         key={index} 
-                        className="flex justify-center"
+                        className="basis-3/4 sm:basis-1/2 lg:basis-1/3 flex justify-center"
                       >
-                        <div className='w-[200px] sm:w-[max-content] h-[250px] sm:h-[300px] bg-white rounded-lg shadow-md overflow-hidden transition-transform duration-300 hover:scale-105'>
+                        <div className='w-[200px] sm:w-[250px] h-[250px] sm:h-[300px] bg-white rounded-lg shadow-md overflow-hidden transition-transform duration-300 hover:scale-105'>
                           <Image 
                             src={item.image} 
                             alt='memory' 
@@ -270,8 +279,6 @@ const Content = () => {
                       </CarouselItem>
                     ))}
                   </CarouselContent>
-                  {/* <CarouselPrevious className="left-4 text-[#1B5A1B] hover:bg-[#D4E2CC]" />
-                  <CarouselNext className="right-4 text-[#1B5A1B] hover:bg-[#D4E2CC]" /> */}
                 </Carousel>
                 <div className='flex justify-center w-full mx-auto mt-6 gap-2 items-center'>
                   {memoryPhotos.map((item, index) => (
@@ -285,104 +292,84 @@ const Content = () => {
                     />
                   ))}
                 </div>
-
               </div>
+
               {/* OCCASIONS UPDATES */}
-              <div className='flex gap-4 bg-[#EAF1E5] rounded-lg p-4 mt-4'>
-                <div className='bg-[#D4E2CC] flex-1 rounded-lg mt-4 p-4 '>
+              <div className='flex flex-col sm:flex-row gap-4 bg-[#EAF1E5] rounded-lg p-4'>
+                <div className='bg-[#D4E2CC] flex-1 rounded-lg p-4'>
                   <div className='flex items-center gap-4'>
                     <GiftIcon className='w-[20px] h-[20px] text-[#1B5A1B]' />
-                    <h2 className='text-2xl text-[#1B5A1B] font-semibold'>Birthdays</h2>
+                    <h2 className='text-xl sm:text-2xl text-[#1B5A1B] font-semibold'>Birthdays</h2>
                   </div>
                   <div className='flex flex-col gap-2'>
-                  {
-                    birthdays.length > 0 ? (
+                    {birthdays.length > 0 ? (
                       <ul className='list-disc list-inside'>
                         {birthdays.map((person : any, index) => (
-                          <li key={index} className='text-lg text-[#434343] font-semibold'>{person.name}</li>
+                          <li key={index} className='text-sm sm:text-lg text-[#434343] font-semibold'>{person.name}</li>
                         ))}
                       </ul>
                     ) : (
                       <div className='text-center text-gray-500 py-4'>No Birthdays</div>
-                    )
-                  }
+                    )}
                   </div>
                 </div>
-                <div className='bg-[#D4E2CC] flex-1 rounded-lg mt-4 p-4'>
+                <div className='bg-[#D4E2CC] flex-1 rounded-lg p-4'>
                   <div className='flex items-center gap-4'>
                     <CalendarHeartIcon className='w-[20px] h-[20px] text-[#1B5A1B]' />
-                    <h2 className='text-2xl text-[#1B5A1B] font-semibold'>Anniversaries</h2>
+                    <h2 className='text-xl sm:text-2xl text-[#1B5A1B] font-semibold'>Anniversaries</h2>
                   </div>
                   <div>
-                    {
-                      anniversary.length > 0 ? (
-                        <ul className='list-disc list-inside'>
-                          {anniversary.map((person : any, index) => (
-                            <li key={index} className='text-lg text-[#434343] font-semibold'>{person.name}</li>
-                          ))}
-                        </ul>
-                      ) : (
-                        <div className=' text-gray-500 py-2'>No Anniversaries</div>
-                      )
-                    }
+                    {anniversary.length > 0 ? (
+                      <ul className='list-disc list-inside'>
+                        {anniversary.map((person : any, index) => (
+                          <li key={index} className='text-sm sm:text-lg text-[#434343] font-semibold'>{person.name}</li>
+                        ))}
+                      </ul>
+                    ) : (
+                      <div className='text-center text-gray-500 py-2'>No Anniversaries</div>
+                    )}
                   </div>
                 </div>
               </div>
             </div>
 
             {/* SECOND COLUMN */}
-            <div>
+            <div className='space-y-4'>
               {/* NOTEPAD */}
-              <div className='bg-[#EAF1E5] h-[max-content] rounded-lg mt-4 p-4'>
+              <div className='bg-[#EAF1E5] h-[max-content] rounded-lg p-4'>
                 <div className='flex justify-between items-center'>
-                  <h2 className='text-2xl text-[#1B5A1B] font-semibold'>Notepad</h2>
+                  <h2 className='text-xl sm:text-2xl text-[#1B5A1B] font-semibold'>Notepad</h2>
                   <CirclePlusIcon className='w-[20px] cursor-pointer h-[20px] text-[#1B5A1B]' />
                 </div>
                 <div className='mt-4 flex flex-col gap-4'>
-                  <div className='bg-[#F3FFE6] rounded-lg p-4'>
-                    <p className='text-lg text-[#1B5A1B] font-semibold'>Add a new note</p>
-                  </div>
-                  <div className='bg-[#F3FFE6] rounded-lg p-4'>
-                    <p className='text-lg text-[#1B5A1B] font-semibold'>Add a new note</p>
-                  </div>
-                  <div className='bg-[#F3FFE6] rounded-lg p-4'>
-                    <p className='text-lg text-[#1B5A1B] font-semibold'>Add a new note</p>
-                  </div>
+                  {[1, 2, 3].map((_, index) => (
+                    <div key={index} className='bg-[#F3FFE6] rounded-lg p-4'>
+                      <p className='text-sm sm:text-lg text-[#1B5A1B] font-semibold'>Add a new note</p>
+                    </div>
+                  ))}
                 </div>
               </div>
+
               {/* MONTHLY UPDATES */}
-              <div className='bg-[#EAF1E5] h-[max-content] rounded-lg mt-4 p-4'>
-                <h2 className='text-2xl text-[#1B5A1B] font-semibold'>Monthly Updates</h2>
+              <div className='bg-[#EAF1E5] h-[max-content] rounded-lg p-4'>
+                <h2 className='text-xl sm:text-2xl text-[#1B5A1B] font-semibold'>Monthly Updates</h2>
                 {monthlyUpdatesList.length > 0 ? (
                   <ul className='list-disc list-inside'>
                     {monthlyUpdatesList.map((item, index) => (
-                      <li key={index} className='text-lg text-[#434343] font-semibold'>{item}</li>
+                      <li key={index} className='text-sm sm:text-lg text-[#434343] font-semibold'>{item}</li>
                     ))}
                   </ul>
                 ) : (
                   <div className='text-center text-gray-500 py-4'>
-                    <p className='text-lg italic'>No updates this month</p>
+                    <p className='text-base italic'>No updates this month</p>
                   </div>
                 )}
               </div>
             </div>
           </div>
         </div>
-
-
-        {/* RECENT ACTIVITY COLUMN */}
-        {/* <div>
-          <div>
-            <Image src={'/images/design-1.png'} alt='profile' className='w-full object-cover' width={1000} height={1000} />
-          </div>
-          <h2 className='text-lg font-semibold mt-4'>Recent Activity</h2>
-          <div className='flex gap-4 '>
-              <ActivityCard />
-            </div>
-        </div> */}
       </div>
     </div>
-
   );
 };
 

@@ -27,13 +27,13 @@ const Terms = () => {
   };
 
   return (
-    <div className={`absolute z-20 ${minimize ? 'hidden' : 'block'} top-0 left-0 w-full bg-black/20 h-screen flex justify-center items-center`}>
-        <div className="bg-[#D9E4D4] max-w-3xl mx-auto p-6">
-        <h4 className="text-2xl font-semibold mb-4">AncesTREE: TERMS AND CONDITIONS</h4>
+    <div className={`absolute z-20 ${minimize ? 'hidden' : 'block'} top-0 left-0 w-full bg-black/20 h-full flex justify-center items-center overflow-auto py-8`}>
+        <div className="bg-[#D9E4D4] w-[90%] md:w-4/5 lg:max-w-3xl mx-auto p-4 md:p-6 rounded-lg">
+        <h4 className="text-xl md:text-2xl font-semibold mb-4 text-center">AncesTREE: TERMS AND CONDITIONS</h4>
         <div 
             ref={termsRef}
             onScroll={handleScroll}
-            className="h-[400px] bg-white overflow-y-auto border border-gray-200 rounded-lg mx-8 px-8 py-4 mb-4 space-y-6"
+            className="h-[300px] md:h-[400px] bg-white overflow-y-auto border border-gray-200 rounded-lg mx-2 md:mx-8 px-4 md:px-8 py-4 mb-4 space-y-4 md:space-y-6"
         >
             <section>
                 <h2 className="text-xl font-bold text-gray-800 mb-3">INTRODUCTION AND ACCEPTANCE</h2>
@@ -136,11 +136,11 @@ const Terms = () => {
                 </div>
             </section>
         </div>
-        <div className="flex flex-col items-center justify-center gap-2">
+        <div className="flex flex-col items-center justify-center gap-2 px-4">
             <button
                 disabled={!hasRead}
                 onClick={handleAccept}
-                className={`px-4 py-2 rounded-lg ${
+                className={`w-full md:w-auto px-4 py-2 rounded-lg text-sm md:text-base ${
                     hasRead 
                     ? 'bg-primary text-white hover:bg-primary/50 transition-colors duration-300' 
                     : 'bg-gray-300 text-gray-500 cursor-not-allowed'
@@ -148,8 +148,8 @@ const Terms = () => {
             >
                 I Agree to Terms & Conditions
             </button>
-            {hasRead ? null : (
-                <p className="text-sm text-gray-500 ">
+            {!hasRead && (
+                <p className="text-xs md:text-sm text-gray-500 text-center mt-2">
                     Please read the terms and conditions to the end
                 </p>
             )}

@@ -149,7 +149,21 @@ const AddFamilyMember = () => {
         animate={{ y: '0%', opacity: 1 }}
         exit={{ y: '-15%', opacity: 0 }}
         transition={{ duration: 0.3, ease: 'easeOut' }}
-        className="relative flex flex-col gap-2 bg-white w-[500px] rounded-[10px] py-2"
+        className="
+          relative 
+          flex 
+          flex-col 
+          gap-2 
+          bg-white 
+          w-[95%] 
+          max-w-[500px] 
+          rounded-[10px] 
+          py-2 
+          px-4 
+          max-h-[90vh] 
+          overflow-y-auto 
+          sm:w-[500px]
+        "
         onSubmit={handleSubmit}
       >
         <div
@@ -162,9 +176,19 @@ const AddFamilyMember = () => {
         <div className="grid grid-cols-2 text-center mb-4">
           {['Add Child', 'Add Parent'].map(link => (
             <li
-              className={`text-[1.5rem] border-b-1 border-primary transition hover:border-b-2 hover:text-primary text-muted-foreground cursor-pointer duration-300 ${
-                selectedPerson === link ? 'border-b-2 text-primary' : ''
-              }`}
+              className={`
+                text-base 
+                sm:text-[1.5rem] 
+                border-b-1 
+                border-primary 
+                transition 
+                hover:border-b-2 
+                hover:text-primary 
+                text-muted-foreground 
+                cursor-pointer 
+                duration-300 
+                ${selectedPerson === link ? 'border-b-2 text-primary' : ''}
+              `}
               style={{ listStyle: 'none' }}
               key={link}
               onClick={() => setSelectedPerson(link)}
@@ -175,22 +199,22 @@ const AddFamilyMember = () => {
         </div>
 
         {/* NAME DETAILS */}
-        <div className='flex flex-wrap mt-2 w-full gap-2 px-4'>
+        <div className='flex flex-wrap mt-2 w-full gap-2'>
           <div className='relative flex flex-col flex-grow'>
             <label className='absolute -top-5 left-0 text-sm text-gray-600 mb-1 font-semibold'>Full Name</label>
             <input
               type="text"
               placeholder='First Name'
-              className='border flex-1 outline-none hover:bg-white/50 rounded px-2 py-1'
+              className='border flex-1 outline-none hover:bg-white/50 rounded px-2 py-1 text-sm sm:text-base'
               value={formData.firstName}
               onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
             />
-            {errors.firstName && <span className="absolute -bottom-6 left-0 text-red-500">{errors.firstName}</span>}
+            {errors.firstName && <span className="absolute -bottom-6 left-0 text-red-500 text-xs sm:text-sm">{errors.firstName}</span>}
           </div>
           <input
             type="text"
             placeholder='Middle Name (optional)'
-            className='border outline-none hover:bg-white/50 rounded px-2 py-1 flex-grow'
+            className='border outline-none hover:bg-white/50 rounded px-2 py-1 flex-grow text-sm sm:text-base'
             value={formData.middleName}
             onChange={(e) => setFormData({ ...formData, middleName: e.target.value })}
           />
@@ -198,22 +222,22 @@ const AddFamilyMember = () => {
             <input
               type="text"
               placeholder='Last Name'
-              className='border w-full outline-none hover:bg-white/50 rounded px-2 py-1 flex-grow'
+              className='border w-full outline-none hover:bg-white/50 rounded px-2 py-1 flex-grow text-sm sm:text-base'
               value={formData.lastName}
               onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
             />
-            {errors.lastName && <span className="absolute -bottom-6 left-0 text-red-500">{errors.lastName}</span>}
+            {errors.lastName && <span className="absolute -bottom-6 left-0 text-red-500 text-xs sm:text-sm">{errors.lastName}</span>}
           </div>
           <input
             type="text"
             placeholder='Suffix'
-            className='border outline-none hover:bg-white/50  rounded px-2 py-1 flex-grow-0'
+            className='border outline-none hover:bg-white/50 rounded px-2 py-1 flex-grow-0 text-sm sm:text-base'
             value={formData.suffix}
             onChange={(e) => setFormData({ ...formData, suffix: e.target.value })}
           />
         </div>
         {/* BIRTH DETAILS */}
-        <div className='flex flex-wrap mt-4 w-full gap-2 px-4'>
+        <div className='flex flex-wrap mt-4 w-full gap-2'>
           <div className='relative flex flex-col'>
             <label className='absolute -top-5 left-0 text-sm text-gray-600 mb-1 font-semibold'>Birth Details</label>
             <input
@@ -221,97 +245,97 @@ const AddFamilyMember = () => {
               value={formData.birthdate}
               onChange={(e) => setFormData({ ...formData, birthdate: e.target.value })}
             />
-            {errors.birthdate && <span className="absolute -bottom-6 left-0 text-red-500">{errors.birthdate}</span>}
+            {errors.birthdate && <span className="absolute -bottom-6 left-0 text-red-500 text-xs sm:text-sm">{errors.birthdate}</span>}
           </div>
           <input
             type="text"
             placeholder='Birth Place'
-            className='border outline-none rounded px-2 py-1'
+            className='border outline-none hover:bg-white/50 rounded px-2 py-1 text-sm sm:text-base'
             value={formData.birthPlace}
             onChange={(e) => setFormData({ ...formData, birthPlace: e.target.value })}
           />
           <input
             type="text"
             placeholder='Birth Country'
-            className='border outline-none rounded px-2 py-1'
+            className='border outline-none hover:bg-white/50 rounded px-2 py-1 text-sm sm:text-base'
             value={formData.birthCountry}
             onChange={(e) => setFormData({ ...formData, birthCountry: e.target.value })}
           />
         </div>
 
         {/* SEX */}
-        <div className='flex flex-col gap-2 px-4'>
-          <label className='text-md font-semibold'>Sex</label>
-
-          <div className='flex flex-col ml-4 '>
-            <label htmlFor="male" className='flex items-center gap-1'>
-              <input
-                type="radio"
-                id="male"
-                name="sex"
-                value="male"
-                className='border rounded'
-                checked={formData.sex === 'male'}
-                onChange={(e) => setFormData({ ...formData, sex: e.target.value })}
-              />
-              Male
-            </label>
-            <label htmlFor="female" className='flex items-center gap-1'>
-              <input
-                type="radio"
-                id="female"
-                name="sex"
-                value="female"
-                className='border rounded'
-                checked={formData.sex === 'female'}
-                onChange={(e) => setFormData({ ...formData, sex: e.target.value })}
-              />
-              Female
-            </label>
+        <div className='flex flex-col sm:flex-row gap-4 px-4 items-center'>
+          <div className='flex flex-col gap-2 w-full sm:w-1/2'>
+            <label className='text-md font-semibold'>Sex</label>
+            <div className='flex flex-row ml-4 gap-4'>
+              <label htmlFor="male" className='flex items-center gap-1'>
+                <input
+                  type="radio"
+                  id="male"
+                  name="sex"
+                  value="male"
+                  className='border rounded'
+                  checked={formData.sex === 'male'}
+                  onChange={(e) => setFormData({ ...formData, sex: e.target.value })}
+                />
+                Male
+              </label>
+              <label htmlFor="female" className='flex items-center gap-1'>
+                <input
+                  type="radio"
+                  id="female"
+                  name="sex"
+                  value="female"
+                  className='border rounded'
+                  checked={formData.sex === 'female'}
+                  onChange={(e) => setFormData({ ...formData, sex: e.target.value })}
+                />
+                Female
+              </label>
+            </div>
           </div>
-        </div>
 
-        {/* STATUS */}
-        <div className='flex flex-col gap-2 px-4'>
-          <label className='text-md font-semibold'>Status</label>
-
-          <div className='flex flex-col ml-4 '>
-            <label htmlFor="living" className='flex items-center gap-1'>
-              <input
-                type="radio"
-                id="living"
-                name="status"
-                value="living"
-                className='border rounded'
-                checked={formData.status === 'living'}
-                onChange={(e) => setFormData({ ...formData, status: e.target.value })}
-              />
-              Living
-            </label>
-            <label htmlFor="deceased" className='flex items-center gap-1'>
-              <input
-                type="radio"
-                id="deceased"
-                name="status"
-                value="deceased"
-                className='border rounded'
-                checked={formData.status === 'deceased'}
-                onChange={(e) => setFormData({ ...formData, status: e.target.value })}
-              />
-              Deceased
-            </label>
-            <label htmlFor="unknown" className='flex items-center gap-1'>
-              <input
-                type="radio"
-                id="unknown"
-                name="status"
-                value="unknown"
-                className='border rounded'
-                checked={formData.status === 'unknown'}
-                onChange={(e) => setFormData({ ...formData, status: e.target.value })}
-              />
-              Unknown
-            </label>
+          {/* STATUS */}
+          <div className='flex flex-col gap-2 w-full sm:w-1/2'>
+            <label className='text-md font-semibold'>Status</label>
+            <div className='flex flex-row ml-4 gap-4'>
+              <label htmlFor="living" className='flex items-center gap-1'>
+                <input
+                  type="radio"
+                  id="living"
+                  name="status"
+                  value="living"
+                  className='border rounded'
+                  checked={formData.status === 'living'}
+                  onChange={(e) => setFormData({ ...formData, status: e.target.value })}
+                />
+                Living
+              </label>
+              <label htmlFor="deceased" className='flex items-center gap-1'>
+                <input
+                  type="radio"
+                  id="deceased"
+                  name="status"
+                  value="deceased"
+                  className='border rounded'
+                  checked={formData.status === 'deceased'}
+                  onChange={(e) => setFormData({ ...formData, status: e.target.value })}
+                />
+                Deceased
+              </label>
+              <label htmlFor="unknown" className='flex items-center gap-1'>
+                <input
+                  type="radio"
+                  id="unknown"
+                  name="status"
+                  value="unknown"
+                  className='border rounded'
+                  checked={formData.status === 'unknown'}
+                  onChange={(e) => setFormData({ ...formData, status: e.target.value })}
+                />
+                Unknown
+              </label>
+            </div>
           </div>
         </div>
 
@@ -322,18 +346,18 @@ const AddFamilyMember = () => {
             <input
               type="text"
               placeholder='Add Nationality'
-              className='border rounded px-2 py-1'
+              className='border rounded px-2 py-1 text-sm sm:text-base'
               value={nationalityInput}
               onChange={(e) => setNationalityInput(e.target.value)}
             />
-            <button type="button" onClick={handleAddNationality} className='bg-primary hover:bg-primary/70 transition-colors duration-300 text-white px-2 py-1 rounded-md'>+</button>
+            <button type="button" onClick={handleAddNationality} className='bg-primary hover:bg-primary/70 transition-colors duration-300 text-white px-2 py-1 rounded-md text-sm sm:text-base'>+</button>
           </div>
           <div className='flex flex-wrap gap-2 mt-2'>
             {formData.nationality.map((nat, index) => (
-              <span key={index} className='bg-gray-200 px-2 py-1 rounded-md'>{nat}</span>
+              <span key={index} className='bg-gray-200 px-2 py-1 rounded-md text-sm sm:text-base'>{nat}</span>
             ))}
           </div>
-          {errors.nationality && <span className="absolute -bottom-6 left-5 text-red-500">{errors.nationality}</span>}
+          {errors.nationality && <span className="absolute -bottom-6 left-5 text-red-500 text-xs sm:text-sm">{errors.nationality}</span>}
         </div>  
 
         {/* PROFILE PICTURE */}
@@ -349,7 +373,7 @@ const AddFamilyMember = () => {
             />
             <label
               htmlFor="profilePicture"
-              className='bg-primary hover:bg-primary/70 transition-colors duration-300 text-white px-4 py-2 rounded-md cursor-pointer'
+              className='bg-primary hover:bg-primary/70 transition-colors duration-300 text-white px-4 py-2 rounded-md cursor-pointer text-sm sm:text-base'
             >
               Upload Picture
             </label>
@@ -378,29 +402,15 @@ const AddFamilyMember = () => {
         </div>
 
         {/* BUTTONS */}
-        <div className='flex justify-center px-4 gap-4'>
-          <button type="button" onClick={() => toggleAddFamilyModal()} className='bg-white-500 text-black border-1 border-green px-4 py-1 rounded-md'>Cancel</button>
-          <button disabled={isFetching} type="submit" className='bg-primary hover:bg-primary/70 transition-colors duration-300 text-white px-4 py-1 rounded-md'>{isFetching ? 'Submitting...' : 'Save'}</button> 
+        <div className='flex justify-center px-4 gap-4 mt-4'>
+          <button type="button" onClick={() => toggleAddFamilyModal()} className='bg-white-500 text-black border-1 border-green px-3 py-1 rounded-md text-sm sm:text-base sm:px-4 sm:py-2'>Cancel</button>
+          <button disabled={isFetching} type="submit" className='bg-primary hover:bg-primary/70 transition-colors duration-300 text-white px-3 py-1 rounded-md text-sm sm:text-base sm:px-4 sm:py-2'>{isFetching ? 'Submitting...' : 'Save'}</button> 
         </div>
       </motion.form>
     </div>
   );
 };
 
-const findNodeRecursively = (nodes: any[], personNodeId: string): any | null => {
-  for (const node of nodes) {
-    if (node.personNodeId === personNodeId) {
-      return node;
-    }
-    
-    // Recursively search children
-    if (node.children && node.children.length > 0) {
-      const foundInChildren = findNodeRecursively(node.children, personNodeId);
-      if (foundInChildren) return foundInChildren;
-    }
-  }
-  return null;
-};
 
 const EditPersonNode = () => {
   const { 
@@ -550,7 +560,7 @@ const EditPersonNode = () => {
         animate={{ y: '0%', opacity: 1 }}
         exit={{ y: '-15%', opacity: 0 }}
         transition={{ duration: 0.3, ease: 'easeOut' }}
-        className="relative flex flex-col gap-4 bg-white w-[500px] rounded-[10px] py-2"
+        className="relative flex flex-col gap-4 bg-white rounded-[10px] py-2 px-4 max-h-[90vh] overflow-y-auto"
         onSubmit={handleSubmit}
       >
         <div
@@ -561,22 +571,22 @@ const EditPersonNode = () => {
         </div>
         <div className='text-2xl px-4 font-bold'>Edit Person</div>
         {/* NAME DETAILS */}
-        <div className='flex flex-wrap mt-2 w-full gap-2 px-4'>
+        <div className='flex flex-wrap mt-2 w-full gap-2'>
           <div className='relative flex flex-col flex-grow'>
             <label className='absolute -top-5 left-0 text-sm text-gray-600 mb-1 font-semibold'>Full Name</label>
             <input
               type="text"
               placeholder='First Name'
-              className='border flex-1 outline-none hover:bg-white/50 rounded px-2 py-1'
+              className='border flex-1 outline-none hover:bg-white/50 rounded px-2 py-1 text-sm sm:text-base'
               value={formData.firstName}
               onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
             />
-            {errors.firstName && <span className="absolute -bottom-6 left-0 text-red-500">{errors.firstName}</span>}
+            {errors.firstName && <span className="absolute -bottom-6 left-0 text-red-500 text-xs sm:text-sm">{errors.firstName}</span>}
           </div>
           <input
             type="text"
             placeholder='Middle Name (optional)'
-            className='border outline-none hover:bg-white/50 rounded px-2 py-1 flex-grow'
+            className='border outline-none hover:bg-white/50 rounded px-2 py-1 flex-grow text-sm sm:text-base'
             value={formData.middleName}
             onChange={(e) => setFormData({ ...formData, middleName: e.target.value })}
           />
@@ -584,22 +594,22 @@ const EditPersonNode = () => {
             <input
               type="text"
               placeholder='Last Name'
-              className='border w-full outline-none hover:bg-white/50 rounded px-2 py-1 flex-grow'
+              className='border w-full outline-none hover:bg-white/50 rounded px-2 py-1 flex-grow text-sm sm:text-base'
               value={formData.lastName}
               onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
             />
-            {errors.lastName && <span className="absolute -bottom-6 left-0 text-red-500">{errors.lastName}</span>}
+            {errors.lastName && <span className="absolute -bottom-6 left-0 text-red-500 text-xs sm:text-sm">{errors.lastName}</span>}
           </div>
           <input
             type="text"
             placeholder='Suffix'
-            className='border outline-none hover:bg-white/50  rounded px-2 py-1 flex-grow-0'
+            className='border outline-none hover:bg-white/50 rounded px-2 py-1 flex-grow-0 text-sm sm:text-base'
             value={formData.suffix}
             onChange={(e) => setFormData({ ...formData, suffix: e.target.value })}
           />
         </div>
         {/* BIRTH DETAILS */}
-        <div className='flex flex-wrap mt-4 w-full gap-2 px-4'>
+        <div className='flex flex-wrap mt-4 w-full gap-2'>
           <div className='relative flex flex-col'>
             <label className='absolute -top-5 left-0 text-sm text-gray-600 mb-1 font-semibold'>Birth Date</label>
             <input
@@ -607,97 +617,97 @@ const EditPersonNode = () => {
               value={formData.birthdate}
               onChange={(e) => setFormData({ ...formData, birthdate: e.target.value })}
             />
-            {errors.birthdate && <span className="absolute -bottom-6 left-0 text-red-500">{errors.birthdate}</span>}
+            {errors.birthdate && <span className="absolute -bottom-6 left-0 text-red-500 text-xs sm:text-sm">{errors.birthdate}</span>}
           </div>
           <input
             type="text"
             placeholder='Birth Place'
-            className='border outline-none hover:bg-white/50 rounded px-2 py-1'
+            className='border outline-none hover:bg-white/50 rounded px-2 py-1 text-sm sm:text-base'
             value={formData.birthPlace}
             onChange={(e) => setFormData({ ...formData, birthPlace: e.target.value })}
           />
           <input
             type="text"
             placeholder='Birth Country'
-            className='border outline-none hover:bg-white/50 rounded px-2 py-1'
+            className='border outline-none hover:bg-white/50 rounded px-2 py-1 text-sm sm:text-base'
             value={formData.birthCountry}
             onChange={(e) => setFormData({ ...formData, birthCountry: e.target.value })}
           />
         </div>
 
         {/* SEX */}
-        <div className='flex flex-col gap-2 px-4'>
-          <label className='text-md font-semibold'>Sex</label>
-
-          <div className='flex flex-col ml-4 '>
-            <label htmlFor="male" className='flex items-center gap-1'>
-              <input
-                type="radio"
-                id="male"
-                name="sex"
-                value="male"
-                className='border rounded'
-                checked={formData.sex === 'male'}
-                onChange={(e) => setFormData({ ...formData, sex: e.target.value })}
-              />
-              Male
-            </label>
-            <label htmlFor="female" className='flex items-center gap-1'>
-              <input
-                type="radio"
-                id="female"
-                name="sex"
-                value="female"
-                className='border rounded'
-                checked={formData.sex === 'female'}
-                onChange={(e) => setFormData({ ...formData, sex: e.target.value })}
-              />
-              Female
-            </label>
+        <div className='flex flex-col sm:flex-row gap-4 px-4 px-0 items-center'>
+          <div className='flex flex-col gap-2 w-full sm:w-1/2'>
+            <label className='text-md font-semibold'>Sex</label>
+            <div className='flex flex-row ml-4 gap-4'>
+              <label htmlFor="male" className='flex items-center gap-1'>
+                <input
+                  type="radio"
+                  id="male"
+                  name="sex"
+                  value="male"
+                  className='border rounded'
+                  checked={formData.sex === 'male'}
+                  onChange={(e) => setFormData({ ...formData, sex: e.target.value })}
+                />
+                Male
+              </label>
+              <label htmlFor="female" className='flex items-center gap-1'>
+                <input
+                  type="radio"
+                  id="female"
+                  name="sex"
+                  value="female"
+                  className='border rounded'
+                  checked={formData.sex === 'female'}
+                  onChange={(e) => setFormData({ ...formData, sex: e.target.value })}
+                />
+                Female
+              </label>
+            </div>
           </div>
-        </div>
 
-        {/* STATUS */}
-        <div className='flex flex-col gap-2 px-4'>
-          <label className='text-md font-semibold'>Status</label>
-
-          <div className='flex flex-col ml-4 '>
-            <label htmlFor="living" className='flex items-center gap-1'>
-              <input
-                type="radio"
-                id="living"
-                name="status"
-                value="living"
-                className='border rounded'
-                checked={formData.status === 'living'}
-                onChange={(e) => setFormData({ ...formData, status: e.target.value })}
-              />
-              Living
-            </label>
-            <label htmlFor="deceased" className='flex items-center gap-1'>
-              <input
-                type="radio"
-                id="deceased"
-                name="status"
-                value="deceased"
-                className='border rounded'
-                checked={formData.status === 'deceased'}
-                onChange={(e) => setFormData({ ...formData, status: e.target.value })}
-              />
-              Deceased
-            </label>
-            <label htmlFor="unknown" className='flex items-center gap-1'>
-              <input
-                type="radio"
-                id="unknown"
-                name="status"
-                value="unknown"
-                className='border rounded'
-                checked={formData.status === 'unknown'}
-                onChange={(e) => setFormData({ ...formData, status: e.target.value })}
-              />
-              Unknown
-            </label>
+          {/* STATUS */}
+          <div className='flex flex-col gap-2 w-full sm:w-1/2'>
+            <label className='text-md font-semibold'>Status</label>
+            <div className='flex flex-row ml-4 gap-4'>
+              <label htmlFor="living" className='flex items-center gap-1'>
+                <input
+                  type="radio"
+                  id="living"
+                  name="status"
+                  value="living"
+                  className='border rounded'
+                  checked={formData.status === 'living'}
+                  onChange={(e) => setFormData({ ...formData, status: e.target.value })}
+                />
+                Living
+              </label>
+              <label htmlFor="deceased" className='flex items-center gap-1'>
+                <input
+                  type="radio"
+                  id="deceased"
+                  name="status"
+                  value="deceased"
+                  className='border rounded'
+                  checked={formData.status === 'deceased'}
+                  onChange={(e) => setFormData({ ...formData, status: e.target.value })}
+                />
+                Deceased
+              </label>
+              <label htmlFor="unknown" className='flex items-center gap-1'>
+                <input
+                  type="radio"
+                  id="unknown"
+                  name="status"
+                  value="unknown"
+                  className='border rounded'
+                  checked={formData.status === 'unknown'}
+                  onChange={(e) => setFormData({ ...formData, status: e.target.value })}
+                />
+                Unknown
+              </label>
+            </div>
           </div>
         </div>
 
@@ -714,7 +724,7 @@ const EditPersonNode = () => {
             />
             <label
               htmlFor="editProfilePicture"
-              className='bg-primary hover:bg-primary/70 transition-colors duration-300 text-white px-4 py-2 rounded-md cursor-pointer'
+              className='bg-primary hover:bg-primary/70 transition-colors duration-300 text-white px-4 py-2 rounded-md cursor-pointer text-sm sm:text-base'
             >
               Upload Picture
             </label>
@@ -746,13 +756,28 @@ const EditPersonNode = () => {
         <div className='flex justify-center gap-4'>
           <button type='button'
           onClick={() => toggleEditPersonModal()} 
-          className='bg-white-500 text-black border-1 border-green px-4 py-1 rounded-md'>
+          className='bg-white-500 text-black border-1 border-green px-3 py-1 rounded-md text-sm sm:text-base sm:px-4 sm:py-2'>
             Cancel</button>
-          <button disabled={isFetching} type="submit" className='bg-primary hover:bg-primary/70 transition-colors duration-300 text-white px-4 py-1 rounded-md'>{isFetching ? 'Submitting...' : 'Save'}</button> 
+          <button disabled={isFetching} type="submit" className='bg-primary hover:bg-primary/70 transition-colors duration-300 text-white px-3 py-1 rounded-md text-sm sm:text-base sm:px-4 sm:py-2'>{isFetching ? 'Submitting...' : 'Save'}</button> 
         </div>
       </motion.form>
     </div>
   );
+};
+
+const findNodeRecursively = (nodes: any[], personNodeId: string): any | null => {
+  for (const node of nodes) {
+    if (node.personNodeId === personNodeId) {
+      return node;
+    }
+    
+    // Recursively search children
+    if (node.children && node.children.length > 0) {
+      const foundInChildren = findNodeRecursively(node.children, personNodeId);
+      if (foundInChildren) return foundInChildren;
+    }
+  }
+  return null;
 };
 
 const ConnectPersonModal = () => {
@@ -801,8 +826,8 @@ const ConnectPersonModal = () => {
 
         {/* BUTTONS */}
         <div className='flex justify-end gap-4'>
-          <button onClick={() => toggleConnectPersonModal()} className='bg-white hover:bg-[#DFDFDF] transition-colors duration-300 text-black border-1 border-green px-4 py-1 rounded-md'>Cancel</button>
-          <button  className='bg-primary hover:bg-primary/70 transition-colors duration-300 text-white px-4 py-1 rounded-md' type='submit'>Connect</button> 
+          <button type='button' onClick={() => toggleConnectPersonModal()} className='bg-white hover:bg-[#DFDFDF] transition-colors duration-300 text-black border-1 border-green px-4 py-1 rounded-md'>Cancel</button>
+          <button className='bg-primary hover:bg-primary/70 transition-colors duration-300 text-white px-4 py-1 rounded-md' type='submit'>Connect</button> 
         </div>
       </motion.form>
     </div>

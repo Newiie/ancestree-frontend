@@ -87,14 +87,32 @@ const ImageContainer = ({ photo }: { photo: { key: string; url: string } }) => {
   };
 
   return (
-    <div className='relative w-[10rem] h-[10rem] rounded-[4px] overflow-hidden group'>
-      <Image src={photo.url} className='h-full w-full object-contain' alt="placeholder" width={1000} height={1000} />
+    <div className='relative w-full aspect-square rounded-[4px] overflow-hidden group'>
+      <Image 
+        src={photo.url} 
+        className='h-full w-full object-cover' 
+        alt="placeholder" 
+        width={1000} 
+        height={1000} 
+      />
       <div className='absolute top-0 left-0 w-full h-full bg-black/20'></div>
       
       <div className='absolute top-0 left-0 w-full h-full flex justify-center items-start'>
         <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
           <PopoverTrigger>
-            <div className='absolute bg-black/55 p-1.5 rounded-full top-2 right-2 cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity duration-300'>
+            <div className='
+              absolute 
+              bg-black/55 
+              p-1.5 
+              rounded-full 
+              top-2 
+              right-2 
+              cursor-pointer 
+              opacity-0 
+              group-hover:opacity-100 
+              transition-opacity 
+              duration-300
+            '>
               <EllipsisVerticalIcon className='text-[#FAFAFA]' size={12} />
             </div>
           </PopoverTrigger>
@@ -150,7 +168,21 @@ const ImageContainer = ({ photo }: { photo: { key: string; url: string } }) => {
                     <button 
                       onClick={handleEditPhoto}
                       disabled={!selectedFile || isUpdating}
-                      className='bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary/80 transition duration-300 disabled:bg-primary/50 disabled:text-white/50 disabled:cursor-not-allowed'
+                      className='
+                        w-full 
+                        sm:w-auto 
+                        bg-primary 
+                        text-white 
+                        px-4 
+                        py-2 
+                        rounded-lg 
+                        hover:bg-primary/80 
+                        transition 
+                        duration-300 
+                        disabled:bg-primary/50 
+                        disabled:text-white/50 
+                        disabled:cursor-not-allowed
+                      '
                     >
                       {isUpdating ? 'Updating...' : 'Update Photo'}
                     </button>
