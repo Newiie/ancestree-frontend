@@ -15,7 +15,7 @@ const Page = () => {
     const [selectedTab, setSelectedTab] = useState("All Photos")
 
     return (
-        <div className="content | overflow-y-auto">
+        <div className="content | overflow-y-auto h-screen">
             <div className='bg-[#DFDFDF] text-black h-full p-4 sm:p-6'>
                 <div className='w-full p-4 h-full bg-gray-100 rounded-lg shadow-md'>
                     <h1 className='text-xl sm:text-2xl font-bold mb-4'>Gallery</h1>

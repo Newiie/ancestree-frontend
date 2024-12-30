@@ -19,7 +19,7 @@ const Page = ({params}: {params: {id: string}}) => {
 
   return (
     <ProfileProvider userId={id as string}> 
-      <div className="content | bg-[#DFDFDF] overflow-y-auto">
+      <div className="content | bg-[#DFDFDF] overflow-y-auto h-[max-content] min-h-screen ">
         <Content />
       </div>
     </ProfileProvider>

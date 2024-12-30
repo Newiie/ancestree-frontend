@@ -36,7 +36,7 @@ const Content = () => {
   };
 
   return (
-    <div className='bg-[#DFDFDF] p-4 sm:p-[1.5rem] h-full rounded-[4px]'>
+    <div className='bg-[#DFDFDF] p-4 sm:p-[1.5rem] h-[max-content] min-h-screen rounded-[4px]'>
       <div className='bg-white rounded-[4px]'>
         <h2 className='text-primary font-bold text-xl sm:text-[1.7rem] p-4 sm:p-[1rem]'>Relationship</h2>
         
