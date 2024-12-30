@@ -845,7 +845,7 @@ const FamilyTreeContent = () => {
   if (isFetching) return <FamilyTreeSkeleton />;
 
   return (
-    <div className="relative content | overflow-y-auto">
+    <div className="relative content tree-content | overflow-y-auto">
         <Content />
         <AnimatePresence>
         {showConnectPersonModal && <ConnectPersonModal />}
