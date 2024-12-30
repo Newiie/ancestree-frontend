@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
 import '@/public/style/familytree.css';
 import { InfoIcon, PencilIcon, PlusIcon, UserRoundIcon, ZoomInIcon, ZoomOutIcon } from 'lucide-react';
@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/sheet"
 import { selectId } from '@/store/userSlice';
 import store from '@/store/store';
+
 const Node = ({ 
     node, 
     selectedNode, 
@@ -120,6 +121,7 @@ const Node = ({
                                         {
                                             node?.person?.vitalInformation?.sex && (
                                                 <>
+
                                                     <p>
                                                         Sex: 
                                                         <span className='pl-2 text-[#7C7C7C]'>
@@ -132,6 +134,7 @@ const Node = ({
                                         {
                                             node?.person?.generalInformation?.status && (
                                                 <>
+
                                                     <p>
                                                         Status: 
                                                         <span className='pl-2 text-[#7C7C7C]'>
@@ -144,6 +147,7 @@ const Node = ({
                                         {
                                             node?.person?.generalInformation.birthPlace && (
                                                 <>
+
                                                     <p>
                                                         Birth Place: 
                                                         <span className='pl-2 text-[#7C7C7C]'>
@@ -154,9 +158,11 @@ const Node = ({
                                             )
                                         }
                                        
+
                                         {
                                             node?.person?.generalInformation.birthCountry && (
                                                 <>
+
                                                     <p>
                                                         Birth Country: 
                                                         <span className='pl-2 text-[#7C7C7C]'>
@@ -167,8 +173,10 @@ const Node = ({
                                             )
                                         }
                                       
+
                                         {node?.person?.generalInformation.nationality.length > 0 && (
                                             <>
+
                                                 <div>
                                                     <p>
                                                         Nationality: 
@@ -182,6 +190,7 @@ const Node = ({
                                         {
                                             node?.person?.generalInformation.birthdate && (
                                                 <>
+
                                                     <p>
                                                         Birth Date: 
                                                         <span className='pl-2 text-[#7C7C7C]'>
@@ -192,9 +201,11 @@ const Node = ({
                                             )
                                         }
                                          
+
                                         {
                                             node?.parents.length > 0 && (
                                                 <>
+
                                                     <p>
                                                         Parents: 
                                                     </p>
@@ -284,10 +295,39 @@ const Content = () => {
     const [zoomLevel, setZoomLevel] = useState(1);
     const treeContainerRef = useRef<HTMLDivElement | null>(null);
     const [isDragging, setIsDragging] = useState(false);
-    const [startX, setStartX] = useState(0);
-    const [startY, setStartY] = useState(0);
-    const [scrollLeft, setScrollLeft] = useState(0);
-    const [scrollTop, setScrollTop] = useState(0);
+    const [position, setPosition] = useState({ x: 0, y: 0 });
+    const [startPos, setStartPos] = useState({ x: 0, y: 0 });
+    const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+
+    useEffect(() => {
+        const handleResize = () => {
+            setIsMobile(window.innerWidth <= 768);
+        };
+
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
+    const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
+        setIsDragging(true);
+        setStartPos({ 
+            x: e.clientX - position.x, 
+            y: e.clientY - position.y 
+        });
+    };
+
+    const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+        if (!isDragging) return;
+        
+        setPosition({
+            x: e.clientX - startPos.x,
+            y: e.clientY - startPos.y
+        });
+    };
+
+    const handleMouseUp = () => {
+        setIsDragging(false);
+    };
 
     const renderTree = (nodes: any) => (
         <ul className='tree-content'>
@@ -316,32 +356,6 @@ const Content = () => {
         }
     };
 
-    const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
-        setIsDragging(true);
-        if(!treeContainerRef.current) return;
-        setStartX(e.pageX - treeContainerRef.current.offsetLeft);
-        setStartY(e.pageY - treeContainerRef.current.offsetTop);
-        setScrollLeft(treeContainerRef.current.scrollLeft);
-        setScrollTop(treeContainerRef.current.scrollTop);
-    };
-
-    const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-        if (!isDragging || !treeContainerRef.current) return;
-        e.preventDefault();
-        if (treeContainerRef.current) {
-            const x = e.pageX - treeContainerRef.current.offsetLeft;
-            const y = e.pageY - treeContainerRef.current.offsetTop;
-            const walkX = (x - startX);
-            const walkY = (y - startY);
-            treeContainerRef.current.scrollLeft = scrollLeft - walkX;
-            treeContainerRef.current.scrollTop = scrollTop - walkY;
-        }
-    };
-
-    const handleMouseUp = () => {
-        setIsDragging(false);
-    };
-
     return (
         <div className='relative'>
             <div className="absolute rounded-[10px] top-0 right-[10px] m-2 bg-white-500 border border-[#E0E0E0] bg-white hover:bg-gray-100 text-[#7C7C7C] flex items-center justify-center z-10">
@@ -355,8 +369,19 @@ const Content = () => {
                 onMouseMove={handleMouseMove}
                 onMouseUp={handleMouseUp}
                 onMouseLeave={handleMouseUp} 
+                style={{ 
+                    left: isMobile ? 0 : position.x, 
+                    top: isMobile ? 0 : position.y 
+                }}
             >
-                <div className="tree" style={{ transform: `scale(${zoomLevel})`, transformOrigin: 'top left' }}>
+                <div 
+                    className="tree" 
+                    style={{ 
+                        transform: `scale(${zoomLevel})`, 
+                        transformOrigin: 'top left',
+                        width: 'max-content'
+                    }}
+                >
                     {renderTree(treeData)}
                 </div>
             </div>
