@@ -5,6 +5,7 @@ import Albums from './_components/Albums'
 import { useEffect } from 'react'
 import galleryService from '@/services/api/galleryService'
 import { useRecords } from '@/providers/RecordsProvider'
+import Image from 'next/image'
 
 const Page = () => {
     const {
@@ -53,6 +54,31 @@ const Page = () => {
                                             key={`${photo.key}-${index}`} 
                                         />
                                     )) || []
+                                ).length > 0 ? (
+                                    albums.flatMap((album) => 
+                                        album?.photos?.map((photo, index) => (
+                                            <ImageContainer 
+                                                photo={photo} 
+                                                key={`${photo.key}-${index}`} 
+                                            />
+                                        )) || []
+                                    )
+                                ) : (
+                                    <div className='col-span-full flex flex-col items-center justify-center py-10 text-center'>
+                                        <Image 
+                                            src='/images/no-photos.svg' 
+                                            alt='No photos' 
+                                            width={250} 
+                                            height={250} 
+                                            className='mb-4 opacity-70'
+                                        />
+                                        <h3 className='text-lg text-[#1B5A1B] font-semibold mb-2'>No Photos Yet</h3>
+                                        <p className='text-sm text-gray-600 max-w-md'>
+                                            Your photo collection is empty. Start capturing and organizing 
+                                            your family&apos;s memories by uploading your first photo.
+                                        </p>
+                                       
+                                    </div>
                                 )}
                             </>
                         }

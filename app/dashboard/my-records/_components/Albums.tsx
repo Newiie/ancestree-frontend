@@ -16,6 +16,7 @@ import { Input } from "@/components/ui/input"
 import galleryService from '@/services/api/galleryService'
 import { useRecords } from '@/providers/RecordsProvider'
 import useError from '@/hooks/useError'
+import Image from 'next/image'
 
 const Albums = () => {
     const { isFetching, setIsFetching, albums, setAlbums } = useRecords();
@@ -120,11 +121,28 @@ const Albums = () => {
                 </AlertDialog>
             </div>
             <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 py-4 w-full'>
-                {albums.map((album) => (
-                    <div key={album._id} className='w-full'>
-                        <Folder album={album} />
+                {albums.length > 0 ? (
+                    albums.map((album) => (
+                        <div key={album._id} className='w-full'>
+                            <Folder album={album} />
+                        </div>
+                    ))
+                ) : (
+                    <div className='col-span-full flex flex-col items-center justify-center py-10 text-center'>
+                        <Image 
+                            src='/images/no-albums.svg' 
+                            alt='No albums' 
+                            width={250} 
+                            height={250} 
+                            className='mb-4 opacity-70'
+                        />
+                        <h3 className='text-lg text-[#1B5A1B] font-semibold mb-2'>No Albums Yet</h3>
+                        <p className='text-sm text-gray-600 max-w-md'>
+                            Your album collection is empty. Start organizing your family&apos;s memories 
+                            by creating your first album.
+                        </p>
                     </div>
-                ))}
+                )}
             </div>
         </div>
     )
