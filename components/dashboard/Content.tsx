@@ -12,7 +12,6 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion"
-
 import {
   Carousel,
   CarouselContent,
@@ -21,6 +20,11 @@ import {
   CarouselNext
 } from "@/components/ui/carousel"
 import { type CarouselApi } from "@/components/ui/carousel"
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover"
 import dashboardService from '@/services/api/dashboardService';
 
 const progress = [
@@ -143,6 +147,7 @@ const Content = () => {
   const [monthlyUpdatesList, setMonthlyUpdatesList] = React.useState(monthlyUpdates)
   const [birthdays, setBirthdays] = React.useState([])
   const [anniversary, setAnniversary] = React.useState([])
+  const [isDevPopoverOpen, setIsDevPopoverOpen] = useState(false);
   React.useEffect(() => {
     // Fetch user progress
     const fetchUserData = async () => {
@@ -339,7 +344,23 @@ const Content = () => {
               <div className='bg-[#EAF1E5] h-[max-content] rounded-lg p-4'>
                 <div className='flex justify-between items-center'>
                   <h2 className='text-xl sm:text-2xl text-[#1B5A1B] font-semibold'>Notepad</h2>
-                  <CirclePlusIcon className='w-[20px] cursor-pointer h-[20px] text-[#1B5A1B]' />
+                  <Popover open={isDevPopoverOpen} onOpenChange={setIsDevPopoverOpen}>
+                    <PopoverTrigger>
+                      <CirclePlusIcon 
+                        onClick={() => setIsDevPopoverOpen(true)} 
+                        className='w-[20px] cursor-pointer h-[20px] text-[#1B5A1B]' 
+                      />
+                    </PopoverTrigger>
+                    <PopoverContent className="w-80 bg-white p-4 rounded-lg shadow-lg border border-gray-200">
+                      <div className="text-center">
+                        <h3 className="text-lg font-semibold text-[#1B5A1B] mb-2">Feature Under Development</h3>
+                        <p className="text-sm text-gray-600">
+                          We&apos;re working hard to bring this exciting feature to you soon! 
+                          Stay tuned for updates.
+                        </p>
+                      </div>
+                    </PopoverContent>
+                  </Popover>
                 </div>
                 <div className='mt-4 flex flex-col gap-4'>
                   {[1, 2, 3].map((_, index) => (

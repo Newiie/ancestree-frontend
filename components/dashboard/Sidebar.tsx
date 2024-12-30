@@ -40,7 +40,7 @@ const Sidebar = () => {
   ];
 
   const renderSidebarLinks = (isMobile = false) => (
-    <ul className={`space-y-2 ${isMobile ? 'px-4 py-6' : 'flex-grow overflow-y-auto'}`}>
+    <ul className={`space-y-2 ${isMobile ? 'px-4 py-6' : 'flex-grow '}`}>
       {sidebarItems.map((item) => (
         <Link
           href={item.url}
@@ -53,7 +53,7 @@ const Sidebar = () => {
           <div className="flex-shrink-0 w-[1.5rem] h-[1.5rem] mr-3">
             {item.icon}
           </div>
-          <span>{item.label}</span>
+          {!isMinimized && <span>{item.label}</span>}
         </Link>
       ))}
     </ul>
@@ -74,7 +74,7 @@ const Sidebar = () => {
         
         <Popover>
           <div className="mt-auto pt-4 border-t border-gray-300">
-            <div className="flex gap-2 items-center">
+            <div className={`flex ${isMinimized ? 'gap-0' : 'gap-2'} items-center`}>
               <Image
                 src={`${userData?.profilePicture ? userData?.profilePicture : "/images/doge.png"}`}
                 alt='Profile'

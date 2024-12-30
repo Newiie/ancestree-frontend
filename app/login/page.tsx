@@ -31,7 +31,7 @@ const Page = () => {
               Unraveling Ancestral Lineages through Geographical History
             </p>
             <Link 
-              href="" 
+              href="/register" 
               className="py-2 px-4 text-sm rounded-md bg-primary hover:bg-primary-dark transition-colors duration-200"
             >
               GET STARTED

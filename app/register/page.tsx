@@ -24,7 +24,7 @@ const Page = () => {
             <h1 className="text-2xl md:text-[3rem] font-semibold mb-4">Welcome to AncesTREE</h1>
             <p className="text-sm md:text-lg mb-6">Unraveling Ancestral Lineages through Geographical History</p>
             <Link 
-              href="" 
+              href="/register" 
               className="py-2 px-4 text-sm md:text-[0.9rem] rounded-[3px] bg-primary hover:text-primary hover:bg-hover transition-colors duration-200"
             >
               GET STARTED

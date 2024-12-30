@@ -50,7 +50,7 @@ export default function Home() {
             animate={isWelcomeInView ? { opacity: 1 } : { opacity: 0 }}
             transition={{ delay: 0.8, duration: 1 }}
             >
-              <Link href="/get-started" className="py-[0.5rem] px-[1rem] text-[0.8rem] md:text-[0.9rem] rounded-[3px] bg-primary hover:text-primary hover:bg-hover transition-colors duration-200">
+              <Link href="/register" className="py-[0.5rem] px-[1rem] text-[0.8rem] md:text-[0.9rem] rounded-[3px] bg-primary hover:text-primary hover:bg-hover transition-colors duration-200">
                 GET STARTED
               </Link>
             </motion.div>
