@@ -495,7 +495,7 @@ const DetailsContent = () => {
             />
           )}
 
-          <div className={`${isEditing ? 'pb-20' : ''}`}>
+          <div className={`${isEditing ? 'pb-20 md:pb-0' : ''}`}>
             {profileTabs === 'Personal Details' && (
               <>
                 <h2 className='text-lg sm:text-xl font-bold'>{selectedDetail}</h2>
@@ -548,7 +548,26 @@ const DetailsContent = () => {
           </div>
 
           {isEditing && (
-            <div className='fixed bottom-0 left-0 right-0 bg-white shadow-lg p-4 z-50'>
+            <div className='hidden md:flex justify-end p-4'>
+              <div className='flex justify-end gap-4 max-w-4xl'>
+                <button 
+                  className={`${buttonStyles} bg-red-500 w-full sm:w-auto`} 
+                  onClick={handleCancelClick}
+                >
+                  Cancel
+                </button>
+                <button 
+                  className={`${buttonStyles} bg-blue-500 w-full sm:w-auto`} 
+                  onClick={handleSaveClick}
+                >
+                  Save
+                </button>
+              </div>
+            </div>
+          )}
+
+          {isEditing && (
+            <div className='fixed flex md:hidden bottom-0 left-0 right-0 bg-white shadow-lg p-4 z-50'>
               <div className='flex justify-end gap-4 max-w-4xl mx-auto'>
                 <button 
                   className={`${buttonStyles} bg-red-500 w-full sm:w-auto`} 

@@ -1,18 +1,20 @@
 import React, { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import useAuth from '@/hooks/useAuth';
 import { Menu, X } from 'lucide-react';
+import { useRouter, usePathname } from 'next/navigation'
 
 const NavBar = () => {
-  const { user } = useAuth();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-
+  const router = useRouter();
+  const pathname = usePathname();
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
-  if (user.id != null) return null;
+  if (pathname !== '/login' && pathname !== '/register' && pathname !== '/' && pathname !== '/about' && pathname !== '/contact') {
+    return null;
+  }
 
   return (
     <nav className="fixed top-0 w-full z-50 bg-white shadow-sm">

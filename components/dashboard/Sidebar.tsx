@@ -111,7 +111,8 @@ const Sidebar = () => {
 
       {/* Mobile Sidebar Trigger */}
       <button 
-        className="md:hidden fixed top-4 left-4 z-50 bg-white shadow-md rounded-full p-2"
+        className={`md:hidden fixed top-4 left-4 z-50 bg-white shadow-md rounded-full p-2 
+          ${isMobileSidebarOpen ? 'opacity-0 -translate-x-full transition-all duration-300 ease-in-out' : 'opacity-100'}`}
         onClick={toggleMobileSidebar}
       >
         <MenuIcon className="text-black" />

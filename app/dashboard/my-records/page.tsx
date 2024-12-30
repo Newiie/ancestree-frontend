@@ -42,7 +42,7 @@ const Page = () => {
                             </div>
                         ))}
                     </div>
-                    <div className={`grid ${selectedTab === "Albums" ? "grid-cols-1" : "grid-cols-2"} sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 p-4`}>
+                    <div className={`grid ${selectedTab === "Albums" ? "grid-cols-1" : "grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5"}  gap-4 p-4`}>
                         {
                             selectedTab === "All Photos" && 
                             <>
