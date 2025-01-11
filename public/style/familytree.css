@@ -43,14 +43,15 @@ body {
                       linear-gradient(to bottom, #f0f0f0 1px, transparent 1px);
     background-size: 40px 40px;
     background-position: -1px -1px;
-    -ms-overflow-style: none;  /* IE and Edge */
     scrollbar-width: none;  /* Firefox */
     overflow: -moz-scrollbars-none;  /* Firefox */
 }
 
 .tree-container::-webkit-scrollbar,
-.tree-content::-webkit-scrollbar {
+.content .tree-content::-webkit-scrollbar,
+.relative::-webkit-scrollbar {
     display: none;
+    overflow: auto
 }
 
 .tree-container:active {
