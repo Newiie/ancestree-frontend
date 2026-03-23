@@ -305,6 +305,7 @@ const Content = () => {
     };
 
     const handlePointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
+      if ((e.target as HTMLElement).closest('button, a')) return;
       e.currentTarget.setPointerCapture(e.pointerId);
       isDragging.current = true;
       lastPointer.current = { x: e.clientX, y: e.clientY };
