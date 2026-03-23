@@ -41,7 +41,6 @@ body {
     background-size: 40px 40px;
     background-position: -1px -1px;
     scrollbar-width: none;  /* Firefox */
-    overflow: -moz-scrollbars-none;  /* Firefox */
 }
 
 .tree-container::-webkit-scrollbar,

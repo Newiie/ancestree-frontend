@@ -453,6 +453,7 @@ const Content = () => {
                         transform: `translate(${pan.x}px, ${pan.y}px) scale(${zoom})`,
                         transformOrigin: '0 0',
                         width: 'max-content',
+                        transition: isDragging.current ? 'none' : undefined,
                     }}
                 >
                     {renderTree(treeData)}
