@@ -377,6 +377,63 @@ const Content = () => {
       return () => el.removeEventListener('wheel', onWheel);
     }, []);
 
+    useEffect(() => {
+      const el = treeContainerRef.current;
+      if (!el) return;
+
+      const onTouchStart = (e: TouchEvent) => {
+        if (e.touches.length === 1) {
+          isDragging.current = true;
+          lastPointer.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+        } else if (e.touches.length === 2) {
+          isDragging.current = false;
+          const dx = e.touches[1].clientX - e.touches[0].clientX;
+          const dy = e.touches[1].clientY - e.touches[0].clientY;
+          lastTouchDist.current = Math.hypot(dx, dy);
+        }
+      };
+
+      const onTouchMove = (e: TouchEvent) => {
+        e.preventDefault();
+        if (e.touches.length === 1 && isDragging.current) {
+          const dx = e.touches[0].clientX - lastPointer.current.x;
+          const dy = e.touches[0].clientY - lastPointer.current.y;
+          lastPointer.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+          setPan(prev => ({ x: prev.x + dx, y: prev.y + dy }));
+        } else if (e.touches.length === 2 && lastTouchDist.current !== null) {
+          const rect = el.getBoundingClientRect();
+          const dx = e.touches[1].clientX - e.touches[0].clientX;
+          const dy = e.touches[1].clientY - e.touches[0].clientY;
+          const newDist = Math.hypot(dx, dy);
+          const midX = (e.touches[0].clientX + e.touches[1].clientX) / 2 - rect.left;
+          const midY = (e.touches[0].clientY + e.touches[1].clientY) / 2 - rect.top;
+          const scale = newDist / lastTouchDist.current;
+          const currentZoom = zoomRef.current;
+          const newZoom = Math.min(3, Math.max(0.2, currentZoom * scale));
+          updateZoom(newZoom);
+          setPan(prev => ({
+            x: midX - (midX - prev.x) * (newZoom / currentZoom),
+            y: midY - (midY - prev.y) * (newZoom / currentZoom),
+          }));
+          lastTouchDist.current = newDist;
+        }
+      };
+
+      const onTouchEnd = () => {
+        isDragging.current = false;
+        lastTouchDist.current = null;
+      };
+
+      el.addEventListener('touchstart', onTouchStart, { passive: false });
+      el.addEventListener('touchmove',  onTouchMove,  { passive: false });
+      el.addEventListener('touchend',   onTouchEnd);
+      return () => {
+        el.removeEventListener('touchstart', onTouchStart);
+        el.removeEventListener('touchmove',  onTouchMove);
+        el.removeEventListener('touchend',   onTouchEnd);
+      };
+    }, []);
+
     return (
         <div className='relative h-full'>
             <div className="absolute rounded-[10px] top-0 right-[10px] m-2 bg-white-500 border border-[#E0E0E0] bg-white hover:bg-gray-100 text-[#7C7C7C] flex items-center justify-center z-10">
