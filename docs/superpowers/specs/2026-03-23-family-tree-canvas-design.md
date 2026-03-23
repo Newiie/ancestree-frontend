@@ -118,18 +118,19 @@ useEffect(() => {
     const cursorX = e.clientX - rect.left;   // cursor relative to container top-left
     const cursorY = e.clientY - rect.top;
     const delta = e.deltaY > 0 ? 0.9 : 1.1;
-    setPan(prev => {
-      const newZoom = Math.min(3, Math.max(0.2, zoom * delta));  // zoom is from outer closure
-      return {
-        x: cursorX - (cursorX - prev.x) * (newZoom / zoom),
-        y: cursorY - (cursorY - prev.y) * (newZoom / zoom),
-      };
-    });
-    setZoom(prev => Math.min(3, Math.max(0.2, prev * delta)));
+    // Read zoom from ref (synchronous) — same pattern as touch handler, avoids stale closure
+    // that would desync pan and zoom when wheel events fire faster than React renders.
+    const currentZoom = zoomRef.current;
+    const newZoom = Math.min(3, Math.max(0.2, currentZoom * delta));
+    updateZoom(newZoom);
+    setPan(prev => ({
+      x: cursorX - (cursorX - prev.x) * (newZoom / currentZoom),
+      y: cursorY - (cursorY - prev.y) * (newZoom / currentZoom),
+    }));
   };
   el.addEventListener('wheel', onWheel, { passive: false });
   return () => el.removeEventListener('wheel', onWheel);
-}, [zoom]);  // re-attach when zoom changes so closure has current value
+}, []);  // stable — no closure over zoom; zoomRef is always current
 ```
 
 > Note: `cursorX/Y` must use `getBoundingClientRect()` — not `event.offsetX/Y`, which shifts when the cursor is over a child element (a tree node) and would cause a zoom jump.
@@ -146,11 +147,12 @@ const zoomToward = (nextZoom: number) => {
   if (!el) return;
   const cx = el.clientWidth / 2;
   const cy = el.clientHeight / 2;
+  const currentZoom = zoomRef.current;  // read from ref — avoids stale closure
   setPan(prev => ({
-    x: cx - (cx - prev.x) * (nextZoom / zoom),
-    y: cy - (cy - prev.y) * (nextZoom / zoom),
+    x: cx - (cx - prev.x) * (nextZoom / currentZoom),
+    y: cy - (cy - prev.y) * (nextZoom / currentZoom),
   }));
-  setZoom(nextZoom);
+  updateZoom(nextZoom);
 };
 
 const zoomIn  = () => zoomToward(Math.min(3,   zoom + 0.1));
@@ -215,7 +217,7 @@ const handleTouchEnd = () => {
 };
 ```
 
-Attach to the `.tree-container` div. `onTouchMove` needs `{ passive: false }` to call `preventDefault()` — add this via `useEffect` the same way as the wheel listener.
+Attach to the `.tree-container` div. Both `touchstart` and `touchmove` must be registered with `{ passive: false }` via `useEffect` — iOS Safari ignores `preventDefault()` in `touchmove` unless the `touchstart` handler was also registered as non-passive. Use the same `addEventListener`/`removeEventListener` pattern as the wheel handler.
 
 ---
 
@@ -271,7 +273,7 @@ The `useIsMobile` hook at `hooks/useIsMobile.ts` is also not used by this compon
 | File | Changes |
 |---|---|
 | `public/style/familytree.css` | Fix container height/overflow, remove mobile hacks, clean `.tree` transitions |
-| `components/dashboard/FamilyTree/Content.tsx` | Unified transform state, pointer events, scroll-to-zoom, touch events, remove `isMobile` |
+| `components/dashboard/FamilyTree/Content.tsx` | Add `h-full` to outermost div; unified transform state; pointer events; scroll-to-zoom; touch events; remove `isMobile` |
 | `app/dashboard/family-tree/[id]/page.tsx` | `FamilyTreeContent` wrapper: `h-full overflow-hidden` |
 | `app/dashboard/family-tree/[id]/loading.tsx` | No changes needed — skeleton's `.tree-container` is direct child of grid cell |
 
