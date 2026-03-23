@@ -340,15 +340,42 @@ const Content = () => {
         </ul>
     );
 
-    const zoomIn = () => {
-        setZoomLevel(zoomLevel + 0.1);
+    const zoomToward = (nextZoom: number) => {
+      const el = treeContainerRef.current;
+      if (!el) return;
+      const cx = el.clientWidth / 2;
+      const cy = el.clientHeight / 2;
+      const currentZoom = zoomRef.current;
+      setPan(prev => ({
+        x: cx - (cx - prev.x) * (nextZoom / currentZoom),
+        y: cy - (cy - prev.y) * (nextZoom / currentZoom),
+      }));
+      updateZoom(nextZoom);
     };
 
-    const zoomOut = () => {
-        if (zoomLevel > 0.1) {
-            setZoomLevel(zoomLevel - 0.1);
-        }
-    };
+    const zoomIn  = () => zoomToward(Math.min(3,   zoom + 0.1));
+    const zoomOut = () => zoomToward(Math.max(0.2, zoom - 0.1));
+
+    useEffect(() => {
+      const el = treeContainerRef.current;
+      if (!el) return;
+      const onWheel = (e: WheelEvent) => {
+        e.preventDefault();
+        const rect = el.getBoundingClientRect();
+        const cursorX = e.clientX - rect.left;
+        const cursorY = e.clientY - rect.top;
+        const delta = e.deltaY > 0 ? 0.9 : 1.1;
+        const currentZoom = zoomRef.current;
+        const newZoom = Math.min(3, Math.max(0.2, currentZoom * delta));
+        updateZoom(newZoom);
+        setPan(prev => ({
+          x: cursorX - (cursorX - prev.x) * (newZoom / currentZoom),
+          y: cursorY - (cursorY - prev.y) * (newZoom / currentZoom),
+        }));
+      };
+      el.addEventListener('wheel', onWheel, { passive: false });
+      return () => el.removeEventListener('wheel', onWheel);
+    }, []);
 
     return (
         <div className='relative h-full'>
