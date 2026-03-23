@@ -354,7 +354,7 @@ const Content = () => {
     };
 
     return (
-        <div className='relative'>
+        <div className='relative h-full'>
             <div className="absolute rounded-[10px] top-0 right-[10px] m-2 bg-white-500 border border-[#E0E0E0] bg-white hover:bg-gray-100 text-[#7C7C7C] flex items-center justify-center z-10">
                 <button className='p-2' onClick={zoomIn}><ZoomInIcon size={32} /></button>
                 <button className='p-2' onClick={zoomOut}><ZoomOutIcon size={32} /></button>
@@ -365,18 +365,14 @@ const Content = () => {
                 onMouseDown={handleMouseDown}
                 onMouseMove={handleMouseMove}
                 onMouseUp={handleMouseUp}
-                onMouseLeave={handleMouseUp} 
-                style={{ 
-                    left: isMobile ? 0 : position.x, 
-                    top: isMobile ? 0 : position.y 
-                }}
+                onMouseLeave={handleMouseUp}
             >
                 <div 
                     className="tree" 
-                    style={{ 
-                        transform: `scale(${zoomLevel})`, 
-                        transformOrigin: 'top left',
-                        width: 'max-content'
+                    style={{
+                        transform: `translate(${pan.x}px, ${pan.y}px) scale(${zoom})`,
+                        transformOrigin: '0 0',
+                        width: 'max-content',
                     }}
                 >
                     {renderTree(treeData)}
