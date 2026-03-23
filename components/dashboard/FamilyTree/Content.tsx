@@ -305,25 +305,22 @@ const Content = () => {
       setZoom(newZoom);
     };
 
-    const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
-        setIsDragging(true);
-        setStartPos({ 
-            x: e.clientX - position.x, 
-            y: e.clientY - position.y 
-        });
+    const handlePointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
+      e.currentTarget.setPointerCapture(e.pointerId);
+      isDragging.current = true;
+      lastPointer.current = { x: e.clientX, y: e.clientY };
     };
 
-    const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-        if (!isDragging) return;
-        
-        setPosition({
-            x: e.clientX - startPos.x,
-            y: e.clientY - startPos.y
-        });
+    const handlePointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
+      if (!isDragging.current) return;
+      const dx = e.clientX - lastPointer.current.x;
+      const dy = e.clientY - lastPointer.current.y;
+      lastPointer.current = { x: e.clientX, y: e.clientY };
+      setPan(prev => ({ x: prev.x + dx, y: prev.y + dy }));
     };
 
-    const handleMouseUp = () => {
-        setIsDragging(false);
+    const handlePointerUp = () => {
+      isDragging.current = false;
     };
 
     const renderTree = (nodes: any) => (
@@ -362,10 +359,10 @@ const Content = () => {
             <div
                 className="tree-container"
                 ref={treeContainerRef}
-                onMouseDown={handleMouseDown}
-                onMouseMove={handleMouseMove}
-                onMouseUp={handleMouseUp}
-                onMouseLeave={handleMouseUp}
+                onPointerDown={handlePointerDown}
+                onPointerMove={handlePointerMove}
+                onPointerUp={handlePointerUp}
+                onPointerCancel={handlePointerUp}
             >
                 <div 
                     className="tree" 
