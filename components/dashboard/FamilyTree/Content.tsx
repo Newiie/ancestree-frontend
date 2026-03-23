@@ -174,14 +174,14 @@ const Node = ({
                                         }
                                       
 
-                                        {node?.person?.generalInformation.nationality.length > 0 && (
+                                        {node?.person?.generalInformation?.nationality?.length > 0 && (
                                             <>
 
                                                 <div>
                                                     <p>
-                                                        Nationality: 
+                                                        Nationality:
                                                     </p>
-                                                    {node?.person?.generalInformation.nationality.map((nationality : any) => (
+                                                    {node?.person?.generalInformation?.nationality?.map((nationality : any) => (
                                                         <span className='pl-4 text-[#7C7C7C]' key={nationality}>{capitalizeFirstLetter(nationality)}</span>
                                                     ))}
                                                 </div>
@@ -292,21 +292,18 @@ const Content = () => {
         handleDeletePersonNode
     } = useTree();
 
-    const [zoomLevel, setZoomLevel] = useState(1);
     const treeContainerRef = useRef<HTMLDivElement | null>(null);
-    const [isDragging, setIsDragging] = useState(false);
-    const [position, setPosition] = useState({ x: 0, y: 0 });
-    const [startPos, setStartPos] = useState({ x: 0, y: 0 });
-    const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+    const [zoom, setZoom] = useState(1);
+    const [pan, setPan] = useState({ x: 0, y: 0 });
+    const zoomRef = useRef(1);
+    const isDragging = useRef(false);
+    const lastPointer = useRef({ x: 0, y: 0 });
+    const lastTouchDist = useRef<number | null>(null);
 
-    useEffect(() => {
-        const handleResize = () => {
-            setIsMobile(window.innerWidth <= 768);
-        };
-
-        window.addEventListener('resize', handleResize);
-        return () => window.removeEventListener('resize', handleResize);
-    }, []);
+    const updateZoom = (newZoom: number) => {
+      zoomRef.current = newZoom;
+      setZoom(newZoom);
+    };
 
     const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
         setIsDragging(true);
