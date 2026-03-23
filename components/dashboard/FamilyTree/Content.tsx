@@ -3,7 +3,6 @@ import Image from 'next/image';
 import '@/public/style/familytree.css';
 import { InfoIcon, PencilIcon, PlusIcon, UserRoundIcon, ZoomInIcon, ZoomOutIcon } from 'lucide-react';
 import { useTree } from '../../../providers/TreeProvider';
-import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import {
     Sheet,
