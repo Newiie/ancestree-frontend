@@ -14,7 +14,6 @@ const fetchUserData = async (userId: string) => {
         const data = response.data;
         return data;
     } catch (error) {
-        console.error("Error fetching user data:", error);
     }
 }
 
@@ -33,7 +32,6 @@ const updateUserData = async (userId: string, data: any) => {
         const updatedData = response.data;
         return updatedData;
     } catch (error) {
-        console.error("Error updating user data:", error);
     }
 }
 
@@ -55,7 +53,6 @@ const updateProfileImage = async (userId: string, formData: FormData) => {
             return updatedData;
         }
     } catch (error) {
-        console.error("Error updating profile picture:", error);
     }
 }
 
@@ -77,7 +74,6 @@ const updateBackgroundImage = async (userId: string, formData: FormData) => {
             return updatedData;
         }
     } catch (error) {
-        console.error("Error updating background image:", error);
     }
 }
 
@@ -96,7 +92,6 @@ const sendFriendRequest = async (userId: string) => {
         const updatedData = response.data;
         return updatedData;
     } catch (error) {
-        console.error("Error sending friend request:", error);
     }
 }
 
@@ -115,7 +110,6 @@ const acceptFriendRequest = async (userId: string) => {
         const updatedData = response.data;
         return updatedData;
     } catch (error) {
-        console.error("Error accepting friend request:", error);
     }
 }
 
@@ -136,7 +130,6 @@ const getFriendList = async () => {
         const data = response.data;
         return data;
     } catch (error) {
-        console.error("Error getting friend list:", error);
     }
 }
 
@@ -148,10 +141,8 @@ const populateFriendList = async () => {
             return { ...friend, user };
         }));
 
-        console.log("POPULATED FRIEND LIST", populatedFriendList)
-        return populatedFriendList; 
+        return populatedFriendList;
     } catch (error) {
-        console.error("Error populating friend list:", error);
     }
 }
 
@@ -169,7 +160,6 @@ const updateUserProgress = async (stepTitle: string) => {
         );
         return response.data;
     } catch (error) {
-        console.error("Error updating user progress:", error);
     }
 };
 

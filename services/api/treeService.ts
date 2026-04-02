@@ -16,7 +16,6 @@ const fetchTreeData = async (userId: string) => {
         const data = await response.json();
         return data;   
     } catch (error) {
-        console.error("Error fetching tree data:", error);
     }
 }
 
@@ -45,9 +44,8 @@ const postAddParent = async (treeId: string, formData: any) => {
             await profileService.updateUserProgress("Create your first Family Tree");
         }
         
-        return data;   
+        return data;
     } catch (error) {
-        console.error("Error adding parent:", error);
     }
 }
 
@@ -66,8 +64,6 @@ const postAddChild = async (treeId: string, formData: FormData) => {
         
         // Create an update when a child is added
         if (response.status == 200) {
-            console.log("ADD CHILD SERVICE", data);
-            
             // Extract child name from the response
             const childName = data.name || data.fullName || 'New Family Member';
             
@@ -77,11 +73,10 @@ const postAddChild = async (treeId: string, formData: FormData) => {
             await profileService.updateUserProgress("Create your first Family Tree");
         }
         
-        return data;   
+        return data;
     } catch (error) {
-        console.error("Error adding child:", error);
     }
-}    
+}
 
 
 const patchEditPersonNode = async (nodeId: string, formData: FormData) => {
@@ -104,9 +99,8 @@ const patchEditPersonNode = async (nodeId: string, formData: FormData) => {
             );
         }
         
-        return data;   
+        return data;
     } catch (error) {
-        console.error("Error editing person node:", error);
     }
 }
 
@@ -132,9 +126,8 @@ const deletePersonNode = async (nodeId: string ) => {
             );
         }
         
-        return data;   
+        return data;
     } catch (error) {
-        console.error("Error deleting person node:", error);
     }
 }
 
@@ -159,9 +152,8 @@ const postConnectPersonToUser = async (userId: string, nodeId: string) => {
             );
         }
         
-        return data;   
+        return data;
     } catch (error) {
-        console.error("Error connecting person to user:", error);
     }
 }
 
@@ -185,9 +177,8 @@ const acceptConnectionRequest = async (nodeId: string) => {
             );
         }
         
-        return data;   
+        return data;
     } catch (error) {
-        console.error("Error accepting connection request:", error);
     }
 }
 

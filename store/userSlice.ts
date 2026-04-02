@@ -19,7 +19,6 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     setUser: (state, action: PayloadAction<UserState>) => {
-      console.log("USER ON SETUSER", action.payload);
       state.username = action.payload.username;
       state.id = action.payload.id;
       state.token = action.payload.token;

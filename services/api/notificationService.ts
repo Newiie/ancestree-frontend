@@ -22,7 +22,6 @@ const notificationService = {
             const data = await response.json();
             return data;
         } catch (error) {
-            console.error("Error fetching notifications:", error);
             throw error;
         }
     },
@@ -46,7 +45,6 @@ const notificationService = {
             await profileService.updateUserProgress("Stay informed with Notifications");
             return data;
         } catch (error) {
-            console.error("Error reading notification:", error);
             throw error;
         }
     }

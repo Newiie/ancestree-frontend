@@ -26,7 +26,6 @@ const findSimilarPersons = async (personDetails: { firstName?: string, lastName?
 
         return data;
     } catch (error) {
-        console.error("Error fetching similar persons:", error);
     }
 };
 

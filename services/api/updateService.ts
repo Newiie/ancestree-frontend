@@ -30,7 +30,6 @@ const updateService = {
 
       return response.data;
     } catch (error) {
-      console.error("Error creating update:", error);
       throw error;
     }
   },
@@ -47,7 +46,6 @@ const updateService = {
       const response = await axios.get(`${baseUrl}/updates/family-events`, { headers });
       return response.data;
     } catch (error) {
-      console.error("Error fetching family events:", error);
       throw error;
     }
   },
@@ -72,7 +70,6 @@ const updateService = {
 
       return response.data;
     } catch (error) {
-      console.error("Error creating connection update:", error);
       throw error;
     }
   },

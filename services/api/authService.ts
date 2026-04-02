@@ -5,10 +5,8 @@ import { baseUrl } from '@/lib/config';
 const login = async (credentials: { username: string, password: string }): Promise<any> => {
   try {
     const response = await axios.post(`${baseUrl}/login`, credentials);
-    console.log("Response: ", response);
     return response.data;
   } catch (error: any) {
-    console.log("Error: ", error);
     throw new Error(error.response?.data?.message || 'Invalid username or password');
   }
 };
