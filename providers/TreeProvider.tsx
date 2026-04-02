@@ -57,7 +57,7 @@ export const TreeProvider: React.FC<{ children: ReactNode, id: string }> = ({ ch
             TreeService.fetchTreeData(id).then((data) => {
                 console.log("FETCHED TREE DATA", data.familyTree.root);
                 setTreeData([data.familyTree.root]);
-                setTreeId(data.familyTree.treeId);
+                setTreeId(data.familyTree.root.id);
                 setIsFetching(false);
             });
         }   
@@ -73,6 +73,7 @@ export const TreeProvider: React.FC<{ children: ReactNode, id: string }> = ({ ch
     const handleAddFamilyMember = async (selectedPerson: string,formData: any) => {
         setIsFetching(true);
         console.log("FORM DATA", formData);
+        console.log("TREE ID", treeId);
         if (selectedPerson === "Add Child") {
             await TreeService.postAddChild(treeId, formData);
             toggleAddFamilyModal();

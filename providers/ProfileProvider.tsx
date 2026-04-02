@@ -1,8 +1,9 @@
+"use client";
+
 import React, { createContext, useContext, useState, ReactNode, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import useAuth from '@/hooks/useAuth';
 import axios from 'axios';
-import { headers } from 'next/headers';
 import profileService from '@/services/api/profileService';
 
 interface ProfileProviderType {

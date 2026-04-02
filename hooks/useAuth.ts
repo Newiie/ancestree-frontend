@@ -14,7 +14,7 @@ const useAuth = () => {
   const pathname = usePathname();
   
   useEffect(() => {
-    if (!user && pathname !== '/register' && pathname !== '/login') {
+    if (!user?.token && pathname !== '/register' && pathname !== '/login') {
       router.push('/login');
     }
   }, [user, router, pathname]);
