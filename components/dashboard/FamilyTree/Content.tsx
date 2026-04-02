@@ -62,12 +62,10 @@ const Node = ({
 
                             <button
                                 onClick={() => {
-                                    if (node?.person?.relatedUser) {   
-                                        console.log(node?.person?.relatedUser);
+                                    if (node?.person?.relatedUser) {
                                         router.push(`/dashboard/profile/${node?.person?.relatedUser}`);
                                     } else {
                                         toggleConnectPersonModal();
-                                        console.log("No related user");
                                     }
                                 }}
                                 className='absolute top-[31px] right-[-14px] bg-white-500 border border-[#E0E0E0] hover:bg-gray-100 text-[#7C7C7C] px-2 py-1 rounded-[50%] w-8 h-8 flex items-center justify-center'
@@ -79,7 +77,6 @@ const Node = ({
                                 onClick={() => {
                                     if (selectId(store.getState()) !== userId) return;
                                     toggleEditPersonModal()
-                                    console.log("SECLECTED NODE", selectedNode);
                                 }}
                                 className='absolute top-[67px] right-[-14px] bg-white-500 border border-[#E0E0E0] hover:bg-gray-100 text-[#7C7C7C] px-2 py-1 rounded-[50%] w-8 h-8 flex items-center justify-center'
                             >
@@ -89,9 +86,6 @@ const Node = ({
                             <Sheet>
                                 <SheetTrigger>
                                     <div
-                                        onClick={() => {
-                                            console.log(node);
-                                        }}
                                         className='absolute top-[98px] right-[1px] bg-white-500 border border-[#E0E0E0] hover:bg-gray-100 text-[#7C7C7C] px-2 py-1 rounded-[50%] w-8 h-8 flex items-center justify-center'
                                     >
                                         <InfoIcon size={16} />

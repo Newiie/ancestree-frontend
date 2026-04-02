@@ -39,14 +39,12 @@ const Page = () => {
         const fetchNotifications = async () => {
             try {
                 const notifications = await notificationService.fetchNotifications();
-                console.log("NOTIFICATIONS", notifications)
                 setNotifications(notifications);
             } catch (error: any) {
                 setError(error.message);
                 // if (error.message === "token expired") {
-                //     setError(error.message); 
+                //     setError(error.message);
                 // } else {
-                //     console.error('Error fetching notifications:', error);
                 // }
             }
         };
@@ -65,19 +63,18 @@ const Page = () => {
 
 
     const handleReadNotification = async (
-        notificationId : string, 
+        notificationId : string,
         relatedId : string,
     ) => {
         try {
             await notificationService.readNotification(notificationId)
             router.push(`/dashboard/profile/${relatedId}`);
         } catch (error) {
-            console.error('Error marking notification as read:', error);
         }
     }
 
     const handleAcceptConnection = async (
-        notificationId : string, 
+        notificationId : string,
         nodeId : string,
     ) => {
         try {
@@ -85,18 +82,16 @@ const Page = () => {
             await treeService.acceptConnectionRequest(nodeId);
             setApiEvent(!apiEvent);
         } catch (error) {
-            console.error('Error accepting connection:', error);
         }
     }
 
     const handleDeclineConnection = async (
-        notificationId : string, 
+        notificationId : string,
     ) => {
         try {
             await notificationService.readNotification(notificationId);
             setApiEvent(!apiEvent);
         } catch (error) {
-            console.error('Error declining connection:', error);
         }
     }
 
@@ -110,7 +105,6 @@ const Page = () => {
             <div className='flex items-center  border-b-1 border-primary'>
                 {["All"].map((item, index) => (
                     <div key={index} onClick={() => {
-                        console.log(item)
                         setSelectedTab(item)
                     }} className={`text-lg pl-8 pr-8 font-semibold  border-primary transition hover:border-b-2 hover:text-primary text-muted-foreground cursor-pointer duration-300 ${selectedTab === item ? 'border-b-2 text-primary' : ''}`}>{item}</div>
                 ))}

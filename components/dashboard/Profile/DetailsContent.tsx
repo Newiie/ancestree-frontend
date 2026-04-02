@@ -123,7 +123,6 @@ const DetailsContent = () => {
           errorObj[path] = error.message;
         });
         setErrors(errorObj);
-        console.log("ERRORS", errorObj);
       }
     }
   };

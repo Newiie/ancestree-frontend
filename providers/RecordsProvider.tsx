@@ -41,10 +41,8 @@ export const RecordsProvider: React.FC<{ children: ReactNode }> = ({ children })
         try {
             setIsFetching(true)
             const fetchedAlbums = await galleryService.getAlbums()
-            console.log("FETCHED ALBUMS", fetchedAlbums)
             setAlbums(fetchedAlbums)
         } catch (error) {
-            console.error('Error fetching albums:', error)
             // Optionally set error state or show error notification
         } finally {
             setIsFetching(false)

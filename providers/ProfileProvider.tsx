@@ -56,16 +56,13 @@ export const ProfileProvider: React.FC<{ children: ReactNode, userId: string }> 
     try {
         const response = await profileService.fetchUserData(userId);
         const friendList = await profileService.getFriendList();
-        console.log("FETCHED USER DATA", response);
         if (response.message === "Invalid User ID") {
-            return; 
+            return;
         } else {
-            setUserData(response); 
+            setUserData(response);
             setUserFriends(friendList);
-            console.log("USER FRIENDS", friendList);
         }
     } catch (error) {
-        console.error("Error fetching user data:", error);
     } finally {
         setIsFetching(false);
     }
@@ -79,7 +76,6 @@ export const ProfileProvider: React.FC<{ children: ReactNode, userId: string }> 
     const populateFriendList = async () => {
       const friendList = await profileService.populateFriendList();
       setFriendsData(friendList);
-      console.log("POPULATED FRIEND LIST", friendList);
     }
 
     populateFriendList();
@@ -96,7 +92,6 @@ export const ProfileProvider: React.FC<{ children: ReactNode, userId: string }> 
       await fetchUserData();
     }
     catch (error) {
-      console.error("Error sending friend request:", error);
     }
   }
 
@@ -106,7 +101,6 @@ export const ProfileProvider: React.FC<{ children: ReactNode, userId: string }> 
       await fetchUserData();
     }
     catch (error) {
-      console.error("Error accepting friend request:", error);
     }
   }
 
@@ -123,20 +117,18 @@ export const ProfileProvider: React.FC<{ children: ReactNode, userId: string }> 
         await fetchUserData();
       }
     } catch (error) {
-      console.error("Error updating user data:", error);
     }
   }
 
   const updateProfileImage = async (imageFile: File) => {
     try {
       const formData = new FormData();
-      formData.append('profilePicture', imageFile); 
+      formData.append('profilePicture', imageFile);
 
       await profileService.updateProfileImage(userId, formData);
       await fetchUserData();
 
     } catch (error) {
-      console.error("Error updating profile picture:", error);
     }
   };
 
@@ -144,11 +136,10 @@ export const ProfileProvider: React.FC<{ children: ReactNode, userId: string }> 
     try {
       const formData = new FormData();
       formData.append('backgroundPicture', imageFile);
-      
+
       await profileService.updateBackgroundImage(userId, formData);
       await fetchUserData();
     } catch (error) {
-      console.error("Error updating background image:", error);
     }
   }
 

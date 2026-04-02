@@ -26,13 +26,11 @@ const Content = () => {
   };
 
   const handleSearch = async () => {
-    console.log('Searching with data:', formData);
     setIsSearching(true);
     setSearchResults([]);
     const data = await relationshipService.findSimilarPersons(formData);
     setSearchResults(data);
     setIsSearching(false);
-    console.log('Similar persons found:', data);
   };
 
   return (

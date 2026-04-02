@@ -31,7 +31,6 @@ export function DateInput({date, setDate}: {date: Date | undefined, setDate: (da
           mode="single"
           selected={date}
           // onSelect={(date) => {
-          //   console.log("SET DATE", date)
           //   setDate(date)}
           // }
           initialFocus

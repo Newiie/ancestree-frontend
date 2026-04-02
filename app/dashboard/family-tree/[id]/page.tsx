@@ -89,9 +89,8 @@ const AddFamilyMember = () => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    
+
     // Create FormData object to handle file upload
-    console.log("FORM DATA", formData);
     const submitData = new FormData();
 
     // Add nodeId to FormData
@@ -424,7 +423,6 @@ const EditPersonNode = () => {
 
   // Find the actual node from treeData using selectedNode (personNodeId)
   const currentNode = findNodeRecursively(treeData, selectedNode);
-  console.log("CURRENT NODE", currentNode)
 
   // Initialize formData with default values and update with found node data
   const [formData, setFormData] = useState(() => {
