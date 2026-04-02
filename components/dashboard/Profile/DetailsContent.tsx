@@ -77,20 +77,25 @@ const DetailsContent = () => {
 
   type FormDataKeys = keyof typeof formData;
 
-  const deepMerge = (target: any, source: any) => {
+  const deepMerge = (target: Record<string, unknown>, source: Record<string, unknown>): Record<string, unknown> => {
+    const result = { ...target };
     for (const key of Object.keys(source)) {
-      if (source[key] instanceof Object && key in target) {
-        Object.assign(source[key], deepMerge(target[key], source[key]));
+      if (source[key] !== null && typeof source[key] === 'object' && !Array.isArray(source[key]) && key in target && target[key] !== null && typeof target[key] === 'object') {
+        result[key] = deepMerge(target[key] as Record<string, unknown>, source[key] as Record<string, unknown>);
+      } else {
+        result[key] = source[key];
       }
     }
-    return { ...target, ...source };
+    return result;
   };
 
   useEffect(() => {
 
-    if (!isFetching && userData) {
-      setFormData((prevFormData) => deepMerge(prevFormData, userData));
-      if (userData === null) {
+    if (!isFetching) {
+      if (userData) {
+        setFormData((prevFormData) => deepMerge(prevFormData as Record<string, unknown>, userData as Record<string, unknown>) as typeof prevFormData);
+      } else {
+        // No profile yet — auto-enter editing mode
         setIsEditing(true);
       }
     }
@@ -105,7 +110,9 @@ const DetailsContent = () => {
 
   const handleCancelClick = () => {
     setIsEditing(false);
-    setFormData((prevFormData) => deepMerge(prevFormData, userData));
+    if (userData) {
+      setFormData((prevFormData) => deepMerge(prevFormData as Record<string, unknown>, userData as Record<string, unknown>) as typeof prevFormData);
+    }
     setErrors({});
   };
 
@@ -198,7 +205,7 @@ const DetailsContent = () => {
 
           // Add the new item if it's not already in the array
           if (!currentSectionWithArrays[field].includes(inputValue)) {
-            currentSectionWithArrays[field].push(inputValue);
+            currentSectionWithArrays[field] = [...(currentSectionWithArrays[field] || []), inputValue];
           }
         }
 
@@ -315,9 +322,11 @@ const DetailsContent = () => {
               name={`quotes.${index}.quote`}
               value={quote.quote || ''}
               onChange={(e) => {
-                const newQuotes = [...(Array.isArray(formData.quotes) ? formData.quotes : [])];
-                newQuotes[index].quote = e.target.value;
-                setFormData({ ...formData, quotes: newQuotes });
+                setFormData((prev) => {
+                  const prevQuotes = Array.isArray(prev.quotes) ? prev.quotes : [];
+                  const newQuotes = prevQuotes.map((q, i) => i === index ? { ...q, quote: e.target.value } : q);
+                  return { ...prev, quotes: newQuotes };
+                });
               }}
               placeholder='Quote'
             />
