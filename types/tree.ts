@@ -13,9 +13,11 @@ export interface GeneralInformation {
   birthdate?: string;
   deathdate?: string;
   birthPlace?: string;
+  birthCountry?: string;
   birthingCenter?: string;
   nationality?: string[];
   civilStatus?: string;
+  status?: string;
   sex?: string;
   height?: string;
   weight?: string;
@@ -28,10 +30,20 @@ export interface GeneralInformation {
   quote?: string;
 }
 
+export interface VitalInformation {
+  sex?: string;
+  height?: string;
+  weight?: string;
+  eyeColor?: string;
+  hairColor?: string;
+  bloodType?: string;
+}
+
 export interface PersonNode {
   profilePicture?: string;
   relatedUser?: string;
   generalInformation?: GeneralInformation;
+  vitalInformation?: VitalInformation;
 }
 
 export interface TreeNode {

@@ -6,6 +6,7 @@ import useAuth from '@/hooks/useAuth';
 import { z } from 'zod';
 import { formDataSchema } from '@/lib/schema';
 import { sectionConfigs } from '@/lib/constants';
+import { UserFriend } from '@/types/profile';
 
 const DetailsContent = () => {
   const { selectedDetail, profileTabs, userData, updateUserData, isFetching } = useProfile();
@@ -537,7 +538,7 @@ const DetailsContent = () => {
                 <h2 className='text-xl sm:text-2xl font-bold mb-4'>Connections</h2>
                 <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4'>
                   {
-                    userData?.friendsList.map((friend: any) => ( 
+                    userData?.friendsList?.map((friend: UserFriend) => ( 
                       <ConnectionCard key={friend.userId} result={friend} />
                     ))
                   }

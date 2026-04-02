@@ -8,6 +8,7 @@ import useAuth from '@/hooks/useAuth';
 import { SquarePenIcon } from 'lucide-react';
 import updateService from '@/services/api/updateService';
 import { UpdateType } from '@/services/api/updateService';
+import { UserFriend } from '@/types/profile';
 
 const ProfileHeader = () => {
   const { user } = useAuth();
@@ -189,7 +190,7 @@ const ProfileHeader = () => {
           </div>
         )}
         
-        <h1 className='text-xl font-bold mt-2'>{userData?.generalInformation.firstname} {userData?.generalInformation.middlename} {userData?.generalInformation.lastname}</h1>
+        <h1 className='text-xl font-bold mt-2'>{userData?.generalInformation?.firstname} {userData?.generalInformation?.middlename} {userData?.generalInformation?.lastname}</h1>
         <p className='text-gray-700'>ID: {userData?.userId}</p>
         <div className='flex mt-2'>
           <Link href={'/dashboard/family-tree/' + userData?.userId} className='bg-white hover:bg-btn-secondary transition-colors duration-300 text-primary border-1 border-green px-2 py-1 rounded-lg mr-2'>
@@ -200,16 +201,16 @@ const ProfileHeader = () => {
             (
               <button
                 onClick={() => {
-                    if (userFriends?.friendRequest?.includes(userData?.userId)) {
+                    if (userFriends?.friendRequest?.includes(userData?.userId ?? '')) {
                       // When accepting a friend request
-                      acceptFriendRequest(userData?.userId);
-                      
+                      acceptFriendRequest(userData?.userId ?? '');
+
                       // Create an update for the logged-in user
                       updateService.acceptConnectionRequest(userData?.name || 'User');
-                    } else if (!userData?.friendsList.some((friend : any) => friend.userId === user?.id)) {
+                    } else if (!userData?.friendsList?.some((friend: UserFriend) => friend.userId === user?.id)) {
                       // When sending a friend request
-                      sendFriendRequest(userData?.userId);
-                      
+                      sendFriendRequest(userData?.userId ?? '');
+
                       // Create an update for the logged-in user
                       updateService.sendConnectionRequest(userData?.name || 'User');
                     }
@@ -217,11 +218,11 @@ const ProfileHeader = () => {
                 }
                 className='bg-primary hover:bg-primary/70 transition-colors duration-300  cursor-pointer text-white border-1 hover:border-white border-green px-2 py-1 rounded-lg'>
                   {
-                    userData?.friendsList.some((friend : any) => friend.userId === user?.id) ? 
-                    "Connected" : 
-                    userData?.friendRequestList.includes(user?.id) ? 
-                    "Sent Request" 
-                    : userFriends?.friendRequest?.includes(userData?.userId)
+                    userData?.friendsList?.some((friend: UserFriend) => friend.userId === user?.id) ?
+                    "Connected" :
+                    userData?.friendRequestList?.includes(user?.id ?? '') ?
+                    "Sent Request"
+                    : userFriends?.friendRequest?.includes(userData?.userId ?? '')
                     ? "Accept Request":
                     "Connect"
                   }

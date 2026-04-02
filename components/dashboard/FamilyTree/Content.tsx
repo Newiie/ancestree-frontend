@@ -15,16 +15,27 @@ import {
 import { selectId } from '@/store/userSlice';
 import store from '@/store/store';
 import { MAX_ZOOM, MIN_ZOOM, ZOOM_STEP, FALLBACK_AVATAR } from '@/lib/constants';
+import { TreeNode } from '@/types/tree';
 
-const Node = ({ 
-    node, 
-    selectedNode, 
-    setSelectedNode, 
-    toggleAddFamilyModal, 
-    toggleEditPersonModal, 
+interface NodeProps {
+  node: TreeNode;
+  selectedNode: string;
+  setSelectedNode: (id: string) => void;
+  toggleAddFamilyModal: () => void;
+  toggleEditPersonModal: () => void;
+  toggleConnectPersonModal: () => void;
+  handleDeletePersonNode: () => Promise<void>;
+}
+
+const Node = ({
+    node,
+    selectedNode,
+    setSelectedNode,
+    toggleAddFamilyModal,
+    toggleEditPersonModal,
     toggleConnectPersonModal,
     handleDeletePersonNode
-}: any) => {
+}: NodeProps) => {
     const router = useRouter();
     const { userId } = useTree();
     function capitalizeFirstLetter(text: string) {
@@ -103,13 +114,13 @@ const Node = ({
                                         <p className='pt-4'>
                                             Name: 
                                             <span className='pl-2 text-[#7C7C7C]'>
-                                                {node?.person?.generalInformation.firstName} 
+                                                {node?.person?.generalInformation?.firstName}
                                                 {" "}
-                                                {node?.person?.generalInformation.middleName} 
+                                                {node?.person?.generalInformation?.middleName}
                                                 {" "}
-                                                {node?.person?.generalInformation.lastName}
+                                                {node?.person?.generalInformation?.lastName}
                                                 {" "}
-                                                {node?.person?.generalInformation.suffix}
+                                                {node?.person?.generalInformation?.suffix}
                                             </span>
                                         </p>
                                         {
@@ -119,7 +130,7 @@ const Node = ({
                                                     <p>
                                                         Sex: 
                                                         <span className='pl-2 text-[#7C7C7C]'>
-                                                        {capitalizeFirstLetter(node?.person?.vitalInformation?.sex)}
+                                                        {capitalizeFirstLetter(node?.person?.vitalInformation?.sex ?? '')}
                                                         </span>
                                                     </p>
                                                 </>
@@ -132,35 +143,35 @@ const Node = ({
                                                     <p>
                                                         Status: 
                                                         <span className='pl-2 text-[#7C7C7C]'>
-                                                            {capitalizeFirstLetter(node?.person?.generalInformation?.status)}
+                                                            {capitalizeFirstLetter(node?.person?.generalInformation?.status ?? '')}
                                                         </span>
                                                     </p>
                                                 </>
                                             )
                                         }
                                         {
-                                            node?.person?.generalInformation.birthPlace && (
+                                            node?.person?.generalInformation?.birthPlace && (
                                                 <>
 
                                                     <p>
-                                                        Birth Place: 
+                                                        Birth Place:
                                                         <span className='pl-2 text-[#7C7C7C]'>
-                                                            {capitalizeFirstLetter(node?.person?.generalInformation.birthPlace)}
+                                                            {capitalizeFirstLetter(node?.person?.generalInformation?.birthPlace ?? '')}
                                                         </span>
                                                     </p>
                                                 </>
                                             )
                                         }
-                                       
+
 
                                         {
-                                            node?.person?.generalInformation.birthCountry && (
+                                            node?.person?.generalInformation?.birthCountry && (
                                                 <>
 
                                                     <p>
-                                                        Birth Country: 
+                                                        Birth Country:
                                                         <span className='pl-2 text-[#7C7C7C]'>
-                                                            {capitalizeFirstLetter(node?.person?.generalInformation.birthCountry)}
+                                                            {capitalizeFirstLetter(node?.person?.generalInformation?.birthCountry ?? '')}
                                                         </span>
                                                     </p>
                                                 </>
@@ -168,27 +179,27 @@ const Node = ({
                                         }
                                       
 
-                                        {node?.person?.generalInformation?.nationality?.length > 0 && (
+                                        {(node?.person?.generalInformation?.nationality?.length ?? 0) > 0 && (
                                             <>
 
                                                 <div>
                                                     <p>
                                                         Nationality:
                                                     </p>
-                                                    {node?.person?.generalInformation?.nationality?.map((nationality : any) => (
+                                                    {node?.person?.generalInformation?.nationality?.map((nationality: string) => (
                                                         <span className='pl-4 text-[#7C7C7C]' key={nationality}>{capitalizeFirstLetter(nationality)}</span>
                                                     ))}
                                                 </div>
                                             </>
                                         )}
                                         {
-                                            node?.person?.generalInformation.birthdate && (
+                                            node?.person?.generalInformation?.birthdate && (
                                                 <>
 
                                                     <p>
-                                                        Birth Date: 
+                                                        Birth Date:
                                                         <span className='pl-2 text-[#7C7C7C]'>
-                                                            {node?.person?.generalInformation.birthdate.slice(0, 10)}
+                                                            {node?.person?.generalInformation?.birthdate.slice(0, 10)}
                                                         </span>
                                                     </p>
                                                 </>
@@ -197,19 +208,19 @@ const Node = ({
                                          
 
                                         {
-                                            node?.parents.length > 0 && (
+                                            (node?.parents?.length ?? 0) > 0 && (
                                                 <>
 
                                                     <p>
                                                         Parents:
                                                     </p>
-                                                    {node?.parents.map((parent : any, index: number) => (
+                                                    {node?.parents?.map((parent: TreeNode, index: number) => (
                                                         <p className='pl-4 text-[#7C7C7C]' key={parent.personNodeId ?? index}>
-                                                            {capitalizeFirstLetter(parent.person.generalInformation?.firstName)}
+                                                            {capitalizeFirstLetter(parent.person?.generalInformation?.firstName ?? '')}
                                                             {" "}
-                                                            {capitalizeFirstLetter(parent.person.generalInformation?.middleName)}
+                                                            {capitalizeFirstLetter(parent.person?.generalInformation?.middleName ?? '')}
                                                             {" "}
-                                                            {capitalizeFirstLetter(parent.person.generalInformation?.lastName)}
+                                                            {capitalizeFirstLetter(parent.person?.generalInformation?.lastName ?? '')}
                                                         </p>
                                                     ))}
                                                 </>
@@ -256,7 +267,7 @@ const Node = ({
             {/* Render children nodes */}
             {node.children && node.children.length > 0 && (
                 <ul className="tree-content">
-                    {node.children.map((childNode: any) => (
+                    {node.children.map((childNode: TreeNode) => (
                         <Node 
                             key={childNode.personNodeId}
                             node={childNode}
@@ -318,9 +329,9 @@ const Content = () => {
       isDragging.current = false;
     };
 
-    const renderTree = (nodes: any) => (
+    const renderTree = (nodes: TreeNode[]) => (
         <ul className='tree-content'>
-            {nodes.map((node: any) =>  (
+            {nodes.map((node: TreeNode) =>  (
                 <Node 
                     key={node.personNodeId}
                     node={node}

@@ -20,7 +20,7 @@ const fetchTreeData = async (userId: string) => {
 }
 
 
-const postAddParent = async (treeId: string, formData: any) => {
+const postAddParent = async (treeId: string, formData: FormData) => {
     const token = selectToken(store.getState());
     const response = await fetch(`${baseUrl}/trees/add-parent`, {
         method: "POST",

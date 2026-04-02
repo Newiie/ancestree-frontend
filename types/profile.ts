@@ -4,6 +4,11 @@ export interface UserFriend {
   user?: UserData;
 }
 
+export interface FriendListResponse {
+  friends?: string[];
+  friendRequest?: string[];
+}
+
 export interface UserData {
   userId?: string;
   relatedUser?: string;
@@ -12,8 +17,11 @@ export interface UserData {
   friendsList?: UserFriend[];
   generalInformation?: {
     firstName?: string;
+    firstname?: string;
     middleName?: string;
+    middlename?: string;
     lastName?: string;
+    lastname?: string;
     suffix?: string;
     birthdate?: string;
     deathdate?: string;
@@ -51,4 +59,6 @@ export interface UserData {
   aboutMe?: string;
   quote?: string;
   message?: string;
+  name?: string;
+  friendRequestList?: string[];
 }

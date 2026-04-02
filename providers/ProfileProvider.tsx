@@ -5,24 +5,25 @@ import { useRouter } from 'next/navigation';
 import useAuth from '@/hooks/useAuth';
 import profileService from '@/services/api/profileService';
 import { toast } from 'sonner';
+import { UserData, UserFriend, FriendListResponse } from '@/types/profile';
 
 interface ProfileProviderType {
   selectedDetail: string;
   setSelectedDetail: (detail: string) => void;
   profileTabs: string;
   setProfileTabs: (tabs: string) => void;
-  userData: any;
-  setUserData: (data: any) => void;
+  userData: UserData | null;
+  setUserData: (data: UserData | null) => void;
   profileSidebarData: string[];
   profileTabsData: string[];
-  updateUserData: (data: any) => void;
+  updateUserData: (data: UserData) => void;
   updateProfileImage: (imageFile: File) => void;
   updateBackgroundImage: (imageFile: File) => void;
   sendFriendRequest: (userId: string) => void;
   acceptFriendRequest: (userId: string) => void;
   isFetching: boolean;
-  userFriends: any;
-  friendsData: any;
+  userFriends: FriendListResponse;
+  friendsData: UserFriend[];
 }
 
 const ProfileContext = createContext<ProfileProviderType | undefined>(undefined);
@@ -30,10 +31,10 @@ const ProfileContext = createContext<ProfileProviderType | undefined>(undefined)
 export const ProfileProvider: React.FC<{ children: ReactNode, userId: string }> = ({ children, userId }) => {
   const [selectedDetail, setSelectedDetail] = useState<string>('General Information');
   const [profileTabs, setProfileTabs] = useState<string>('Personal Details');
-  const [userData, setUserData] = useState<any>(null);
+  const [userData, setUserData] = useState<UserData | null>(null);
   const [isFetching, setIsFetching] = useState<boolean>(true);
-  const [userFriends, setUserFriends] = useState<any>([]);
-  const [friendsData, setFriendsData] = useState<any>([]);
+  const [userFriends, setUserFriends] = useState<FriendListResponse>({});
+  const [friendsData, setFriendsData] = useState<UserFriend[]>([]);
   const user = useAuth();
   const router = useRouter();
 
@@ -109,10 +110,10 @@ export const ProfileProvider: React.FC<{ children: ReactNode, userId: string }> 
     }
   }
 
-  const updateUserData = async (data: any) => {
+  const updateUserData = async (data: UserData) => {
     try {
       const { userId, relatedUser, profilePicture, backgroundPicture, ...restData } = data;
-      await profileService.updateUserData(userId, restData);
+      await profileService.updateUserData(userId ?? '', restData);
       // axios throws on non-2xx, so reaching here means success
       await profileService.updateUserProgress("Update profile details");
       await fetchUserData();

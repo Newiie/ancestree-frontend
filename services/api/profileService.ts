@@ -2,6 +2,7 @@ import axios from "axios";
 import store from "@/store/store";
 import { selectToken, selectId } from "@/store/userSlice";
 import { baseUrl } from '@/lib/config';
+import { UserData } from '@/types/profile';
 
 const fetchUserData = async (userId: string) => {
     const token = selectToken(store.getState());
@@ -13,7 +14,7 @@ const fetchUserData = async (userId: string) => {
     return response.data;
 }
 
-const updateUserData = async (userId: string, data: any) => {
+const updateUserData = async (userId: string, data: Partial<UserData>) => {
     const token = selectToken(store.getState());
     const headers = {
         'Content-Type': 'application/json',

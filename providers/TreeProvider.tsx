@@ -4,23 +4,24 @@ import useAuth from '@/hooks/useAuth';
 import TreeService from '@/services/api/treeService';
 import { setUser } from '@/store/userSlice';
 import { toast } from 'sonner';
+import { TreeNode } from '@/types/tree';
 
 interface TreeContextType {
   addFamilyMember: boolean;
   toggleAddFamilyModal: () => void;
   toggleEditPersonModal: () => void;
-  treeData: any;
+  treeData: TreeNode[];
   editPersonModal: boolean;
   showConnectPersonModal: boolean;
   setEditPersonModal: (value: boolean) => void;
   setShowConnectPersonModal: (value: boolean) => void;
   toggleConnectPersonModal: () => void;
-  setTreeData: (data: any) => void;
-  handleAddFamilyMember: (selectedPerson: string, formData: any) => void;
-  handleEditPerson: (formData: any) => void;
-  selectedNode: any;
+  setTreeData: (data: TreeNode[]) => void;
+  handleAddFamilyMember: (selectedPerson: string, formData: FormData) => void;
+  handleEditPerson: (formData: FormData) => void;
+  selectedNode: string;
   handleDeletePersonNode: () => Promise<void>;
-  setSelectedNode: (node: any) => void;
+  setSelectedNode: (node: string) => void;
   handleConnectPersonToUser: (userId: string) => void;
   isFetching: boolean;
   userId: string;
@@ -28,13 +29,6 @@ interface TreeContextType {
 }
 
 const TreeContext = createContext<TreeContextType | undefined>(undefined);
-
-interface TreeNode {
-  personNodeId: string;
-  name: string;
-  children: TreeNode[];
-  parent?: Array<{ personNodeId: string }>;
-}
 
 export const TreeProvider: React.FC<{ children: ReactNode, id: string }> = ({ children, id }) => {
 
@@ -47,7 +41,7 @@ export const TreeProvider: React.FC<{ children: ReactNode, id: string }> = ({ ch
     const [isFetching, setIsFetching] = useState(false);
     const [apiEvent, setApiEvent] = useState(false);
     const selectedPerson = useRef("");
-    const [treeData, setTreeData] = useState<any>([]);
+    const [treeData, setTreeData] = useState<TreeNode[]>([]);
 
     useEffect(() => {
         if (id) {
@@ -67,7 +61,7 @@ export const TreeProvider: React.FC<{ children: ReactNode, id: string }> = ({ ch
         }
     }, [apiEvent, id]);
 
-    const handleEditPerson = async (formData: any) => {
+    const handleEditPerson = async (formData: FormData) => {
         setIsFetching(true);
         try {
             await TreeService.patchEditPersonNode(selectedNode, formData);
@@ -80,7 +74,7 @@ export const TreeProvider: React.FC<{ children: ReactNode, id: string }> = ({ ch
         }
     }
 
-    const handleAddFamilyMember = async (selectedPerson: string, formData: any) => {
+    const handleAddFamilyMember = async (selectedPerson: string, formData: FormData) => {
         setIsFetching(true);
         try {
             if (selectedPerson === "Add Child") {

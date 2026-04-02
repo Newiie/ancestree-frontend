@@ -213,7 +213,7 @@ const Content = () => {
             <div className='relative flex flex-col sm:flex-row gap-4 sm:gap-[4rem] rounded-sm w-full sm:pl-16 py-2 px-4 bg-[#D4E2CC]'>
               <div className='text-center sm:text-left'>
                 <p className='text-xl sm:text-[2rem] text-black/80 font-semibold'>
-                  {userData?.generalInformation.firstName} {userData?.generalInformation.lastName}
+                  {userData?.generalInformation?.firstName} {userData?.generalInformation?.lastName}
                 </p>
               </div>
               <div className='flex justify-center sm:justify-start items-center'>
