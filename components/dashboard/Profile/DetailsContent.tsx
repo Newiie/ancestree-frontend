@@ -315,7 +315,7 @@ const DetailsContent = () => {
               name={`quotes.${index}.quote`}
               value={quote.quote || ''}
               onChange={(e) => {
-                const newQuotes = [...formData.quotes];
+                const newQuotes = [...(Array.isArray(formData.quotes) ? formData.quotes : [])];
                 newQuotes[index].quote = e.target.value;
                 setFormData({ ...formData, quotes: newQuotes });
               }}
