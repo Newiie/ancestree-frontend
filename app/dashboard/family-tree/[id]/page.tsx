@@ -12,6 +12,7 @@ import {
 import { ACCEPTED_IMAGE_TYPES, MAX_FILE_SIZE_BYTES } from '@/lib/constants';
 import { TreeProvider, useTree } from '../../../../providers/TreeProvider'
 import Image from 'next/image'
+import { findNodeRecursively } from '@/lib/treeUtils'
 
 const AddFamilyMember = () => {
   const [selectedPerson, setSelectedPerson] = useState('Add Child');
@@ -760,20 +761,6 @@ const EditPersonNode = () => {
   );
 };
 
-const findNodeRecursively = (nodes: any[], personNodeId: string): any | null => {
-  for (const node of nodes) {
-    if (node.personNodeId === personNodeId) {
-      return node;
-    }
-    
-    // Recursively search children
-    if (node.children && node.children.length > 0) {
-      const foundInChildren = findNodeRecursively(node.children, personNodeId);
-      if (foundInChildren) return foundInChildren;
-    }
-  }
-  return null;
-};
 
 const ConnectPersonModal = () => {
   const { 
