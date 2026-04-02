@@ -101,9 +101,9 @@ const getFriendList = async () => {
 const populateFriendList = async () => {
     const friendList = await getFriendList();
     if (!friendList || !friendList.friends) return [];
-    const populatedFriendList = await Promise.all(friendList.friends.map(async (friend: any) => {
-        const user = await fetchUserData(friend.toString());
-        return { ...friend, user };
+    const populatedFriendList = await Promise.all(friendList.friends.map(async (friend: string) => {
+        const user = await fetchUserData(friend);
+        return { id: friend, user };
     }));
     return populatedFriendList;
 }
