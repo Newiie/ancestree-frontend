@@ -4,6 +4,7 @@ import { baseUrl } from '@/lib/config';
 import updateService from './updateService';
 import { UpdateType } from './updateService';
 import profileService from './profileService';
+import { ApiError } from '@/lib/errors';
 
 const fetchTreeData = async (userId: string) => {
     const response = await fetch(`${baseUrl}/trees/family-tree/${userId}`, {
@@ -13,7 +14,7 @@ const fetchTreeData = async (userId: string) => {
         },
     });
     if (!response.ok) {
-        throw new Error(`Failed to fetch tree data: ${response.status}`);
+        throw new ApiError(response.status, `Failed to fetch tree data: ${response.status}`);
     }
     const data = await response.json();
     return data;
@@ -31,7 +32,7 @@ const postAddParent = async (treeId: string, formData: FormData) => {
         body: formData,
     });
     if (!response.ok) {
-        throw new Error(`Failed to add parent: ${response.status}`);
+        throw new ApiError(response.status, `Failed to add parent: ${response.status}`);
     }
     const data = await response.json();
     const parentName = data.name || data.fullName || 'New Family Member';
@@ -51,7 +52,7 @@ const postAddChild = async (treeId: string, formData: FormData) => {
         body: formData,
     });
     if (!response.ok) {
-        throw new Error(`Failed to add child: ${response.status}`);
+        throw new ApiError(response.status, `Failed to add child: ${response.status}`);
     }
     const data = await response.json();
     const childName = data.name || data.fullName || 'New Family Member';
@@ -71,7 +72,7 @@ const patchEditPersonNode = async (nodeId: string, formData: FormData) => {
         body: formData,
     });
     if (!response.ok) {
-        throw new Error(`Failed to edit person node: ${response.status}`);
+        throw new ApiError(response.status, `Failed to edit person node: ${response.status}`);
     }
     const data = await response.json();
     await updateService.createUpdate(
@@ -91,7 +92,7 @@ const deletePersonNode = async (nodeId: string) => {
         },
     });
     if (!response.ok) {
-        throw new Error(`Failed to delete person node: ${response.status}`);
+        throw new ApiError(response.status, `Failed to delete person node: ${response.status}`);
     }
     const data = await response.json();
     await updateService.createUpdate(
@@ -112,7 +113,7 @@ const postConnectPersonToUser = async (userId: string, nodeId: string) => {
         body: JSON.stringify({ nodeId }),
     });
     if (!response.ok) {
-        throw new Error(`Failed to connect person to user: ${response.status}`);
+        throw new ApiError(response.status, `Failed to connect person to user: ${response.status}`);
     }
     const data = await response.json();
     await updateService.createUpdate(
@@ -132,7 +133,7 @@ const acceptConnectionRequest = async (nodeId: string) => {
         },
     });
     if (!response.ok) {
-        throw new Error(`Failed to accept connection request: ${response.status}`);
+        throw new ApiError(response.status, `Failed to accept connection request: ${response.status}`);
     }
     const data = await response.json();
     await updateService.createUpdate(
