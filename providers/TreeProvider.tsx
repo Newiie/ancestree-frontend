@@ -98,11 +98,14 @@ export const TreeProvider: React.FC<{ children: ReactNode, id: string }> = ({ ch
     };
 
     const handleConnectPersonToUser = async (userId: string) => {
+        setIsFetching(true);
         try {
             await TreeService.postConnectPersonToUser(userId, selectedNode);
             setApiEvent(!apiEvent);
         } catch {
             toast.error('Failed to connect person. Please try again.');
+        } finally {
+            setIsFetching(false);
         }
     }
 
@@ -119,11 +122,14 @@ export const TreeProvider: React.FC<{ children: ReactNode, id: string }> = ({ ch
     }
 
     const handleDeletePersonNode = async () => {
+        setIsFetching(true);
         try {
             await TreeService.deletePersonNode(selectedNode);
             setApiEvent(!apiEvent);
         } catch {
             toast.error('Failed to delete person. Please try again.');
+        } finally {
+            setIsFetching(false);
         }
     };
 

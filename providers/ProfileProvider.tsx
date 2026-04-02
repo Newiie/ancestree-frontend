@@ -3,7 +3,6 @@
 import React, { createContext, useContext, useState, ReactNode, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import useAuth from '@/hooks/useAuth';
-import axios from 'axios';
 import profileService from '@/services/api/profileService';
 import { toast } from 'sonner';
 
