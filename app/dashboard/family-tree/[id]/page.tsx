@@ -364,7 +364,7 @@ const AddFamilyMember = () => {
           <div className='flex items-center gap-4'>
             <input
               type="file"
-              accept="image/jpeg,image/png,image/gif"
+              accept={ACCEPTED_IMAGE_TYPES.join(',')}
               onChange={handlePictureChange}
               className='hidden'
               id="profilePicture"
@@ -712,7 +712,7 @@ const EditPersonNode = () => {
           <div className='flex items-center gap-4'>
             <input
               type="file"
-              accept="image/jpeg,image/png,image/gif"
+              accept={ACCEPTED_IMAGE_TYPES.join(',')}
               onChange={handlePictureChange}
               className='hidden'
               id="editProfilePicture"
