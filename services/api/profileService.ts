@@ -4,6 +4,7 @@ import { selectToken, selectId } from "@/store/userSlice";
 import { baseUrl } from '@/lib/config';
 import { UserData } from '@/types/profile';
 import { ApiError } from '@/lib/errors';
+import { userDataResponseSchema } from '@/lib/schema';
 
 const fetchUserData = async (userId: string) => {
     const token = selectToken(store.getState());
@@ -13,8 +14,16 @@ const fetchUserData = async (userId: string) => {
     };
     try {
         const response = await axios.get(`${baseUrl}/person/${userId}`, { headers });
-        return response.data;
+        const data = response.data;
+        const parsed = userDataResponseSchema.safeParse(data);
+        if (!parsed.success) {
+            throw new ApiError(500, 'Unexpected response shape from user API');
+        }
+        return data;
     } catch (error: unknown) {
+        if (error instanceof ApiError) {
+            throw error;
+        }
         if (error instanceof Error && 'response' in error) {
             const axiosError = error as { response?: { status: number } };
             throw new ApiError(axiosError.response?.status ?? 500, 'Failed to fetch user data');

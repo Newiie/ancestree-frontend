@@ -5,6 +5,7 @@ import updateService from './updateService';
 import { UpdateType } from './updateService';
 import profileService from './profileService';
 import { ApiError } from '@/lib/errors';
+import { treeDataResponseSchema } from '@/lib/schema';
 
 const fetchTreeData = async (userId: string) => {
     const response = await fetch(`${baseUrl}/trees/family-tree/${userId}`, {
@@ -17,6 +18,10 @@ const fetchTreeData = async (userId: string) => {
         throw new ApiError(response.status, `Failed to fetch tree data: ${response.status}`);
     }
     const data = await response.json();
+    const parsed = treeDataResponseSchema.safeParse(data);
+    if (!parsed.success) {
+        throw new ApiError(500, 'Unexpected response shape from tree API');
+    }
     return data;
 }
 

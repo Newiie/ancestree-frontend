@@ -94,3 +94,18 @@ const connectPersonSchema = z.object({
 });
 
 export { formDataSchema, registerSchema, familyMemberSchema, editPersonSchema, connectPersonSchema };
+
+// Response schema for fetchTreeData
+export const treeDataResponseSchema = z.object({
+  familyTree: z.object({
+    root: z.object({
+      id: z.string().optional(),
+      personNodeId: z.string().optional(),
+    }).passthrough(),
+  }),
+}).passthrough();
+
+// Response schema for fetchUserData — lenient due to backend field inconsistency
+export const userDataResponseSchema = z.object({
+  userId: z.string().optional(),
+}).passthrough();
