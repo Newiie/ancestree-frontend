@@ -1,3 +1,4 @@
+"use client";
 import React, { useState, useEffect } from 'react';
 import { useProfile } from '../../../providers/ProfileProvider';
 import { SquarePenIcon, StarIcon } from 'lucide-react';
@@ -33,7 +34,8 @@ const DetailsContent = () => {
       middleName: '',
       lastName: '',
       suffix: '',
-      birthDate: '',
+      birthdate: '',
+      deathdate: '',
       birthPlace: '',
       birthingCenter: '',
       nationality: [] as string[],
@@ -304,7 +306,7 @@ const DetailsContent = () => {
     }
 
     if (section === 'quotes') {
-      return formData.quotes.map((quote, index) => (
+      return (Array.isArray(formData.quotes) ? formData.quotes : []).map((quote, index) => (
         <div key={index} className='mb-1'>
           {isEditing ? (
             <input
@@ -389,7 +391,7 @@ const DetailsContent = () => {
               <div className='space-y-4'>
                 <h2 className='text-xl sm:text-2xl font-bold'>Profile Memo</h2>
                 <p className='text-center text-base sm:text-2xl md:text-[2.5rem] w-full md:w-[60%] mx-auto'>
-                  &quot;{formData.quotes.find((quote) => quote.isFavorite)?.quote || 'No Profile Memo'}&quot;
+                  &quot;{(Array.isArray(formData.quotes) ? formData.quotes.find((quote) => quote.isFavorite) : null)?.quote || 'No Profile Memo'}&quot;
                 </p>
                 <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
                   <div>
