@@ -24,9 +24,8 @@ const fetchUserData = async (userId: string) => {
         if (error instanceof ApiError) {
             throw error;
         }
-        if (error instanceof Error && 'response' in error) {
-            const axiosError = error as { response?: { status: number } };
-            throw new ApiError(axiosError.response?.status ?? 500, 'Failed to fetch user data');
+        if (axios.isAxiosError(error)) {
+            throw new ApiError(error.response?.status ?? 500, 'Failed to fetch user data');
         }
         throw new ApiError(500, 'Failed to fetch user data');
     }
@@ -46,9 +45,8 @@ const updateUserData = async (userId: string, data: Partial<UserData>) => {
         );
         return response.data;
     } catch (error: unknown) {
-        if (error instanceof Error && 'response' in error) {
-            const axiosError = error as { response?: { status: number } };
-            throw new ApiError(axiosError.response?.status ?? 500, 'Failed to update user data');
+        if (axios.isAxiosError(error)) {
+            throw new ApiError(error.response?.status ?? 500, 'Failed to update user data');
         }
         throw new ApiError(500, 'Failed to update user data');
     }
@@ -68,9 +66,8 @@ const updateProfileImage = async (userId: string, formData: FormData) => {
         );
         return response.data;
     } catch (error: unknown) {
-        if (error instanceof Error && 'response' in error) {
-            const axiosError = error as { response?: { status: number } };
-            throw new ApiError(axiosError.response?.status ?? 500, 'Failed to update profile image');
+        if (axios.isAxiosError(error)) {
+            throw new ApiError(error.response?.status ?? 500, 'Failed to update profile image');
         }
         throw new ApiError(500, 'Failed to update profile image');
     }
@@ -90,9 +87,8 @@ const updateBackgroundImage = async (userId: string, formData: FormData) => {
         );
         return response.data;
     } catch (error: unknown) {
-        if (error instanceof Error && 'response' in error) {
-            const axiosError = error as { response?: { status: number } };
-            throw new ApiError(axiosError.response?.status ?? 500, 'Failed to update background image');
+        if (axios.isAxiosError(error)) {
+            throw new ApiError(error.response?.status ?? 500, 'Failed to update background image');
         }
         throw new ApiError(500, 'Failed to update background image');
     }
@@ -112,9 +108,8 @@ const sendFriendRequest = async (userId: string) => {
         );
         return response.data;
     } catch (error: unknown) {
-        if (error instanceof Error && 'response' in error) {
-            const axiosError = error as { response?: { status: number } };
-            throw new ApiError(axiosError.response?.status ?? 500, 'Failed to send friend request');
+        if (axios.isAxiosError(error)) {
+            throw new ApiError(error.response?.status ?? 500, 'Failed to send friend request');
         }
         throw new ApiError(500, 'Failed to send friend request');
     }
@@ -134,9 +129,8 @@ const acceptFriendRequest = async (userId: string) => {
         );
         return response.data;
     } catch (error: unknown) {
-        if (error instanceof Error && 'response' in error) {
-            const axiosError = error as { response?: { status: number } };
-            throw new ApiError(axiosError.response?.status ?? 500, 'Failed to accept friend request');
+        if (axios.isAxiosError(error)) {
+            throw new ApiError(error.response?.status ?? 500, 'Failed to accept friend request');
         }
         throw new ApiError(500, 'Failed to accept friend request');
     }
@@ -156,22 +150,26 @@ const getFriendList = async () => {
         );
         return response.data;
     } catch (error: unknown) {
-        if (error instanceof Error && 'response' in error) {
-            const axiosError = error as { response?: { status: number } };
-            throw new ApiError(axiosError.response?.status ?? 500, 'Failed to get friend list');
+        if (axios.isAxiosError(error)) {
+            throw new ApiError(error.response?.status ?? 500, 'Failed to get friend list');
         }
         throw new ApiError(500, 'Failed to get friend list');
     }
 }
 
 const populateFriendList = async () => {
-    const friendList = await getFriendList();
-    if (!friendList || !friendList.friends) return [];
-    const populatedFriendList = await Promise.all(friendList.friends.map(async (friend: string) => {
-        const user = await fetchUserData(friend);
-        return { id: friend, user };
-    }));
-    return populatedFriendList;
+    try {
+        const friendList = await getFriendList();
+        if (!friendList || !friendList.friends) return [];
+        const populatedFriendList = await Promise.all(friendList.friends.map(async (friend: string) => {
+            const user = await fetchUserData(friend);
+            return { id: friend, user };
+        }));
+        return populatedFriendList;
+    } catch (error: unknown) {
+        if (error instanceof ApiError) throw error;
+        throw new ApiError(500, 'Failed to populate friend list');
+    }
 }
 
 const updateUserProgress = async (stepTitle: string) => {
@@ -188,9 +186,8 @@ const updateUserProgress = async (stepTitle: string) => {
         );
         return response.data;
     } catch (error: unknown) {
-        if (error instanceof Error && 'response' in error) {
-            const axiosError = error as { response?: { status: number } };
-            throw new ApiError(axiosError.response?.status ?? 500, 'Failed to update user progress');
+        if (axios.isAxiosError(error)) {
+            throw new ApiError(error.response?.status ?? 500, 'Failed to update user progress');
         }
         throw new ApiError(500, 'Failed to update user progress');
     }

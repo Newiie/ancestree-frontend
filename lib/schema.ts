@@ -102,7 +102,7 @@ export const treeDataResponseSchema = z.object({
       id: z.string().optional(),
       personNodeId: z.string().optional(),
     }).passthrough(),
-  }),
+  }).passthrough(),
 }).passthrough();
 
 // Response schema for fetchUserData — lenient due to backend field inconsistency
