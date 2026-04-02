@@ -13,6 +13,7 @@ const ConnectPersonModal = () => {
   const [userId, setUserId] = useState('');
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     handleConnectPersonToUser(userId);
   };
   return (
