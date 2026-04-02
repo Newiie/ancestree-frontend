@@ -195,17 +195,15 @@ const DetailsContent = () => {
 
         // Type guard to ensure we're working with an object that can have array fields
         if (typeof currentSection === 'object' && currentSection !== null) {
-          // Type assertion to handle array fields
-          const currentSectionWithArrays = currentSection as Record<string, any>;
+          // Spread to avoid mutating the previous state reference
+          const currentSectionWithArrays = { ...(currentSection as Record<string, unknown>) } as Record<string, any>;
+          (updatedData as Record<string, unknown>)[section] = currentSectionWithArrays;
 
-          // Ensure the field is an array
-          if (!Array.isArray(currentSectionWithArrays[field])) {
-            currentSectionWithArrays[field] = [];
-          }
+          const existingArray = Array.isArray(currentSectionWithArrays[field]) ? currentSectionWithArrays[field] : [];
 
           // Add the new item if it's not already in the array
-          if (!currentSectionWithArrays[field].includes(inputValue)) {
-            currentSectionWithArrays[field] = [...(currentSectionWithArrays[field] || []), inputValue];
+          if (!existingArray.includes(inputValue)) {
+            currentSectionWithArrays[field] = [...existingArray, inputValue];
           }
         }
 
