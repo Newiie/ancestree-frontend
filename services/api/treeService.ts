@@ -6,183 +6,143 @@ import { UpdateType } from './updateService';
 import profileService from './profileService';
 
 const fetchTreeData = async (userId: string) => {
-    try {
-        const response = await fetch(`${baseUrl}/trees/family-tree/${userId}`, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-            },
-        });
-        const data = await response.json();
-        return data;   
-    } catch (error) {
+    const response = await fetch(`${baseUrl}/trees/family-tree/${userId}`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+        },
+    });
+    if (!response.ok) {
+        throw new Error(`Failed to fetch tree data: ${response.status}`);
     }
+    const data = await response.json();
+    return data;
 }
 
 
 const postAddParent = async (treeId: string, formData: any) => {
-    try {
-        const token = selectToken(store.getState());
-        const response = await fetch(`${baseUrl}/trees/add-parent`, {
-            method: "POST",
-            headers: {
-                "Authorization": `Bearer ${token}`,
-                "X-Tree-Id": treeId
-            },
-            body: formData,
-        });
-        const data = await response.json();
-        
-        // Create an update when a parent is added
-        if (response.status == 200) {
-            // Extract parent name from the response
-            const parentName = data.name || data.fullName || 'New Family Member';
-            
-            await updateService.addFamilyMember(parentName);
-            
-            // Update user progress for creating first family tree
-            await profileService.updateUserProgress("Create your first Family Tree");
-        }
-        
-        return data;
-    } catch (error) {
+    const token = selectToken(store.getState());
+    const response = await fetch(`${baseUrl}/trees/add-parent`, {
+        method: "POST",
+        headers: {
+            "Authorization": `Bearer ${token}`,
+            "X-Tree-Id": treeId
+        },
+        body: formData,
+    });
+    if (!response.ok) {
+        throw new Error(`Failed to add parent: ${response.status}`);
     }
+    const data = await response.json();
+    const parentName = data.name || data.fullName || 'New Family Member';
+    await updateService.addFamilyMember(parentName);
+    await profileService.updateUserProgress("Create your first Family Tree");
+    return data;
 }
 
 const postAddChild = async (treeId: string, formData: FormData) => {
-    try {
-        const token = selectToken(store.getState());
-        const response = await fetch(`${baseUrl}/trees/add-child`, {
-            method: "POST",
-            headers: {
-                "Authorization": `Bearer ${token}`,
-                "X-Tree-Id": treeId
-            },
-            body: formData,
-        });
-        const data = await response.json();
-        
-        // Create an update when a child is added
-        if (response.status == 200) {
-            // Extract child name from the response
-            const childName = data.name || data.fullName || 'New Family Member';
-            
-            await updateService.addFamilyMember(childName);
-            
-            // Update user progress for creating first family tree
-            await profileService.updateUserProgress("Create your first Family Tree");
-        }
-        
-        return data;
-    } catch (error) {
+    const token = selectToken(store.getState());
+    const response = await fetch(`${baseUrl}/trees/add-child`, {
+        method: "POST",
+        headers: {
+            "Authorization": `Bearer ${token}`,
+            "X-Tree-Id": treeId
+        },
+        body: formData,
+    });
+    if (!response.ok) {
+        throw new Error(`Failed to add child: ${response.status}`);
     }
+    const data = await response.json();
+    const childName = data.name || data.fullName || 'New Family Member';
+    await updateService.addFamilyMember(childName);
+    await profileService.updateUserProgress("Create your first Family Tree");
+    return data;
 }
 
 
 const patchEditPersonNode = async (nodeId: string, formData: FormData) => {
-    try {
-        const token = selectToken(store.getState());
-        const response = await fetch(`${baseUrl}/trees/update-node/${nodeId}`, {
-            method: "PATCH",
-            headers: {
-                "Authorization": `Bearer ${token}`,
-            },
-            body: formData,
-        });
-        const data = await response.json();
-        
-        // Create an update when a person node is edited
-        if (response.status == 200) {
-            await updateService.createUpdate(
-                UpdateType.TREE_UPDATED, 
-                `Person node edited in family tree`
-            );
-        }
-        
-        return data;
-    } catch (error) {
+    const token = selectToken(store.getState());
+    const response = await fetch(`${baseUrl}/trees/update-node/${nodeId}`, {
+        method: "PATCH",
+        headers: {
+            "Authorization": `Bearer ${token}`,
+        },
+        body: formData,
+    });
+    if (!response.ok) {
+        throw new Error(`Failed to edit person node: ${response.status}`);
     }
+    const data = await response.json();
+    await updateService.createUpdate(
+        UpdateType.TREE_UPDATED,
+        `Person node edited in family tree`
+    );
+    return data;
 }
 
-const deletePersonNode = async (nodeId: string ) => {
-    try {
-        const token = selectToken(store.getState());
-
-        const response = await fetch(`${baseUrl}/trees/delete-node/${nodeId}`, {
-            method: "DELETE",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${token}`
-            },
-        });
-
-        const data = await response.json();
-        
-        // Create an update when a person node is deleted
-        if (response.status == 200) {
-            await updateService.createUpdate(
-                UpdateType.TREE_UPDATED, 
-                `Person node deleted from family tree`
-            );
-        }
-        
-        return data;
-    } catch (error) {
+const deletePersonNode = async (nodeId: string) => {
+    const token = selectToken(store.getState());
+    const response = await fetch(`${baseUrl}/trees/delete-node/${nodeId}`, {
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+        },
+    });
+    if (!response.ok) {
+        throw new Error(`Failed to delete person node: ${response.status}`);
     }
+    const data = await response.json();
+    await updateService.createUpdate(
+        UpdateType.TREE_UPDATED,
+        `Person node deleted from family tree`
+    );
+    return data;
 }
 
 const postConnectPersonToUser = async (userId: string, nodeId: string) => {
-    try {
-        const token = selectToken(store.getState());
-        const response = await fetch(`${baseUrl}/trees/connect-person/${userId}`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${token}`
-            },
-            body: JSON.stringify({ nodeId }),
-        });
-        const data = await response.json();
-        
-        // Create an update when a person is connected to a user
-        if (response.status == 200) {
-            await updateService.createUpdate(
-                UpdateType.TREE_UPDATED, 
-                `Person connected to user in family tree`
-            );
-        }
-        
-        return data;
-    } catch (error) {
+    const token = selectToken(store.getState());
+    const response = await fetch(`${baseUrl}/trees/connect-person/${userId}`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+        },
+        body: JSON.stringify({ nodeId }),
+    });
+    if (!response.ok) {
+        throw new Error(`Failed to connect person to user: ${response.status}`);
     }
+    const data = await response.json();
+    await updateService.createUpdate(
+        UpdateType.TREE_UPDATED,
+        `Person connected to user in family tree`
+    );
+    return data;
 }
 
 const acceptConnectionRequest = async (nodeId: string) => {
-    try {   
-        const token = selectToken(store.getState());
-        const response = await fetch(`${baseUrl}/trees/accept-connection-request/${nodeId}`, {
-            method: "PATCH",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${token}`
-            },
-        });
-        const data = await response.json();
-        
-        // Create an update when a connection request is accepted
-        if (response.status == 200) {
-            await updateService.createUpdate(
-                UpdateType.TREE_UPDATED, 
-                `Connection request accepted in family tree`
-            );
-        }
-        
-        return data;
-    } catch (error) {
+    const token = selectToken(store.getState());
+    const response = await fetch(`${baseUrl}/trees/accept-connection-request/${nodeId}`, {
+        method: "PATCH",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+        },
+    });
+    if (!response.ok) {
+        throw new Error(`Failed to accept connection request: ${response.status}`);
     }
+    const data = await response.json();
+    await updateService.createUpdate(
+        UpdateType.TREE_UPDATED,
+        `Connection request accepted in family tree`
+    );
+    return data;
 }
 
-const TreeService = { 
+const TreeService = {
     fetchTreeData,
     postAddChild,
     deletePersonNode,
