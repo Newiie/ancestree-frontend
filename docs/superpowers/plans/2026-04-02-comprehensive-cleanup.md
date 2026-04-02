@@ -82,7 +82,7 @@
 **Files:**
 - Modify: `lib/config.ts`
 
-- [ ] **Step 1: Update env var reference**
+- [ ] **Step 1: Update env var reference in lib/config.ts**
 
 Replace the entire file contents:
 
@@ -93,6 +93,15 @@ export {
     baseUrl 
 };
 ```
+
+- [ ] **Step 1b: Verify .env file uses the correct key**
+
+Open `.env`. It should contain:
+```
+NEXT_PUBLIC_API_URL=http://localhost:3001/api
+```
+
+If it says `NEXT_PUBLIC_API_BASE_URL`, rename that key to `NEXT_PUBLIC_API_URL`. If any other env files exist (`.env.local`, `.env.production`), update them too.
 
 - [ ] **Step 2: Verify build compiles**
 
@@ -148,6 +157,16 @@ In `services/api/profileService.ts`, delete every `console.error(...)` line insi
 - [ ] **Step 4: Remove console.error calls from notificationService.ts**
 
 In `services/api/notificationService.ts`, delete the two `console.error(...)` lines (inside `fetchNotifications` and `readNotification` catch blocks). The `throw error` lines must stay — they are correct error propagation.
+
+- [ ] **Step 4b: Remove console statements from remaining service files**
+
+These files also have console statements that will fail the ESLint no-console rule added in Task 4:
+
+- `services/api/authService.ts` — delete line 8: `console.log("Response: ", response)` and line 11: `console.log("Error: ", error)`
+- `services/api/dashboardService.ts` — delete 4 `console.error(...)` lines (lines 19, 36, 53, 70)
+- `services/api/relationshipService.ts` — delete 1 `console.error(...)` line (line 29)
+- `services/api/updateService.ts` — delete 3 `console.error(...)` lines (lines 33, 50, 75)
+- `services/api/galleryService.ts` — delete any `console.log` or `console.error` calls
 
 - [ ] **Step 5: Verify TypeScript compiles**
 
@@ -274,6 +293,8 @@ git commit -m "chore: add no-console ESLint rule to prevent regression"
 ---
 
 ### Task 5: Remove service error swallowing — treeService
+
+> ⚠️ **Coupling note:** This task and Task 7 must be committed in the same session without deploying in between. After this task removes the treeService try/catch, errors propagate up to TreeProvider. Task 7 adds the catch handlers in TreeProvider. Do Task 5 → Task 7 → single combined commit or commit each individually but do not stop between them.
 
 **Files:**
 - Modify: `services/api/treeService.ts`
@@ -695,11 +716,13 @@ git commit -m "fix: remove error swallowing from profileService"
 **Files:**
 - Modify: `providers/TreeProvider.tsx`
 
-- [ ] **Step 1: Remove dead import**
+- [ ] **Step 1: Remove dead and unused imports**
 
-Delete line 6 from `providers/TreeProvider.tsx`:
+Delete these two lines from `providers/TreeProvider.tsx`:
 ```typescript
-// DELETE THIS LINE:
+// DELETE line 3 (axios is never used in TreeProvider):
+import axios from 'axios';
+// DELETE line 6 (set is never used):
 import { set } from 'zod';
 ```
 
@@ -847,14 +870,29 @@ Replace the catch block in `fetchUserData`:
 }
 ```
 
-- [ ] **Step 3: Fix populateFriendList — add catch in useEffect**
+- [ ] **Step 3: Fix populateFriendList — add null guard + catch in useEffect**
 
-Replace the `populateFriendList` call inside `useEffect` (lines 79–85):
+`populateFriendList` in `profileService` accesses `friendList.friends` without checking if `friendList` is defined. Fix the service first:
+
+In `services/api/profileService.ts`, update `populateFriendList`:
+```typescript
+const populateFriendList = async () => {
+    const friendList = await getFriendList();
+    if (!friendList || !friendList.friends) return [];
+    const populatedFriendList = await Promise.all(friendList.friends.map(async (friend: any) => {
+        const user = await fetchUserData(friend.toString());
+        return { ...friend, user };
+    }));
+    return populatedFriendList;
+}
+```
+
+Then in `ProfileProvider.tsx`, update the `populateFriendList` call inside `useEffect` (lines 79–85):
 
 ```typescript
 const populateFriendList = async () => {
     const friendList = await profileService.populateFriendList();
-    setFriendsData(friendList);
+    setFriendsData(friendList ?? []);
 }
 
 populateFriendList().catch(() => {
@@ -880,12 +918,22 @@ Replace the catch block in `acceptFriendRequest`:
 }
 ```
 
-- [ ] **Step 6: Add toast to updateUserData catch**
+- [ ] **Step 6: Fix updateUserData success path and add toast to catch**
 
-Replace the catch block in `updateUserData`:
+`ProfileProvider.updateUserData` currently checks `response.status === 200`, but `profileService.updateUserData` returns `response.data` (the body), not the axios response object — so `.status` is always `undefined` and `updateUserProgress` + `fetchUserData` are never called on success.
+
+Replace the entire `updateUserData` function in `ProfileProvider.tsx`:
 ```typescript
-} catch {
-    toast.error('Failed to update profile. Please try again.');
+const updateUserData = async (data: any) => {
+    try {
+        const { userId, relatedUser, profilePicture, backgroundPicture, ...restData } = data;
+        await profileService.updateUserData(userId, restData);
+        // axios throws on non-2xx, so reaching here means success
+        await profileService.updateUserProgress("Update profile details");
+        await fetchUserData();
+    } catch {
+        toast.error('Failed to update profile. Please try again.');
+    }
 }
 ```
 
