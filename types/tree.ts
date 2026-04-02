@@ -1,0 +1,48 @@
+import { z } from 'zod';
+import { familyMemberSchema } from '@/lib/schema';
+
+// Backend API returns both casings on generalInformation fields.
+// Both are optional until the backend normalises field names.
+export interface GeneralInformation {
+  firstName?: string;
+  firstname?: string;
+  middleName?: string;
+  lastName?: string;
+  lastname?: string;
+  suffix?: string;
+  birthdate?: string;
+  deathdate?: string;
+  birthPlace?: string;
+  birthingCenter?: string;
+  nationality?: string[];
+  civilStatus?: string;
+  sex?: string;
+  height?: string;
+  weight?: string;
+  eyeColor?: string;
+  hairColor?: string;
+  bloodType?: string;
+  email?: string;
+  phone?: string;
+  aboutMe?: string;
+  quote?: string;
+}
+
+export interface PersonNode {
+  profilePicture?: string;
+  relatedUser?: string;
+  generalInformation?: GeneralInformation;
+}
+
+export interface TreeNode {
+  personNodeId: string;
+  id?: string;
+  name?: string;
+  person?: PersonNode;
+  parents?: TreeNode[];
+  children?: TreeNode[];
+  parent?: Array<{ personNodeId: string }>;
+}
+
+// Derived from existing Zod schema to avoid divergence
+export type FamilyMember = z.infer<typeof familyMemberSchema>;

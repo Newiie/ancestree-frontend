@@ -50,3 +50,11 @@ const sectionConfigs = {
 };
 
 export { sectionConfigs };
+
+export const ACCEPTED_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/gif'];
+export const MAX_FILE_SIZE_MB = 5;
+export const MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MB * 1024 * 1024;
+export const MAX_ZOOM = 3;
+export const MIN_ZOOM = 0.2;
+export const ZOOM_STEP = 0.1;
+export const FALLBACK_AVATAR = '/images/pirot.png';

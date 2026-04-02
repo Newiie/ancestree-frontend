@@ -4,11 +4,12 @@ import React, { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion';
 import { CircleXIcon } from 'lucide-react'
 import FamilyTreeSkeleton from './loading'
-import { 
-  familyMemberSchema, 
+import {
+  familyMemberSchema,
   editPersonSchema,
   connectPersonSchema,
  } from '@/lib/schema';
+import { ACCEPTED_IMAGE_TYPES, MAX_FILE_SIZE_BYTES } from '@/lib/constants';
 import { TreeProvider, useTree } from '../../../../providers/TreeProvider'
 import Image from 'next/image'
 
@@ -51,8 +52,7 @@ const AddFamilyMember = () => {
     const file = e.target.files?.[0];
     if (file) {
       // Validate file type
-      const validTypes = ['image/jpeg', 'image/png', 'image/gif'];
-      if (!validTypes.includes(file.type)) {
+      if (!ACCEPTED_IMAGE_TYPES.includes(file.type)) {
         setErrors(prev => ({
           ...prev,
           profilePicture: 'Invalid file type. Please upload JPEG, PNG, or GIF.',
@@ -61,8 +61,7 @@ const AddFamilyMember = () => {
       }
 
       // Validate file size (5MB max)
-      const maxSize = 5 * 1024 * 1024;
-      if (file.size > maxSize) {
+      if (file.size > MAX_FILE_SIZE_BYTES) {
         setErrors(prev => ({
           ...prev,
           profilePicture: 'File too large. Maximum size is 5MB.',
@@ -477,8 +476,7 @@ const EditPersonNode = () => {
     const file = e.target.files?.[0];
     if (file) {
       // Validate file type
-      const validTypes = ['image/jpeg', 'image/png', 'image/gif'];
-      if (!validTypes.includes(file.type)) {
+      if (!ACCEPTED_IMAGE_TYPES.includes(file.type)) {
         setErrors(prev => ({
           ...prev,
           profilePicture: 'Invalid file type. Please upload JPEG, PNG, or GIF.',
@@ -487,8 +485,7 @@ const EditPersonNode = () => {
       }
 
       // Validate file size (5MB max)
-      const maxSize = 5 * 1024 * 1024;
-      if (file.size > maxSize) {
+      if (file.size > MAX_FILE_SIZE_BYTES) {
         setErrors(prev => ({
           ...prev,
           profilePicture: 'File too large. Maximum size is 5MB.',

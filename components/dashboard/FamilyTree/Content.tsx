@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/sheet"
 import { selectId } from '@/store/userSlice';
 import store from '@/store/store';
+import { MAX_ZOOM, MIN_ZOOM, ZOOM_STEP, FALLBACK_AVATAR } from '@/lib/constants';
 
 const Node = ({ 
     node, 
@@ -38,7 +39,7 @@ const Node = ({
                 className='relative'
                 onClick={() => setSelectedNode(node.personNodeId)}
             >
-                <Image src={`${node?.person?.profilePicture || '/images/pirot.png'}`} alt= {`${node?.person?.generalInformation?.firstname} ${node?.person?.generalInformation?.lastname}`} width={100} height={100} />
+                <Image src={`${node?.person?.profilePicture || FALLBACK_AVATAR}`} alt= {`${node?.person?.generalInformation?.firstname} ${node?.person?.generalInformation?.lastname}`} width={100} height={100} />
                 <span>
                      {node?.person?.generalInformation?.firstname}
                      {node?.person?.generalInformation?.firstName}
@@ -347,8 +348,8 @@ const Content = () => {
       updateZoom(nextZoom);
     };
 
-    const zoomIn  = () => zoomToward(Math.min(3,   zoom + 0.1));
-    const zoomOut = () => zoomToward(Math.max(0.2, zoom - 0.1));
+    const zoomIn  = () => zoomToward(Math.min(MAX_ZOOM, zoom + ZOOM_STEP));
+    const zoomOut = () => zoomToward(Math.max(MIN_ZOOM, zoom - ZOOM_STEP));
 
     useEffect(() => {
       const el = treeContainerRef.current;
@@ -360,7 +361,7 @@ const Content = () => {
         const cursorY = e.clientY - rect.top;
         const delta = e.deltaY > 0 ? 0.9 : 1.1;
         const currentZoom = zoomRef.current;
-        const newZoom = Math.min(3, Math.max(0.2, currentZoom * delta));
+        const newZoom = Math.min(MAX_ZOOM, Math.max(MIN_ZOOM, currentZoom * delta));
         updateZoom(newZoom);
         setPan(prev => ({
           x: cursorX - (cursorX - prev.x) * (newZoom / currentZoom),
@@ -403,7 +404,7 @@ const Content = () => {
           const midY = (e.touches[0].clientY + e.touches[1].clientY) / 2 - rect.top;
           const scale = newDist / lastTouchDist.current;
           const currentZoom = zoomRef.current;
-          const newZoom = Math.min(3, Math.max(0.2, currentZoom * scale));
+          const newZoom = Math.min(MAX_ZOOM, Math.max(MIN_ZOOM, currentZoom * scale));
           updateZoom(newZoom);
           setPan(prev => ({
             x: midX - (midX - prev.x) * (newZoom / currentZoom),
