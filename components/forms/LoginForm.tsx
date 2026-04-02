@@ -30,8 +30,7 @@ const LoginForm = () => {
     try {
       setIsLoading(true);
       const userResponse = await authService.login({ username, password });
-      console.log("RESPONSE", userResponse);
-      
+
       if (userResponse && typeof userResponse === 'object' && 'username' in userResponse && 'id' in userResponse && 'token' in userResponse && 'isCompleted' in userResponse) {
         login({
           username: userResponse.username,
@@ -44,7 +43,6 @@ const LoginForm = () => {
         throw new Error('Invalid user data received');
       }
     } catch (error: any) {
-      console.log("Error: ", error);
       setError(error.message);
     } finally {
       setIsLoading(false);

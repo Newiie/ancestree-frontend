@@ -175,7 +175,6 @@ const Content = () => {
           setBirthdays(birthdaysResponse.upcomingEvents);
         }
       } catch (error) {
-        console.error('Error fetching dashboard data:', error);
       }
     };
 

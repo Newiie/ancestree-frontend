@@ -20,7 +20,6 @@ const useAuth = () => {
   }, [user, router, pathname]);
 
   const login = (useraccount: UserState) => {
-    console.log("USER ON LOGIN", useraccount);
     dispatch(setUser({ username: useraccount.username, id: useraccount.id, token: useraccount.token, isCompleted: useraccount.isCompleted || false }));
     const userData = { username: useraccount.username, id: useraccount.id, token: useraccount.token, isCompleted: useraccount.isCompleted || false };
     window.localStorage.setItem('AncestreeUser', JSON.stringify(userData));

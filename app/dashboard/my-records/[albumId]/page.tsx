@@ -30,7 +30,6 @@ const FolderPage = () => {
     const fetchAlbumData = async () => {
       try {
         const album = await galleryService.getAlbum(albumId);
-        console.log(album)
         setAlbum(album);
       } catch (error) {
         setError('Failed to fetch album data');

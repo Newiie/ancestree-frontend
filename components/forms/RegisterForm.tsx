@@ -49,7 +49,6 @@ const RegisterForm = () => {
         password: formData.password,
       });
       if (response.message == "Registered successfully!") {
-        console.log('Registered user:', user);
         router.push('/dashboard');
       }
     } catch (error: any) {

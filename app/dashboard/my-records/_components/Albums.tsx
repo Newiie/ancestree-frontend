@@ -29,7 +29,6 @@ const Albums = () => {
             try {
                 const albums = await galleryService.getAlbums();
                 setAlbums(albums);
-                console.log(albums)
             } catch (error) {
                 setError('Failed to fetch albums:')
             }
@@ -41,7 +40,6 @@ const Albums = () => {
         if (!albumName.trim()) return
         setIsFetching(true)
         try {
-            console.log('Creating album:', albumName)
             await galleryService.addAlbum(albumName)
             setAlbumName("")
             setIsOpen(false) 
