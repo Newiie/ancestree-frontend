@@ -21,6 +21,10 @@ export default class ErrorBoundary extends Component<Props, State> {
     return { hasError: true };
   }
 
+  componentDidCatch(_error: Error, _info: React.ErrorInfo) {
+    // Error reporting service can be wired here (e.g. Sentry)
+  }
+
   render() {
     if (this.state.hasError) {
       return this.props.fallback ?? (

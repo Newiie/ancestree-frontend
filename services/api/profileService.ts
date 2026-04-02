@@ -19,7 +19,7 @@ const fetchUserData = async (userId: string) => {
         if (!parsed.success) {
             throw new ApiError(500, 'Unexpected response shape from user API');
         }
-        return data;
+        return parsed.data;
     } catch (error: unknown) {
         if (error instanceof ApiError) {
             throw error;

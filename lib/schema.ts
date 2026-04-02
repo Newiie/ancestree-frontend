@@ -99,8 +99,8 @@ export { formDataSchema, registerSchema, familyMemberSchema, editPersonSchema, c
 export const treeDataResponseSchema = z.object({
   familyTree: z.object({
     root: z.object({
-      id: z.string().optional(),
-      personNodeId: z.string().optional(),
+      id: z.string(),
+      personNodeId: z.string(),
     }).passthrough(),
   }).passthrough(),
 }).passthrough();
