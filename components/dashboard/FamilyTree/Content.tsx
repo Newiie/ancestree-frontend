@@ -200,13 +200,13 @@ const Node = ({
                                                 <>
 
                                                     <p>
-                                                        Parents: 
+                                                        Parents:
                                                     </p>
-                                                    {node?.parents.map((parent : any) => (
-                                                        <p className='pl-4 text-[#7C7C7C]' key={parent}>
-                                                            {capitalizeFirstLetter(parent.person.generalInformation?.firstName)} 
+                                                    {node?.parents.map((parent : any, index: number) => (
+                                                        <p className='pl-4 text-[#7C7C7C]' key={parent.personNodeId ?? index}>
+                                                            {capitalizeFirstLetter(parent.person.generalInformation?.firstName)}
                                                             {" "}
-                                                            {capitalizeFirstLetter(parent.person.generalInformation?.middleName)} 
+                                                            {capitalizeFirstLetter(parent.person.generalInformation?.middleName)}
                                                             {" "}
                                                             {capitalizeFirstLetter(parent.person.generalInformation?.lastName)}
                                                         </p>
