@@ -136,6 +136,7 @@ const EditPersonModal = () => {
 
     // Add general information
     Object.entries(formData).forEach(([key, value]) => {
+      if (key === 'sex') return;
       if (key === 'profilePicture' && value instanceof File) {
         submitData.append('generalInformation[profilePicture]', value);
       } else if (typeof value === 'string') {
