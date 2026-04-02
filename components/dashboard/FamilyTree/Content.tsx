@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState, useRef, useEffect } from 'react';
 import '@/public/style/familytree.css';
 import { ZoomInIcon, ZoomOutIcon } from 'lucide-react';
@@ -22,7 +24,8 @@ const Content = () => {
     const [zoom, setZoom] = useState(1);
     const [pan, setPan] = useState({ x: 0, y: 0 });
     const zoomRef = useRef(1);
-    const isDragging = useRef(false);
+    const [isDragging, setIsDragging] = useState(false);
+    const isDraggingRef = useRef(false);
     const lastPointer = useRef({ x: 0, y: 0 });
     const lastTouchDist = useRef<number | null>(null);
 
@@ -34,12 +37,13 @@ const Content = () => {
     const handlePointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
       if ((e.target as HTMLElement).closest('button, a')) return;
       e.currentTarget.setPointerCapture(e.pointerId);
-      isDragging.current = true;
+      isDraggingRef.current = true;
+      setIsDragging(true);
       lastPointer.current = { x: e.clientX, y: e.clientY };
     };
 
     const handlePointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
-      if (!isDragging.current) return;
+      if (!isDraggingRef.current) return;
       const dx = e.clientX - lastPointer.current.x;
       const dy = e.clientY - lastPointer.current.y;
       lastPointer.current = { x: e.clientX, y: e.clientY };
@@ -47,7 +51,8 @@ const Content = () => {
     };
 
     const handlePointerUp = () => {
-      isDragging.current = false;
+      isDraggingRef.current = false;
+      setIsDragging(false);
     };
 
     const renderTree = (nodes: TreeNode[]) => (
@@ -110,10 +115,12 @@ const Content = () => {
 
       const onTouchStart = (e: TouchEvent) => {
         if (e.touches.length === 1) {
-          isDragging.current = true;
+          isDraggingRef.current = true;
+          setIsDragging(true);
           lastPointer.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };
         } else if (e.touches.length === 2) {
-          isDragging.current = false;
+          isDraggingRef.current = false;
+          setIsDragging(false);
           const dx = e.touches[1].clientX - e.touches[0].clientX;
           const dy = e.touches[1].clientY - e.touches[0].clientY;
           lastTouchDist.current = Math.hypot(dx, dy);
@@ -122,7 +129,7 @@ const Content = () => {
 
       const onTouchMove = (e: TouchEvent) => {
         e.preventDefault();
-        if (e.touches.length === 1 && isDragging.current) {
+        if (e.touches.length === 1 && isDraggingRef.current) {
           const dx = e.touches[0].clientX - lastPointer.current.x;
           const dy = e.touches[0].clientY - lastPointer.current.y;
           lastPointer.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };
@@ -147,7 +154,8 @@ const Content = () => {
       };
 
       const onTouchEnd = () => {
-        isDragging.current = false;
+        isDraggingRef.current = false;
+        setIsDragging(false);
         lastTouchDist.current = null;
       };
 
@@ -181,7 +189,7 @@ const Content = () => {
                         transform: `translate(${pan.x}px, ${pan.y}px) scale(${zoom})`,
                         transformOrigin: '0 0',
                         width: 'max-content',
-                        transition: isDragging.current ? 'none' : undefined,
+                        transition: isDragging ? 'none' : undefined,
                     }}
                 >
                     {renderTree(treeData)}

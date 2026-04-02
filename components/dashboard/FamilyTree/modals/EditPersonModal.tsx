@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { CircleXIcon } from 'lucide-react';
 import Image from 'next/image';
@@ -15,7 +15,6 @@ const EditPersonModal = () => {
     handleEditPerson,
     isFetching,
     selectedNode,
-    handleDeletePersonNode,
     treeData
   } = useTree();
 
@@ -57,6 +56,26 @@ const EditPersonModal = () => {
       profilePicture: null as File | null,
     };
   });
+
+  useEffect(() => {
+    const node = findNodeRecursively(treeData, selectedNode);
+    if (node) {
+      const person = node.person?.generalInformation || {};
+      const vitalInfo = node.person?.vitalInformation || {};
+      setFormData({
+        firstName: person.firstName || '',
+        middleName: person.middleName || '',
+        lastName: person.lastName || '',
+        suffix: person.suffix || '',
+        birthdate: person.birthdate ? person.birthdate.slice(0, 10) : '',
+        birthPlace: person.birthPlace || '',
+        birthCountry: person.birthCountry || '',
+        sex: vitalInfo.sex || 'male',
+        status: person.status || 'unknown',
+        profilePicture: null,
+      });
+    }
+  }, [selectedNode, treeData]);
 
   const [picturePreview, setPicturePreview] = useState<string | null>(null);
 

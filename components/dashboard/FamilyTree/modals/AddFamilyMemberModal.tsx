@@ -27,7 +27,7 @@ const AddFamilyMemberModal = () => {
     birthCountry: '',
     sex: 'male',
     status: 'unknown',
-    nationality: [],
+    nationality: [] as string[],
     profilePicture: null as File | null,
   });
   const [picturePreview, setPicturePreview] = useState<string | null>(null);
@@ -92,6 +92,7 @@ const AddFamilyMemberModal = () => {
 
     // Add general information
     Object.entries(formData).forEach(([key, value]) => {
+      if (key === 'sex') return;
       if (key === 'profilePicture' && value instanceof File) {
         submitData.append('generalInformation[profilePicture]', value);
       } else if (key === 'nationality' && Array.isArray(value)) {
@@ -126,10 +127,9 @@ const AddFamilyMemberModal = () => {
 
   const handleAddNationality = () => {
     if (nationalityInput.trim()) {
-      setFormData((prevData: any) => ({
+      setFormData((prevData) => ({
         ...prevData,
-        nationality: prevData.nationality ? [...prevData.nationality, nationalityInput.trim()] : [nationalityInput.trim()],
-        profilePicture: prevData.profilePicture || ''
+        nationality: [...prevData.nationality, nationalityInput.trim()],
       }));
       setNationalityInput('');
     }
@@ -168,7 +168,8 @@ const AddFamilyMemberModal = () => {
 
         <div className="grid grid-cols-2 text-center mb-4">
           {['Add Child', 'Add Parent'].map(link => (
-            <li
+            <button
+              type="button"
               className={`
                 text-base
                 sm:text-[1.5rem]
@@ -182,12 +183,11 @@ const AddFamilyMemberModal = () => {
                 duration-300
                 ${selectedPerson === link ? 'border-b-2 text-primary' : ''}
               `}
-              style={{ listStyle: 'none' }}
               key={link}
               onClick={() => setSelectedPerson(link)}
             >
               {link}
-            </li>
+            </button>
           ))}
         </div>
 

@@ -14,7 +14,7 @@ import {
     SheetTrigger,
 } from "@/components/ui/sheet";
 import { selectId } from '@/store/userSlice';
-import store from '@/store/store';
+import { useSelector } from 'react-redux';
 import { TreeNode as TreeNodeType } from '@/types/tree';
 import { FALLBACK_AVATAR } from '@/lib/constants';
 
@@ -39,6 +39,7 @@ const TreeNodeCard = ({
 }: TreeNodeProps) => {
     const router = useRouter();
     const { userId } = useTree();
+    const currentUserId = useSelector(selectId);
     function capitalizeFirstLetter(text: string) {
         if (!text) return '';
         return text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
@@ -51,13 +52,11 @@ const TreeNodeCard = ({
                 className='relative'
                 onClick={() => setSelectedNode(node.personNodeId)}
             >
-                <Image src={`${node?.person?.profilePicture || FALLBACK_AVATAR}`} alt= {`${node?.person?.generalInformation?.firstname} ${node?.person?.generalInformation?.lastname}`} width={100} height={100} />
+                <Image src={`${node?.person?.profilePicture || FALLBACK_AVATAR}`} alt={`${node?.person?.generalInformation?.firstName ?? node?.person?.generalInformation?.firstname} ${node?.person?.generalInformation?.lastName ?? node?.person?.generalInformation?.lastname}`} width={100} height={100} />
                 <span>
-                     {node?.person?.generalInformation?.firstname}
-                     {node?.person?.generalInformation?.firstName}
+                     {node?.person?.generalInformation?.firstName ?? node?.person?.generalInformation?.firstname}
                      {" "}
-                     {node?.person?.generalInformation?.lastName}
-                     {node?.person?.generalInformation?.lastname}
+                     {node?.person?.generalInformation?.lastName ?? node?.person?.generalInformation?.lastname}
                 </span>
 
                 {selectedNode === node.personNodeId && (
@@ -65,7 +64,7 @@ const TreeNodeCard = ({
                         <div className='relative flex flex-col gap-1'>
                             <button
                                 onClick={() => {
-                                    if (selectId(store.getState()) !== userId) return;
+                                    if (currentUserId !== userId) return;
                                     toggleAddFamilyModal()
                                 }}
                                 className='absolute top-0 right-[2px] bg-white-500 border border-[#E0E0E0] hover:bg-gray-100 text-[#7C7C7C] px-2 py-1 rounded-[50%] w-8 h-8 flex items-center justify-center'
@@ -88,7 +87,7 @@ const TreeNodeCard = ({
 
                             <button
                                 onClick={() => {
-                                    if (selectId(store.getState()) !== userId) return;
+                                    if (currentUserId !== userId) return;
                                     toggleEditPersonModal()
                                 }}
                                 className='absolute top-[67px] right-[-14px] bg-white-500 border border-[#E0E0E0] hover:bg-gray-100 text-[#7C7C7C] px-2 py-1 rounded-[50%] w-8 h-8 flex items-center justify-center'
@@ -228,7 +227,7 @@ const TreeNodeCard = ({
                                             )
                                         }
 
-                                        {(selectId(store.getState()) === userId) &&<button
+                                        {(currentUserId === userId) &&<button
                                         className='mt-4 bg-white hover:bg-red-50 text-red-500 border border-red-300 px-4 py-1 rounded-[3px]'
                                         onClick={() => {
                                             handleDeletePersonNode()
