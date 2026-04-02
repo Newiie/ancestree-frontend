@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import useAuth from '@/hooks/useAuth';
 import axios from 'axios';
 import profileService from '@/services/api/profileService';
+import { toast } from 'sonner';
 
 interface ProfileProviderType {
   selectedDetail: string;
@@ -38,16 +39,16 @@ export const ProfileProvider: React.FC<{ children: ReactNode, userId: string }> 
   const router = useRouter();
 
   const profileSidebarData = [
-    'General Information', 
-    'Addresses', 
-    'Vital Information', 
-    'Personal Interests', 
+    'General Information',
+    'Addresses',
+    'Vital Information',
+    'Personal Interests',
     'Contact Information'
   ];
 
   const profileTabsData = [
-    'Personal Details', 
-    'Profile Memo', 
+    'Personal Details',
+    'Profile Memo',
     'Connections'
   ];
 
@@ -63,6 +64,7 @@ export const ProfileProvider: React.FC<{ children: ReactNode, userId: string }> 
             setUserFriends(friendList);
         }
     } catch (error) {
+        toast.error('Failed to load profile data. Please refresh.');
     } finally {
         setIsFetching(false);
     }
@@ -75,11 +77,13 @@ export const ProfileProvider: React.FC<{ children: ReactNode, userId: string }> 
 
     const populateFriendList = async () => {
       const friendList = await profileService.populateFriendList();
-      setFriendsData(friendList);
+      setFriendsData(friendList ?? []);
     }
 
-    populateFriendList();
-    
+    populateFriendList().catch(() => {
+      toast.error('Failed to load friends list.');
+    });
+
     if (userId == null) {
         setUserData(null);
         router.push("/login");
@@ -91,7 +95,8 @@ export const ProfileProvider: React.FC<{ children: ReactNode, userId: string }> 
       await profileService.sendFriendRequest(userId);
       await fetchUserData();
     }
-    catch (error) {
+    catch {
+      toast.error('Failed to send friend request. Please try again.');
     }
   }
 
@@ -100,23 +105,20 @@ export const ProfileProvider: React.FC<{ children: ReactNode, userId: string }> 
       await profileService.acceptFriendRequest(userId);
       await fetchUserData();
     }
-    catch (error) {
+    catch {
+      toast.error('Failed to accept friend request. Please try again.');
     }
   }
 
   const updateUserData = async (data: any) => {
     try {
       const { userId, relatedUser, profilePicture, backgroundPicture, ...restData } = data;
-      const updatedData = {
-        ...restData
-      };
-      const response = await profileService.updateUserData(userId, updatedData);
-      if (response.status === 200) {
-        // Mark the "Update profile details" step as completed
-        await profileService.updateUserProgress("Update profile details");
-        await fetchUserData();
-      }
-    } catch (error) {
+      await profileService.updateUserData(userId, restData);
+      // axios throws on non-2xx, so reaching here means success
+      await profileService.updateUserProgress("Update profile details");
+      await fetchUserData();
+    } catch {
+      toast.error('Failed to update profile. Please try again.');
     }
   }
 
@@ -128,7 +130,8 @@ export const ProfileProvider: React.FC<{ children: ReactNode, userId: string }> 
       await profileService.updateProfileImage(userId, formData);
       await fetchUserData();
 
-    } catch (error) {
+    } catch {
+      toast.error('Failed to update profile picture. Please try again.');
     }
   };
 
@@ -139,15 +142,16 @@ export const ProfileProvider: React.FC<{ children: ReactNode, userId: string }> 
 
       await profileService.updateBackgroundImage(userId, formData);
       await fetchUserData();
-    } catch (error) {
+    } catch {
+      toast.error('Failed to update background image. Please try again.');
     }
   }
 
   return (
-    <ProfileContext.Provider value={{ 
+    <ProfileContext.Provider value={{
       selectedDetail, setSelectedDetail,
-      profileTabs, setProfileTabs, 
-      userData, setUserData,  
+      profileTabs, setProfileTabs,
+      userData, setUserData,
       profileSidebarData, profileTabsData,
       updateUserData,
       updateProfileImage,
@@ -157,7 +161,7 @@ export const ProfileProvider: React.FC<{ children: ReactNode, userId: string }> 
       isFetching,
       userFriends,
       friendsData
-    }}> 
+    }}>
       {children}
     </ProfileContext.Provider>
   );

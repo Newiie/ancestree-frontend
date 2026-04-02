@@ -1,11 +1,12 @@
-import React, { 
-    createContext, 
-    useState, 
-    useContext, 
-    ReactNode, 
-    useEffect 
+import React, {
+    createContext,
+    useState,
+    useContext,
+    ReactNode,
+    useEffect
 } from 'react'
 import galleryService from '@/services/api/galleryService'
+import { toast } from 'sonner'
 
 // Define the Album interface
 export interface Album {
@@ -43,7 +44,7 @@ export const RecordsProvider: React.FC<{ children: ReactNode }> = ({ children })
             const fetchedAlbums = await galleryService.getAlbums()
             setAlbums(fetchedAlbums)
         } catch (error) {
-            // Optionally set error state or show error notification
+            toast.error('Failed to load albums. Please try again.');
         } finally {
             setIsFetching(false)
         }

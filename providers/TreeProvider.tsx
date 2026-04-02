@@ -1,10 +1,9 @@
 import { baseUrl } from '@/lib/config';
 import React, { createContext, useState, useContext, ReactNode, useEffect, useRef } from 'react';
-import axios from 'axios';
 import useAuth from '@/hooks/useAuth';
 import TreeService from '@/services/api/treeService';
-import { set } from 'zod';
 import { setUser } from '@/store/userSlice';
+import { toast } from 'sonner';
 
 interface TreeContextType {
   addFamilyMember: boolean;
@@ -43,7 +42,7 @@ export const TreeProvider: React.FC<{ children: ReactNode, id: string }> = ({ ch
     const [editPersonModal, setEditPersonModal] = useState(false);
     const [showConnectPersonModal, setShowConnectPersonModal] = useState(false);
     const [userId, setUserId] = useState<string>('');
-    const [selectedNode, setSelectedNode] = useState<string>(""); 
+    const [selectedNode, setSelectedNode] = useState<string>("");
     const [treeId, setTreeId] = useState<string>("");
     const [isFetching, setIsFetching] = useState(false);
     const [apiEvent, setApiEvent] = useState(false);
@@ -54,36 +53,57 @@ export const TreeProvider: React.FC<{ children: ReactNode, id: string }> = ({ ch
         if (id) {
             setIsFetching(true);
             setUserId(id);
-            TreeService.fetchTreeData(id).then((data) => {
-                setTreeData([data.familyTree.root]);
-                setTreeId(data.familyTree.root.id);
-                setIsFetching(false);
-            });
+            TreeService.fetchTreeData(id)
+                .then((data) => {
+                    setTreeData([data.familyTree.root]);
+                    setTreeId(data.familyTree.root.id);
+                })
+                .catch(() => {
+                    toast.error('Failed to load family tree. Please refresh the page.');
+                })
+                .finally(() => {
+                    setIsFetching(false);
+                });
         }
-    }, [apiEvent,id]);
+    }, [apiEvent, id]);
 
     const handleEditPerson = async (formData: any) => {
         setIsFetching(true);
-        await TreeService.patchEditPersonNode(selectedNode, formData);
-        toggleEditPersonModal();
-        setApiEvent(!apiEvent);
+        try {
+            await TreeService.patchEditPersonNode(selectedNode, formData);
+            toggleEditPersonModal();
+            setApiEvent(!apiEvent);
+        } catch {
+            toast.error('Failed to update person. Please try again.');
+        } finally {
+            setIsFetching(false);
+        }
     }
 
-    const handleAddFamilyMember = async (selectedPerson: string,formData: any) => {
+    const handleAddFamilyMember = async (selectedPerson: string, formData: any) => {
         setIsFetching(true);
-        if (selectedPerson === "Add Child") {
-            await TreeService.postAddChild(treeId, formData);
+        try {
+            if (selectedPerson === "Add Child") {
+                await TreeService.postAddChild(treeId, formData);
+            } else {
+                await TreeService.postAddParent(treeId, formData);
+            }
             toggleAddFamilyModal();
-        } else {
-            await TreeService.postAddParent(treeId, formData);
-            toggleAddFamilyModal();
+            setApiEvent(!apiEvent);
+        } catch {
+            toast.error('Failed to add family member. Please try again.');
+        } finally {
+            setIsFetching(false);
         }
-        setApiEvent(!apiEvent);
     };
 
     const handleConnectPersonToUser = async (userId: string) => {
-        await TreeService.postConnectPersonToUser(userId, selectedNode);
-        setApiEvent(!apiEvent);
+        try {
+            await TreeService.postConnectPersonToUser(userId, selectedNode);
+            setApiEvent(!apiEvent);
+        } catch {
+            toast.error('Failed to connect person. Please try again.');
+        }
     }
 
     const toggleAddFamilyModal = () => {
@@ -99,28 +119,32 @@ export const TreeProvider: React.FC<{ children: ReactNode, id: string }> = ({ ch
     }
 
     const handleDeletePersonNode = async () => {
-        await TreeService.deletePersonNode(selectedNode);
-        setApiEvent(!apiEvent);
+        try {
+            await TreeService.deletePersonNode(selectedNode);
+            setApiEvent(!apiEvent);
+        } catch {
+            toast.error('Failed to delete person. Please try again.');
+        }
     };
 
     return (
-    <TreeContext.Provider value={{ 
-        addFamilyMember, 
+    <TreeContext.Provider value={{
+        addFamilyMember,
         selectedPerson,
         userId,
-        toggleAddFamilyModal, 
+        toggleAddFamilyModal,
         handleDeletePersonNode,
         treeData,
-        setTreeData, 
-        handleAddFamilyMember, 
-        toggleEditPersonModal, 
+        setTreeData,
+        handleAddFamilyMember,
+        toggleEditPersonModal,
         handleEditPerson,
-        editPersonModal, 
+        editPersonModal,
         setEditPersonModal,
-        selectedNode, 
-        setSelectedNode, 
+        selectedNode,
+        setSelectedNode,
         isFetching,
-        showConnectPersonModal, 
+        showConnectPersonModal,
         setShowConnectPersonModal,
         toggleConnectPersonModal,
         handleConnectPersonToUser
