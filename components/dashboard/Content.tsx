@@ -18,6 +18,9 @@ import {
 } from "@/components/ui/carousel"
 import { type CarouselApi } from "@/components/ui/carousel"
 import dashboardService from '@/services/api/dashboardService';
+import TreeService from '@/services/api/treeService';
+import { TreeNode } from '@/types/tree';
+import useAuth from '@/hooks/useAuth';
 
 const progress = [
   {
@@ -131,6 +134,8 @@ const ActivityCard = () => {
 
 const Content = () => {
   const { userData } = useProfile();
+  const { user } = useAuth();
+  const [treeMemberCount, setTreeMemberCount] = useState<number | null>(null);
   const [api, setApi] = React.useState<CarouselApi>()
   const [current, setCurrent] = React.useState(0)
   const [count, setCount] = React.useState(0)
@@ -176,34 +181,56 @@ const Content = () => {
     if (!api) {
       return
     }
- 
+
     setCount(api.scrollSnapList().length)
     setCurrent(api.selectedScrollSnap())
- 
+
     api.on("select", () => {
       setCurrent(api.selectedScrollSnap())
     })
 
   }, [api])
 
+  React.useEffect(() => {
+    if (!userData?.userId) return;
+    const visited = new Set<string>();
+    const countNodes = (node: TreeNode): number => {
+      if (!node?.id || visited.has(node.id)) return 0;
+      visited.add(node.id);
+      let n = 1;
+      (node.children ?? []).forEach(c => { n += countNodes(c); });
+      (node.parents ?? []).forEach(p => { n += countNodes(p); });
+      return n;
+    };
+    TreeService.fetchTreeData(userData.userId)
+      .then(data => setTreeMemberCount(countNodes(data.familyTree.root as TreeNode)))
+      .catch(() => setTreeMemberCount(null));
+  }, [userData?.userId]);
+
   return (
     <div className='bg-stone-50 text-black p-4 sm:p-6 space-y-4'>
-      {/* PROFILE HERO */}
+      {/* TREE SUMMARY HERO */}
       <div className='flex items-center gap-4 bg-white rounded-2xl p-5 border border-stone-200 shadow-sm'>
         <div className='relative flex-shrink-0'>
           <Image
             src={userData?.profilePicture ? userData.profilePicture : '/images/doge.png'}
             alt={userData?.generalInformation?.firstName ? `${userData.generalInformation.firstName}'s avatar` : 'User avatar'}
-            width={64}
-            height={64}
-            className='w-16 h-16 rounded-full object-cover ring-2 ring-[#1B5A1B]/20'
+            width={56}
+            height={56}
+            className='w-14 h-14 rounded-full object-cover ring-2 ring-[#1B5A1B]/20'
           />
         </div>
         <div className='flex-grow min-w-0'>
-          <p className='text-xl font-bold text-stone-800 truncate'>
-            {userData?.generalInformation?.firstName} {userData?.generalInformation?.lastName}
+          <p className='text-base font-bold text-stone-800 truncate'>
+            {userData?.generalInformation?.firstName
+              ? `${userData.generalInformation.firstName}'s Family Tree`
+              : 'Your Family Tree'}
           </p>
-          <p className='text-sm text-stone-400'>Your family tree awaits</p>
+          <p className='text-sm text-stone-400'>
+            {treeMemberCount !== null
+              ? `${treeMemberCount} member${treeMemberCount !== 1 ? 's' : ''} in your tree`
+              : 'Start building your family history'}
+          </p>
         </div>
         {userData?.userId && (
           <Link
