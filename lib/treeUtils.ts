@@ -2,7 +2,7 @@ import { TreeNode } from '@/types/tree';
 
 export function findNodeRecursively(nodes: TreeNode[], nodeId: string): TreeNode | null {
   for (const node of nodes) {
-    if (node.personNodeId === nodeId) {
+    if (node.id === nodeId) {
       return node;
     }
     if (node.children && node.children.length > 0) {

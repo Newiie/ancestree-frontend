@@ -59,7 +59,7 @@ const Content = () => {
         <ul className='tree-content'>
             {nodes.map((node: TreeNode) =>  (
                 <TreeNodeCard
-                    key={node.personNodeId}
+                    key={node.id}
                     node={node}
                     selectedNode={selectedNode}
                     setSelectedNode={setSelectedNode}

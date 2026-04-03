@@ -46,11 +46,11 @@ const TreeNodeCard = ({
     }
 
     return (
-        <li key={node.personNodeId}>
+        <li key={node.id}>
             <a
                 href="#"
                 className='relative'
-                onClick={() => setSelectedNode(node.personNodeId)}
+                onClick={() => setSelectedNode(node.id)}
             >
                 <Image src={`${node?.person?.profilePicture || FALLBACK_AVATAR}`} alt={`${node?.person?.generalInformation?.firstName ?? node?.person?.generalInformation?.firstname} ${node?.person?.generalInformation?.lastName ?? node?.person?.generalInformation?.lastname}`} width={100} height={100} />
                 <span>
@@ -59,7 +59,7 @@ const TreeNodeCard = ({
                      {node?.person?.generalInformation?.lastName ?? node?.person?.generalInformation?.lastname}
                 </span>
 
-                {selectedNode === node.personNodeId && (
+                {selectedNode === node.id && (
                     <div className='absolute top-0 -right-[40px] z-10'>
                         <div className='relative flex flex-col gap-1'>
                             <button
@@ -215,7 +215,7 @@ const TreeNodeCard = ({
                                                         Parents:
                                                     </p>
                                                     {node?.parents?.map((parent: TreeNodeType, index: number) => (
-                                                        <p className='pl-4 text-[#7C7C7C]' key={parent.personNodeId ?? index}>
+                                                        <p className='pl-4 text-[#7C7C7C]' key={parent.id ?? index}>
                                                             {capitalizeFirstLetter(parent.person?.generalInformation?.firstName ?? '')}
                                                             {" "}
                                                             {capitalizeFirstLetter(parent.person?.generalInformation?.middleName ?? '')}
@@ -269,7 +269,7 @@ const TreeNodeCard = ({
                 <ul className="tree-content">
                     {node.children.map((childNode: TreeNodeType) => (
                         <TreeNodeCard
-                            key={childNode.personNodeId}
+                            key={childNode.id}
                             node={childNode}
                             selectedNode={selectedNode}
                             setSelectedNode={setSelectedNode}
