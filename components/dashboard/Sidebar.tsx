@@ -139,13 +139,15 @@ const Sidebar = () => {
             <p className="text-sm font-semibold text-white truncate leading-tight">{userName}</p>
             <p className="text-xs text-white/40 truncate leading-tight">Online</p>
           </div>
-          <div className={`flex-shrink-0 transition-all duration-300 ease-in-out ${collapsed ? 'max-w-0 opacity-0 overflow-hidden' : 'max-w-[28px] opacity-100 delay-100'}`}>
-            <PopoverTrigger asChild>
-              <button className="w-7 h-7 flex items-center justify-center rounded-lg text-white/40 hover:text-white hover:bg-white/10 transition-colors">
-                <SettingsIcon size={14} />
-              </button>
-            </PopoverTrigger>
-          </div>
+          {!collapsed && (
+            <div className="flex-shrink-0">
+              <PopoverTrigger asChild>
+                <button className="w-7 h-7 flex items-center justify-center rounded-lg text-white/40 hover:text-white hover:bg-white/10 transition-colors">
+                  <SettingsIcon size={14} />
+                </button>
+              </PopoverTrigger>
+            </div>
+          )}
         </div>
       </div>
       <PopoverContent side="top" align="end" className="w-44 p-1">
