@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import ConnectionCard from '../content/ConnectionCard';
 import relationshipService from '@/services/api/relationshipService';
 import Loading from './Loading';
-import { Input } from '@/components/ui/input';
 
 const Content = () => {
   const [formData, setFormData] = useState({
@@ -64,7 +63,13 @@ const Content = () => {
           ))}
         </div>
 
-        <form onSubmit={(e) => { e.preventDefault(); handleSearch(); }} className='space-y-4'>
+        {activeTab === 'Find by ID' && (
+          <div className='mb-4 px-4 py-3 bg-stone-50 border border-dashed border-stone-200 rounded-xl text-sm text-stone-400 text-center'>
+            Search by ID is coming soon
+          </div>
+        )}
+
+        <form onSubmit={(e) => { e.preventDefault(); handleSearch(); }} className={`space-y-4 ${activeTab === 'Find by ID' ? 'opacity-40 pointer-events-none select-none' : ''}`}>
           {/* Name row */}
           <div className='grid grid-cols-1 sm:grid-cols-3 gap-3'>
             {[
