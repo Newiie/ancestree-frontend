@@ -202,24 +202,26 @@ const Content = () => {
         <div className='relative flex-shrink-0'>
           <Image
             src={userData?.profilePicture ? userData.profilePicture : '/images/doge.png'}
-            alt='profile'
+            alt={userData?.generalInformation?.firstName ? `${userData.generalInformation.firstName}'s avatar` : 'User avatar'}
             width={64}
             height={64}
             className='w-16 h-16 rounded-full object-cover ring-2 ring-[#1B5A1B]/20'
           />
         </div>
         <div className='flex-grow min-w-0'>
-          <h1 className='text-xl font-bold text-stone-800 truncate'>
+          <p className='text-xl font-bold text-stone-800 truncate'>
             {userData?.generalInformation?.firstName} {userData?.generalInformation?.lastName}
-          </h1>
+          </p>
           <p className='text-sm text-stone-400'>Your family tree awaits</p>
         </div>
-        <Link
-          href={`/dashboard/family-tree/${userData?.userId}`}
-          className='flex-shrink-0 px-4 py-2 bg-[#1B5A1B] text-white text-sm font-medium rounded-xl hover:bg-[#1B5A1B]/90 transition-colors'
-        >
-          View Tree
-        </Link>
+        {userData?.userId && (
+          <Link
+            href={`/dashboard/family-tree/${userData.userId}`}
+            className='flex-shrink-0 px-4 py-2 bg-[#1B5A1B] text-white text-sm font-medium rounded-xl hover:bg-[#1B5A1B]/90 transition-colors'
+          >
+            View Tree
+          </Link>
+        )}
       </div>
 
       <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
