@@ -219,7 +219,7 @@ const Content = () => {
             {/* FIRST COLUMN */}
             <div className='space-y-4'>
               {/* GETTING STARTED PROGRESS */}
-              {(() => {
+              {progressSteps.some(s => !s.completed) && (() => {
                 const completedCount = progressSteps.filter(s => s.completed).length;
                 const pct = progressSteps.length ? Math.round((completedCount / progressSteps.length) * 100) : 0;
                 return (
