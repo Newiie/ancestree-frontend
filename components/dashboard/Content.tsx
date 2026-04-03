@@ -5,7 +5,7 @@ import React, {
 import { useProfile } from '@/providers/ProfileProvider';
 import Image from 'next/image';
 import Link from 'next/link';
-import { CalendarHeartIcon, CirclePlusIcon, EllipsisIcon, GiftIcon, NetworkIcon, HeartIcon, BookTextIcon, BookImageIcon } from 'lucide-react';
+import { CalendarHeartIcon, CheckIcon, CirclePlusIcon, EllipsisIcon, GiftIcon, NetworkIcon, HeartIcon, BookTextIcon, BookImageIcon } from 'lucide-react';
 import {
   Accordion,
   AccordionContent,
@@ -276,27 +276,42 @@ const Content = () => {
       <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
             {/* FIRST COLUMN */}
             <div className='space-y-4'>
-              {/* ACCOUNT PROGRESS */}
-              <Accordion type="single" collapsible className='w-full'>
-                <AccordionItem value="item-1">
-                  <AccordionTrigger className='text-sm sm:text-base'>
-                    Welcome to AncesTREE! To get started, click here to show tasks and complete account progress.
-                  </AccordionTrigger>
-                  <AccordionContent>
-                    {progressSteps.map((item, index) => (
-                      <div key={index} className='flex ml-4 sm:ml-16 pl-3 flex-col justify-center relative'>
-                        <div className={`absolute top-[5px] z-10 -left-4 h-[1rem] w-[1rem] border-1 border-[#174317] rounded-full ${item.completed ? 'bg-[#519F49]' : 'bg-white'}`}></div>
-                        {index != progressSteps.length - 1 && <div className='absolute top-[5px] -left-[9px] h-full w-[1px] bg-[#434343]'></div>}
-                        <p className='text-sm sm:text-lg text-[#434343] font-semibold'>{index + 1}. {item.title}</p>
-                        <p className='text-xs sm:text-sm pl-4 text-black'>{item.description}</p>
-                      </div>
-                    ))}
-                    <p className='text-base sm:text-xl text-[#1B5A1B] font-bold ml-4 sm:ml-16 mt-4'>
-                      Well Done! You can now go through the app and start tracing your roots.
-                    </p>
-                  </AccordionContent>
-                </AccordionItem>
-              </Accordion>
+              {/* GETTING STARTED PROGRESS */}
+              {(() => {
+                const completedCount = progressSteps.filter(s => s.completed).length;
+                const pct = Math.round((completedCount / progressSteps.length) * 100);
+                return (
+                  <div className='bg-white rounded-2xl border border-stone-200 p-5'>
+                    <div className='flex items-center justify-between mb-2'>
+                      <h2 className='text-sm font-semibold text-stone-700'>Getting Started</h2>
+                      <span className='text-xs text-stone-400'>{completedCount} of {progressSteps.length} complete</span>
+                    </div>
+                    <div className='w-full h-1.5 bg-stone-100 rounded-full overflow-hidden mb-4'>
+                      <div
+                        className='h-full bg-[#1B5A1B] rounded-full transition-all duration-500'
+                        style={{ width: `${pct}%` }}
+                      />
+                    </div>
+                    <div className='space-y-2.5'>
+                      {progressSteps.slice(0, 4).map((step, i) => (
+                        <div key={i} className='flex items-start gap-2.5'>
+                          <div className={`mt-0.5 w-4 h-4 rounded-full flex-shrink-0 flex items-center justify-center border ${step.completed ? 'bg-[#1B5A1B] border-[#1B5A1B]' : 'border-stone-300'}`}>
+                            {step.completed && <CheckIcon size={9} className='text-white' />}
+                          </div>
+                          <p className={`text-sm leading-snug ${step.completed ? 'text-stone-400 line-through decoration-stone-300' : 'text-stone-700'}`}>
+                            {step.title}
+                          </p>
+                        </div>
+                      ))}
+                    </div>
+                    {progressSteps.length > 4 && (
+                      <p className='mt-3 text-xs font-medium text-[#1B5A1B] cursor-pointer hover:underline'>
+                        +{progressSteps.length - 4} more steps →
+                      </p>
+                    )}
+                  </div>
+                );
+              })()}
 
               {/* MEMORIES CAROUSEL */}
               <div className='bg-[#EAF1E5] h-[max-content] rounded-lg p-4'>
