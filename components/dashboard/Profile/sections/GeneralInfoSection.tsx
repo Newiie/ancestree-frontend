@@ -101,7 +101,7 @@ const GeneralInfoSection: React.FC<GeneralInfoSectionProps> = ({
                     <button
                       type="button"
                       onClick={() => handleAddArrayItem(section, field.name)}
-                      className="bg-primary hover:bg-primary/70 transition-colors duration-300 text-white px-2 py-1 rounded-md"
+                      className="bg-[#1B5A1B] hover:bg-[#1B5A1B]/90 transition-colors text-white px-2 py-1 rounded-md"
                     >
                       +
                     </button>
