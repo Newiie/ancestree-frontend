@@ -98,9 +98,9 @@ export { formDataSchema, registerSchema, familyMemberSchema, editPersonSchema, c
 // Response schema for fetchTreeData
 export const treeDataResponseSchema = z.object({
   familyTree: z.object({
+    id: z.string(),
     root: z.object({
       id: z.string(),
-      personNodeId: z.string(),
     }).passthrough(),
   }).passthrough(),
 }).passthrough();

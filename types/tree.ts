@@ -47,13 +47,12 @@ export interface PersonNode {
 }
 
 export interface TreeNode {
-  personNodeId: string;
-  id?: string;
+  id: string;
   name?: string;
   person?: PersonNode;
   parents?: TreeNode[];
   children?: TreeNode[];
-  parent?: Array<{ personNodeId: string }>;
+  parent?: Array<{ id: string }>;
 }
 
 // Derived from existing Zod schema to avoid divergence
