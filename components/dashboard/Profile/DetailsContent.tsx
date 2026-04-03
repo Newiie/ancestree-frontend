@@ -265,7 +265,7 @@ const DetailsContent = () => {
                   </button>
                 </div>
               ) : (
-                <p><strong>{interest.title}:</strong> {interest.description || 'No Description'}</p>
+                <p><strong>{interest.title || '—'}:</strong> {interest.description || '—'}</p>
               )}
             </div>
           ))}
@@ -337,7 +337,7 @@ const DetailsContent = () => {
 
     return fields.map((field) => (
       <div key={field.name} className='mb-1'>
-        <p><strong>{field.label}:</strong> {(formData[section] as Record<string, any>)[field.name] || 'Unknown'}</p>
+        <p><strong>{field.label}:</strong> {(formData[section] as Record<string, any>)[field.name] || '—'}</p>
       </div>
     ));
   };

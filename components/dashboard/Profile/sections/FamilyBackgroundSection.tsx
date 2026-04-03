@@ -11,7 +11,7 @@ interface FamilyBackgroundSectionProps {
   errors?: Record<string, string>;
 }
 
-const inputStyles = 'border rounded-md p-2 mt-1 mb-2 w-full';
+const inputStyles = 'w-full border border-stone-200 rounded-lg px-3 py-2 text-sm text-stone-800 bg-stone-50 placeholder:text-stone-400 focus:outline-none focus:border-[#1B5A1B]/50 focus:bg-white transition-colors mt-1 mb-2';
 const errorStyles = 'text-red-500 text-sm mt-1';
 
 const FamilyBackgroundSection: React.FC<FamilyBackgroundSectionProps> = ({
@@ -43,10 +43,10 @@ const FamilyBackgroundSection: React.FC<FamilyBackgroundSectionProps> = ({
       const errorKey = `vitalInformation.${field.name}`;
       const displayValue =
         Array.isArray(rawValue)
-          ? (rawValue as string[]).join(', ')
+          ? ((rawValue as string[]).join(', ') || '—')
           : typeof rawValue === 'string'
-          ? rawValue
-          : 'Unknown';
+          ? (rawValue || '—')
+          : '—';
 
       return (
         <div key={field.name} className="mb-1">
