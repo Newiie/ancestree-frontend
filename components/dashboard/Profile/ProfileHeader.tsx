@@ -143,10 +143,10 @@ const ProfileHeader = () => {
 
       {/* Avatar + info */}
       <div className='px-6 pb-5'>
-        <div className='flex items-end justify-between -mt-10 mb-4'>
-          {/* Avatar */}
+        {/* Avatar row — overlaps background */}
+        <div className='-mt-10 mb-3'>
           <div
-            className='relative'
+            className='relative w-fit'
             onMouseEnter={() => setIsProfileHover(true)}
             onMouseLeave={() => setIsProfileHover(false)}
           >
@@ -176,59 +176,84 @@ const ProfileHeader = () => {
               </>
             )}
           </div>
-
-          {/* Action buttons */}
-          <div className='flex items-center gap-2 pb-1'>
-            <Link
-              href={'/dashboard/family-tree/' + userData?.userId}
-              className='px-4 py-2 border border-stone-200 text-stone-700 text-sm font-medium rounded-xl hover:bg-stone-50 transition-colors'
-            >
-              View Tree
-            </Link>
-            {user?.id !== userData?.userId && (
-              <button
-                onClick={() => {
-                  if (userFriends?.friendRequest?.includes(userData?.userId ?? '')) {
-                    acceptFriendRequest(userData?.userId ?? '');
-                    updateService.acceptConnectionRequest(userData?.name || 'User');
-                  } else if (!userData?.friendsList?.some((friend: UserFriend) => friend.userId === user?.id)) {
-                    sendFriendRequest(userData?.userId ?? '');
-                    updateService.sendConnectionRequest(userData?.name || 'User');
-                  }
-                }}
-                className='px-4 py-2 bg-[#1B5A1B] hover:bg-[#1B5A1B]/90 text-white text-sm font-medium rounded-xl transition-colors'
-              >
-                {userData?.friendsList?.some((friend: UserFriend) => friend.userId === user?.id)
-                  ? 'Connected'
-                  : userData?.friendRequestList?.includes(user?.id ?? '')
-                  ? 'Sent Request'
-                  : userFriends?.friendRequest?.includes(userData?.userId ?? '')
-                  ? 'Accept Request'
-                  : 'Connect'}
+          {isEditingProfile && (
+            <div className='flex gap-2 mt-2'>
+              <button onClick={handleConfirmProfileImage} className='px-3 py-1.5 bg-[#1B5A1B] text-white text-xs font-semibold rounded-lg'>
+                Confirm photo
               </button>
-            )}
-          </div>
+              <button onClick={handleCancelProfileImage} className='px-3 py-1.5 border border-stone-200 text-stone-600 text-xs font-semibold rounded-lg'>
+                Cancel
+              </button>
+            </div>
+          )}
         </div>
 
-        {isEditingProfile && (
-          <div className='flex gap-2 mb-3'>
-            <button onClick={handleConfirmProfileImage} className='px-3 py-1.5 bg-[#1B5A1B] text-white text-xs font-semibold rounded-lg'>
-              Confirm photo
-            </button>
-            <button onClick={handleCancelProfileImage} className='px-3 py-1.5 border border-stone-200 text-stone-600 text-xs font-semibold rounded-lg'>
-              Cancel
-            </button>
+        {/* Name + subtitle + buttons */}
+        <div className='flex items-start justify-between gap-4'>
+          <div>
+            <h1 className='text-xl font-bold text-stone-900'>
+              {userData?.generalInformation?.firstName || userData?.generalInformation?.firstname}{' '}
+              {userData?.generalInformation?.middleName || userData?.generalInformation?.middlename}{' '}
+              {userData?.generalInformation?.lastName || userData?.generalInformation?.lastname}
+            </h1>
+            <p className='text-sm text-stone-400 mt-0.5'>Family tree member</p>
           </div>
-        )}
 
-        {/* Name + subtitle */}
-        <div>
-          <h1 className='text-xl font-bold text-stone-900'>
-            {userData?.generalInformation?.firstName || userData?.generalInformation?.firstname}{' '}
-            {userData?.generalInformation?.middleName || userData?.generalInformation?.middlename}{' '}
-            {userData?.generalInformation?.lastName || userData?.generalInformation?.lastname}
-          </h1>
-          <p className='text-sm text-stone-400 mt-0.5'>Family tree member</p>
+          {/* Action buttons — only shown when data is loaded */}
+          {userData && (
+            <div className='flex items-center gap-2 flex-shrink-0'>
+              <Link
+                href={'/dashboard/family-tree/' + userData?.userId}
+                className='px-4 py-2 border border-stone-200 text-stone-700 text-sm font-medium rounded-xl hover:bg-stone-50 transition-colors'
+              >
+                View Tree
+              </Link>
+              {user?.id !== userData?.userId && (() => {
+                const isConnected = userData?.friendsList?.some((friend: UserFriend) => friend.userId === user?.id);
+                const sentRequest = userData?.friendRequestList?.includes(user?.id ?? '');
+                const incomingRequest = userFriends?.friendRequest?.includes(userData?.userId ?? '');
+
+                if (isConnected) {
+                  return (
+                    <span className='px-4 py-2 bg-[#EAF1E5] text-[#1B5A1B] text-sm font-medium rounded-xl'>
+                      Connected
+                    </span>
+                  );
+                }
+                if (sentRequest) {
+                  return (
+                    <span className='px-4 py-2 border border-stone-200 text-stone-400 text-sm font-medium rounded-xl'>
+                      Sent Request
+                    </span>
+                  );
+                }
+                if (incomingRequest) {
+                  return (
+                    <button
+                      onClick={() => {
+                        acceptFriendRequest(userData?.userId ?? '');
+                        updateService.acceptConnectionRequest(userData?.name || 'User');
+                      }}
+                      className='px-4 py-2 bg-[#1B5A1B] hover:bg-[#1B5A1B]/90 text-white text-sm font-medium rounded-xl transition-colors'
+                    >
+                      Accept Request
+                    </button>
+                  );
+                }
+                return (
+                  <button
+                    onClick={() => {
+                      sendFriendRequest(userData?.userId ?? '');
+                      updateService.sendConnectionRequest(userData?.name || 'User');
+                    }}
+                    className='px-4 py-2 bg-[#1B5A1B] hover:bg-[#1B5A1B]/90 text-white text-sm font-medium rounded-xl transition-colors'
+                  >
+                    Connect
+                  </button>
+                );
+              })()}
+            </div>
+          )}
         </div>
       </div>
     </div>

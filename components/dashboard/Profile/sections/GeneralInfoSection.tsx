@@ -206,10 +206,10 @@ const GeneralInfoSection: React.FC<GeneralInfoSectionProps> = ({
             <p>
               <strong>{field.label}:</strong>{' '}
               {Array.isArray(rawValue)
-                ? (rawValue as string[]).join(', ')
+                ? ((rawValue as string[]).join(', ') || '—')
                 : typeof rawValue === 'string'
-                ? rawValue
-                : 'Unknown'}
+                ? (rawValue || '—')
+                : '—'}
             </p>
           )}
         </div>

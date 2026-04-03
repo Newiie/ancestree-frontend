@@ -417,12 +417,13 @@ const DetailsContent = () => {
               <div>
                 <h2 className='text-xl sm:text-2xl font-bold mb-4'>Connections</h2>
                 <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4'>
-                  {
-                    userData?.friendsList?.map((friend: UserFriend) => (
-                      <ConnectionCard key={friend.userId} result={friend} />
-                    ))
-                  }
+                  {userData?.friendsList?.map((friend: UserFriend) => (
+                    <ConnectionCard key={friend.userId} result={friend} />
+                  ))}
                 </div>
+                {(!userData?.friendsList || userData.friendsList.length === 0) && (
+                  <p className='text-sm text-stone-400'>No connections yet</p>
+                )}
               </div>
             )}
           </div>
