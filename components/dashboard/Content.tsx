@@ -377,42 +377,37 @@ const Content = () => {
                 )}
               </div>
 
-              {/* OCCASIONS UPDATES */}
-              <div className='flex flex-col sm:flex-row gap-4 bg-[#EAF1E5] rounded-lg p-4'>
-                <div className='bg-[#D4E2CC] flex-1 rounded-lg p-4'>
-                  <div className='flex items-center gap-4'>
-                    <GiftIcon className='w-[20px] h-[20px] text-[#1B5A1B]' />
-                    <h2 className='text-xl sm:text-2xl text-[#1B5A1B] font-semibold'>Birthdays</h2>
+              {/* UPCOMING EVENTS */}
+              <div className='bg-white rounded-2xl border border-stone-200 p-5'>
+                <h2 className='text-sm font-semibold text-stone-700 mb-3'>Upcoming</h2>
+                {birthdays.length === 0 && anniversary.length === 0 ? (
+                  <p className='text-sm text-stone-400 py-2'>No upcoming events</p>
+                ) : (
+                  <div className='space-y-2'>
+                    {(birthdays as any[]).map((person, index) => (
+                      <div key={`b-${index}`} className='flex items-center gap-3 py-2 border-b border-stone-100 last:border-0'>
+                        <span className='w-7 h-7 flex items-center justify-center rounded-full bg-[#EAF1E5] flex-shrink-0'>
+                          <GiftIcon size={13} className='text-[#1B5A1B]' />
+                        </span>
+                        <div className='min-w-0'>
+                          <p className='text-sm font-medium text-stone-800 truncate'>{person.name}</p>
+                          <p className='text-xs text-stone-400'>Birthday</p>
+                        </div>
+                      </div>
+                    ))}
+                    {(anniversary as any[]).map((person, index) => (
+                      <div key={`a-${index}`} className='flex items-center gap-3 py-2 border-b border-stone-100 last:border-0'>
+                        <span className='w-7 h-7 flex items-center justify-center rounded-full bg-[#EAF1E5] flex-shrink-0'>
+                          <CalendarHeartIcon size={13} className='text-[#1B5A1B]' />
+                        </span>
+                        <div className='min-w-0'>
+                          <p className='text-sm font-medium text-stone-800 truncate'>{person.name}</p>
+                          <p className='text-xs text-stone-400'>Anniversary</p>
+                        </div>
+                      </div>
+                    ))}
                   </div>
-                  <div className='flex flex-col gap-2'>
-                    {birthdays.length > 0 ? (
-                      <ul className='list-disc list-inside'>
-                        {birthdays.map((person : any, index) => (
-                          <li key={index} className='text-sm sm:text-lg text-[#434343] font-semibold'>{person.name}</li>
-                        ))}
-                      </ul>
-                    ) : (
-                      <div className='text-center text-gray-500 py-4'>No Birthdays</div>
-                    )}
-                  </div>
-                </div>
-                <div className='bg-[#D4E2CC] flex-1 rounded-lg p-4'>
-                  <div className='flex items-center gap-4'>
-                    <CalendarHeartIcon className='w-[20px] h-[20px] text-[#1B5A1B]' />
-                    <h2 className='text-xl sm:text-2xl text-[#1B5A1B] font-semibold'>Anniversaries</h2>
-                  </div>
-                  <div>
-                    {anniversary.length > 0 ? (
-                      <ul className='list-disc list-inside'>
-                        {anniversary.map((person : any, index) => (
-                          <li key={index} className='text-sm sm:text-lg text-[#434343] font-semibold'>{person.name}</li>
-                        ))}
-                      </ul>
-                    ) : (
-                      <div className='text-center text-gray-500 py-2'>No Anniversaries</div>
-                    )}
-                  </div>
-                </div>
+                )}
               </div>
             </div>
 
