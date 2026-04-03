@@ -226,15 +226,24 @@ const Content = () => {
 
       {/* QUICK ACTIONS */}
       <div className='grid grid-cols-2 sm:grid-cols-4 gap-3'>
-        <Link
-          href={`/dashboard/family-tree/${userData?.userId}`}
-          className='flex flex-col items-center gap-2 p-4 bg-white rounded-2xl border border-stone-200 hover:border-[#1B5A1B]/40 hover:shadow-sm transition-all group'
-        >
-          <span className='w-10 h-10 flex items-center justify-center rounded-xl bg-[#EAF1E5] text-[#1B5A1B] group-hover:bg-[#1B5A1B] group-hover:text-white transition-colors'>
-            <NetworkIcon size={18} />
-          </span>
-          <span className='text-xs font-medium text-stone-600 text-center'>Family Tree</span>
-        </Link>
+        {userData?.userId ? (
+          <Link
+            href={`/dashboard/family-tree/${userData.userId}`}
+            className='flex flex-col items-center gap-2 p-4 bg-white rounded-2xl border border-stone-200 hover:border-[#1B5A1B]/40 hover:shadow-sm transition-all group'
+          >
+            <span className='w-10 h-10 flex items-center justify-center rounded-xl bg-[#EAF1E5] text-[#1B5A1B] group-hover:bg-[#1B5A1B] group-hover:text-white transition-colors'>
+              <NetworkIcon size={18} />
+            </span>
+            <span className='text-xs font-medium text-stone-600 text-center'>Family Tree</span>
+          </Link>
+        ) : (
+          <div className='flex flex-col items-center gap-2 p-4 bg-white rounded-2xl border border-stone-200 opacity-50 cursor-not-allowed'>
+            <span className='w-10 h-10 flex items-center justify-center rounded-xl bg-[#EAF1E5] text-[#1B5A1B]'>
+              <NetworkIcon size={18} />
+            </span>
+            <span className='text-xs font-medium text-stone-600 text-center'>Family Tree</span>
+          </div>
+        )}
         <Link
           href='/dashboard/relationships'
           className='flex flex-col items-center gap-2 p-4 bg-white rounded-2xl border border-stone-200 hover:border-[#1B5A1B]/40 hover:shadow-sm transition-all group'
