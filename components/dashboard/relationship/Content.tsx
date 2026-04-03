@@ -34,153 +34,141 @@ const Content = () => {
   };
 
   return (
-    <div className='bg-[#DFDFDF] p-4 sm:p-[1.5rem] h-[max-content] min-h-screen rounded-[4px]'>
-      <div className='bg-white rounded-[4px]'>
-        <h2 className='text-primary font-bold text-xl sm:text-[1.7rem] p-4 sm:p-[1rem]'>Relationship</h2>
-        
-        <div className='bg-gradient-linear-navigation p-4 sm:p-[1rem] grid grid-cols-1 md:grid-cols-[40%_60%] gap-4'>
-          <div className='text-white text-center md:text-left'>
-            <h1 className='text-2xl sm:text-[2.5rem] font-bold mb-2 sm:mb-4'>Trace Your Roots with a Global Family Tree</h1>
-            <p className='text-base sm:text-[1.2rem]'>Uncover your roots and trace your family connections. Discover ancestors and find out how your lineage intertwines with others.</p>
+    <div className='bg-stone-50 min-h-screen p-4 sm:p-6 space-y-6'>
+
+      {/* PAGE HEADER */}
+      <div className='bg-[#1B5A1B] rounded-2xl p-6 sm:p-8'>
+        <p className='text-[#D4F3C0] text-xs font-semibold uppercase tracking-widest mb-2'>Relationships</p>
+        <h1 className='text-white text-2xl sm:text-3xl font-bold leading-snug mb-1'>Find Family Connections</h1>
+        <p className='text-white/60 text-sm'>Search by name or birth details to discover potential relatives in the global family tree.</p>
+      </div>
+
+      {/* SEARCH CARD */}
+      <div className='bg-white rounded-2xl border border-stone-200 shadow-sm p-5 sm:p-6'>
+
+        {/* Tab switcher */}
+        <div className='flex gap-0 bg-stone-100 rounded-xl p-1 mb-6 w-fit'>
+          {['Find Person', 'Find by ID'].map(tab => (
+            <button
+              key={tab}
+              type='button'
+              onClick={() => setActiveTab(tab)}
+              className={`py-2 px-5 rounded-lg text-sm font-medium transition-all duration-200 ${
+                activeTab === tab
+                  ? 'bg-white text-stone-800 shadow-sm shadow-stone-200'
+                  : 'text-stone-500 hover:text-stone-700'
+              }`}
+            >
+              {tab}
+            </button>
+          ))}
+        </div>
+
+        <form onSubmit={(e) => { e.preventDefault(); handleSearch(); }} className='space-y-4'>
+          {/* Name row */}
+          <div className='grid grid-cols-1 sm:grid-cols-3 gap-3'>
+            {[
+              { label: 'First Name', name: 'firstName', id: 'first-name' },
+              { label: 'Middle Name', name: 'middleName', id: 'middle-name' },
+              { label: 'Last Name', name: 'lastName', id: 'last-name' },
+            ].map(({ label, name, id }) => (
+              <div key={name} className='flex flex-col gap-1'>
+                <label htmlFor={id} className='text-xs font-semibold text-stone-500 uppercase tracking-wide'>{label}</label>
+                <input
+                  type='text'
+                  name={name}
+                  id={id}
+                  value={formData[name as keyof typeof formData]}
+                  onChange={handleInputChange}
+                  placeholder={label}
+                  className='w-full border border-stone-200 rounded-lg px-3 py-2 text-sm text-stone-800 bg-stone-50 placeholder:text-stone-400 focus:outline-none focus:border-[#1B5A1B]/50 focus:bg-white transition-colors'
+                />
+              </div>
+            ))}
           </div>
-          
-          <form 
-            className='rounded-[4px] bg-white p-4 sm:p-[1rem]' 
-            onSubmit={(e) => { e.preventDefault(); handleSearch(); }}
-          >
-            {/* Tabs for Mobile and Desktop */}
-            <div className='grid grid-cols-2 text-center mb-4 sm:mb-[2rem]'>
-              {['Find Person', 'Find by ID'].map(link => (
-                <li
-                  key={link}
-                  className={`
-                    text-base sm:text-[1.5rem] 
-                    border-b-1 border-primary 
-                    transition hover:border-b-2 
-                    hover:text-primary 
-                    text-muted-foreground 
-                    cursor-pointer 
-                    duration-300
-                    ${activeTab === link ? 'text-primary border-b-2' : ''}
-                  `}
-                  style={{ listStyle: 'none' }}
-                  onClick={() => setActiveTab(link)}
-                >
-                  {link}
-                </li>
+
+          {/* Birth details row */}
+          <div className='grid grid-cols-1 sm:grid-cols-[1fr_160px] gap-3'>
+            <div className='flex flex-col gap-1'>
+              <label htmlFor='birthPlace' className='text-xs font-semibold text-stone-500 uppercase tracking-wide'>Birth Place</label>
+              <input
+                type='text'
+                name='birthPlace'
+                id='birthPlace'
+                value={formData.birthPlace}
+                onChange={handleInputChange}
+                placeholder='City or Province'
+                className='w-full border border-stone-200 rounded-lg px-3 py-2 text-sm text-stone-800 bg-stone-50 placeholder:text-stone-400 focus:outline-none focus:border-[#1B5A1B]/50 focus:bg-white transition-colors'
+              />
+            </div>
+            <div className='flex flex-col gap-1'>
+              <label htmlFor='birthdate' className='text-xs font-semibold text-stone-500 uppercase tracking-wide'>Birthdate</label>
+              <input
+                type='date'
+                name='birthdate'
+                id='birthdate'
+                value={formData.birthdate}
+                onChange={handleInputChange}
+                className='w-full border border-stone-200 rounded-lg px-3 py-2 text-sm text-stone-600 bg-stone-50 focus:outline-none focus:border-[#1B5A1B]/50 focus:bg-white transition-colors'
+              />
+            </div>
+          </div>
+
+          {/* Actions */}
+          <div className='flex items-center gap-3 pt-1'>
+            <button
+              type='submit'
+              disabled={isSearching}
+              className='px-6 py-2.5 bg-[#1B5A1B] hover:bg-[#1B5A1B]/90 disabled:opacity-50 disabled:cursor-not-allowed text-white text-sm font-semibold rounded-xl transition-colors'
+            >
+              {isSearching ? 'Searching…' : 'Search'}
+            </button>
+            <button
+              type='button'
+              className='px-4 py-2.5 text-sm font-medium text-stone-500 hover:text-stone-800 transition-colors'
+            >
+              Advanced Search
+            </button>
+          </div>
+        </form>
+      </div>
+
+      {/* RESULTS */}
+      <div>
+        {isSearching && (
+          <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4'>
+            <Loading />
+            <Loading />
+            <Loading />
+          </div>
+        )}
+
+        {!isSearching && searchResults.length > 0 && (
+          <>
+            <p className='text-xs font-semibold text-stone-400 uppercase tracking-widest mb-3'>
+              {searchResults.length} result{searchResults.length !== 1 ? 's' : ''} found
+            </p>
+            <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4'>
+              {searchResults.map((result: any) => (
+                <ConnectionCard key={result.userId} result={result} />
               ))}
             </div>
+          </>
+        )}
 
-            <div className='grid grid-cols-1 sm:grid-cols-3 lg:gap-4 mt-4 sm:mt-[2rem]'>
-              <Input 
-                label="First Name" 
-                type="text" 
-                name="firstName" 
-                id="first-name" 
-                value={formData.firstName} 
-                onChange={handleInputChange} 
-              />
-              <Input 
-                label="Middle Name" 
-                type="text" 
-                name="middleName" 
-                id="middle-name" 
-                value={formData.middleName} 
-                onChange={handleInputChange} 
-              />
-              <Input 
-                label="Last Name" 
-                type="text" 
-                name="lastName" 
-                id="last-name" 
-                value={formData.lastName} 
-                onChange={handleInputChange} 
-              />
+        {!isSearching && searchResults.length === 0 && (
+          <div className='bg-white rounded-2xl border border-stone-200 p-10 flex flex-col items-center text-center'>
+            <div className='w-12 h-12 rounded-full bg-[#EAF1E5] flex items-center justify-center mb-4'>
+              <svg width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='#1B5A1B' strokeWidth='1.5' strokeLinecap='round' strokeLinejoin='round'>
+                <circle cx='11' cy='11' r='8'/><path d='m21 21-4.35-4.35'/>
+              </svg>
             </div>
-
-            <div className='grid grid-cols-1 sm:grid-cols-[calc(70%-1rem)_30%] gap-4 mt-4 sm:mt-[2rem]'>
-              <Input 
-                label="Birth Place" 
-                type="text" 
-                name="birthPlace"
-                id="birthPlace"
-                value={formData.birthPlace}
-                onChange={handleInputChange} 
-              />
-              <Input 
-                label="Birthdate" 
-                type="date" 
-                name="birthdate" 
-                id="birthdate" 
-                value={formData.birthdate} 
-                onChange={handleInputChange} 
-              />
-            </div>
-
-            <div className='flex flex-col sm:flex-row gap-4 mt-4 sm:mt-[2rem]'>
-              <button 
-                type="submit" 
-                className='
-                  w-full sm:w-auto 
-                  py-[0.5rem] 
-                  bg-btn-primary 
-                  text-white 
-                  font-bold 
-                  px-[1rem] 
-                  text-[0.9rem] 
-                  rounded-[3px] 
-                  hover:text-white 
-                  hover:bg-primary 
-                  transition-colors 
-                  duration-400
-                '
-              >
-                SEARCH
-              </button>
-              <button 
-                type="button" 
-                className='
-                  w-full sm:w-auto 
-                  py-[0.5rem] 
-                  text-primary 
-                  px-[1rem] 
-                  text-[0.9rem] 
-                  rounded-[3px] 
-                  cursor-pointer
-                '
-              >
-                ADVANCE SEARCH
-              </button>
-            </div>
-          </form>
-        </div>
-
-        <div className="p-4">
-          <h3 className='text-primary font-bold text-xl sm:text-[1.7rem] p-4 sm:p-[1rem]'>Results</h3>
-          <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4'>
-            {searchResults.map((result : any) => (
-              <ConnectionCard key={result.userId} result={result} />
-            ))}
-
-            {
-              searchResults.length == 0 && !isSearching && (
-                <div className='col-span-full flex flex-col gap-4 px-4 justify-center h-[100%]'>
-                  <p className='text-base sm:text-[1.2rem] text-gray-500 text-center'>No results found</p>
-                </div>
-              )
-            }
-            {
-              isSearching && (
-                <div className='col-span-full flex flex-wrap gap-4 w-full justify-center'>
-                  <Loading />
-                  <Loading />
-                  <Loading />
-                </div>
-              )
-            }
+            <p className='text-sm font-semibold text-stone-700 mb-1'>Search for relatives</p>
+            <p className='text-sm text-stone-400 max-w-xs'>Enter a name or birth details above to find potential family connections in the global tree.</p>
           </div>
-        </div>
-      </div>  
+        )}
+      </div>
+
     </div>
   );
 };
