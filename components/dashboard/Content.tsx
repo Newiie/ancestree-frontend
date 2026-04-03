@@ -20,7 +20,6 @@ import { type CarouselApi } from "@/components/ui/carousel"
 import dashboardService from '@/services/api/dashboardService';
 import TreeService from '@/services/api/treeService';
 import { TreeNode } from '@/types/tree';
-import useAuth from '@/hooks/useAuth';
 
 const progress = [
   {
@@ -134,7 +133,6 @@ const ActivityCard = () => {
 
 const Content = () => {
   const { userData } = useProfile();
-  const { user } = useAuth();
   const [treeMemberCount, setTreeMemberCount] = useState<number | null>(null);
   const [api, setApi] = React.useState<CarouselApi>()
   const [current, setCurrent] = React.useState(0)
@@ -193,17 +191,22 @@ const Content = () => {
 
   React.useEffect(() => {
     if (!userData?.userId) return;
-    const visited = new Set<string>();
-    const countNodes = (node: TreeNode): number => {
-      if (!node?.id || visited.has(node.id)) return 0;
-      visited.add(node.id);
-      let n = 1;
-      (node.children ?? []).forEach(c => { n += countNodes(c); });
-      (node.parents ?? []).forEach(p => { n += countNodes(p); });
-      return n;
-    };
     TreeService.fetchTreeData(userData.userId)
-      .then(data => setTreeMemberCount(countNodes(data.familyTree.root as TreeNode)))
+      .then(data => {
+        const root = data.familyTree.root as unknown as TreeNode;
+        const visited = new Set<string>();
+        const queue: TreeNode[] = [root];
+        let count = 0;
+        while (queue.length > 0) {
+          const node = queue.shift()!;
+          if (!node?.id || visited.has(node.id)) continue;
+          visited.add(node.id);
+          count++;
+          (node.children ?? []).forEach(c => queue.push(c));
+          (node.parents ?? []).forEach(p => queue.push(p));
+        }
+        setTreeMemberCount(count);
+      })
       .catch(() => setTreeMemberCount(null));
   }, [userData?.userId]);
 
