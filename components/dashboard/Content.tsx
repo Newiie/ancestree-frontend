@@ -314,8 +314,8 @@ const Content = () => {
               })()}
 
               {/* MEMORIES CAROUSEL */}
-              <div className='bg-[#EAF1E5] h-[max-content] rounded-lg p-4'>
-                <h2 className='text-xl sm:text-2xl text-[#1B5A1B] font-semibold'>Memories</h2>
+              <div className='bg-white rounded-2xl border border-stone-200 p-5'>
+                <h2 className='text-sm font-semibold text-stone-700 mb-3'>Memories</h2>
                 {memoryPhotos.length > 0 ? (
                   <>
                     <Carousel
