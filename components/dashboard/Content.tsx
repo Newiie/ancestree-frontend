@@ -414,9 +414,9 @@ const Content = () => {
             {/* SECOND COLUMN */}
             <div className='space-y-4'>
               {/* NOTEPAD */}
-              <div className='bg-[#EAF1E5] h-[max-content] rounded-lg p-4'>
+              <div className='bg-white rounded-2xl border border-stone-200 p-5'>
                 <div className='flex justify-between items-center'>
-                  <h2 className='text-xl sm:text-2xl text-[#1B5A1B] font-semibold'>Notepad</h2>
+                  <h2 className='text-sm font-semibold text-stone-700'>Notepad</h2>
                   <Popover open={isDevPopoverOpen} onOpenChange={setIsDevPopoverOpen}>
                     <PopoverTrigger>
                       <CirclePlusIcon 
@@ -437,25 +437,28 @@ const Content = () => {
                 </div>
                 <div className='mt-4 flex flex-col gap-4'>
                   {[1, 2, 3].map((_, index) => (
-                    <div key={index} className='bg-[#F3FFE6] rounded-lg p-4'>
-                      <p className='text-sm sm:text-lg text-[#1B5A1B] font-semibold'>Add a new note</p>
+                    <div key={index} className='bg-stone-50 border border-dashed border-stone-200 rounded-xl p-4'>
+                      <p className='text-sm text-stone-400'>Add a new note…</p>
                     </div>
                   ))}
                 </div>
               </div>
 
               {/* MONTHLY UPDATES */}
-              <div className='bg-[#EAF1E5] h-[max-content] rounded-lg p-4'>
-                <h2 className='text-xl sm:text-2xl text-[#1B5A1B] font-semibold'>Monthly Updates</h2>
+              <div className='bg-white rounded-2xl border border-stone-200 p-5'>
+                <h2 className='text-sm font-semibold text-stone-700 mb-3'>Monthly Updates</h2>
                 {monthlyUpdatesList.length > 0 ? (
-                  <ul className='list-disc list-inside'>
+                  <div className='space-y-2'>
                     {monthlyUpdatesList.map((item, index) => (
-                      <li key={index} className='text-sm sm:text-lg text-[#434343] font-semibold'>{item}</li>
+                      <div key={index} className='flex items-start gap-2.5 py-2 border-b border-stone-100 last:border-0'>
+                        <span className='mt-1.5 w-1.5 h-1.5 rounded-full bg-[#1B5A1B] flex-shrink-0' />
+                        <p className='text-sm text-stone-700'>{item}</p>
+                      </div>
                     ))}
-                  </ul>
+                  </div>
                 ) : (
                   <div className='text-center text-gray-500 py-4'>
-                    <p className='text-base italic'>No updates this month</p>
+                    <p className='text-sm text-stone-400 py-2'>No updates this month</p>
                   </div>
                 )}
               </div>
