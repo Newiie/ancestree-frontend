@@ -14,7 +14,7 @@ interface GeneralInfoSectionProps {
 
 type SectionKey = 'generalInformation' | 'address';
 
-const inputStyles = 'border rounded-md p-2 mt-1 mb-2 w-full';
+const inputStyles = 'w-full border border-stone-200 rounded-lg px-3 py-2 text-sm text-stone-800 bg-stone-50 placeholder:text-stone-400 focus:outline-none focus:border-[#1B5A1B]/50 focus:bg-white transition-colors mt-1 mb-2';
 const errorStyles = 'text-red-500 text-sm mt-1';
 
 const GeneralInfoSection: React.FC<GeneralInfoSectionProps> = ({
@@ -113,7 +113,7 @@ const GeneralInfoSection: React.FC<GeneralInfoSectionProps> = ({
                         (item, index) => (
                           <span
                             key={index}
-                            className="flex items-center bg-gray-200 px-2 py-1 rounded-md text-sm"
+                            className="flex items-center bg-[#EAF1E5] text-[#1B5A1B] px-2.5 py-1 rounded-full text-xs font-medium"
                           >
                             {item}
                             <button
@@ -194,7 +194,7 @@ const GeneralInfoSection: React.FC<GeneralInfoSectionProps> = ({
                   (item, index) => (
                     <span
                       key={index}
-                      className="bg-gray-200 px-2 py-1 rounded-md text-sm"
+                      className="bg-[#EAF1E5] text-[#1B5A1B] px-2.5 py-1 rounded-full text-xs font-medium"
                     >
                       {item}
                     </span>

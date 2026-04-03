@@ -9,52 +9,31 @@ const ProfileSidebar = () => {
   if (profileTabs !== 'Personal Details') return null;
 
   return (
-    <div className='w-full'>
+    <div className='w-full border-b md:border-b-0 md:border-r border-stone-200'>
       {/* Mobile Dropdown */}
-      <div 
-        className='md:hidden flex justify-between items-center bg-gray-100 p-4 cursor-pointer'
+      <div
+        className='md:hidden flex justify-between items-center p-4 cursor-pointer hover:bg-stone-50 transition-colors'
         onClick={() => setIsOpen(!isOpen)}
       >
-        <span className='font-bold'>{selectedDetail}</span>
-        {isOpen ? <ChevronDownIcon /> : <ChevronRightIcon />}
+        <span className='text-sm font-semibold text-stone-700'>{selectedDetail}</span>
+        {isOpen ? <ChevronDownIcon size={16} className='text-stone-400' /> : <ChevronRightIcon size={16} className='text-stone-400' />}
       </div>
 
-      {/* Sidebar for Desktop and Mobile Dropdown */}
-      <div className={`
-        ${isOpen ? 'block' : 'hidden'} 
-        md:block 
-        bg-white 
-        md:bg-transparent 
-        border-t md:border-t-0 
-        md:border-r-[2.5px] 
-        border-[#DFDFDF] 
-        py-4 
-        pr-4
-      `}>
-        <h2 className='p-2 text-lg font-bold hidden md:block'>Personal Details</h2>
-        <div className='mt-2'>
+      <div className={`${isOpen ? 'block' : 'hidden'} md:block py-3 px-2`}>
+        <p className='hidden md:block px-2 mb-2 text-xs font-semibold text-stone-400 uppercase tracking-widest'>Personal Details</p>
+        <div className='space-y-0.5'>
           {profileSidebarData.map((item) => (
-            <p 
-              key={item} 
-              onClick={() => {
-                setSelectedDetail(item);
-                setIsOpen(false);
-              }} 
-              className={`
-                text-black 
-                p-2 
-                ${item === selectedDetail ? 'bg-gray-200' : 'hover:bg-gray-200'} 
-                mt-2 
-                rounded-lg 
-                cursor-pointer 
-                transition 
-                duration-300
-                text-sm 
-                md:text-base
-              `}
+            <button
+              key={item}
+              onClick={() => { setSelectedDetail(item); setIsOpen(false); }}
+              className={`w-full text-left px-3 py-2.5 rounded-lg text-sm transition-colors duration-200 ${
+                item === selectedDetail
+                  ? 'bg-[#EAF1E5] text-[#1B5A1B] font-semibold'
+                  : 'text-stone-600 hover:bg-stone-100 hover:text-stone-800'
+              }`}
             >
               {item}
-            </p>
+            </button>
           ))}
         </div>
       </div>

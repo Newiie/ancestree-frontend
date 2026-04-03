@@ -102,9 +102,9 @@ const DetailsContent = () => {
   }, [userData, isFetching]);
 
   // STYLES
-  const inputStyles = 'border rounded-md p-2 mt-1 mb-2 w-full';
-  const buttonStyles = 'px-4 py-2 font-bold text-white rounded-md';
-  const errorStyles = 'text-red-500 text-sm mt-1';
+  const inputStyles = 'w-full border border-stone-200 rounded-lg px-3 py-2 text-sm text-stone-800 bg-stone-50 placeholder:text-stone-400 focus:outline-none focus:border-[#1B5A1B]/50 focus:bg-white transition-colors mt-1 mb-2';
+  const buttonStyles = 'px-4 py-2 text-sm font-semibold rounded-xl transition-colors';
+  const errorStyles = 'text-red-500 text-xs mt-1';
 
   const handleEditClick = () => setIsEditing(true);
 
@@ -349,7 +349,7 @@ const DetailsContent = () => {
   return (
     <div className='p-4 sm:p-6 relative'>
       {isFetching ? (
-        <p>Loading...</p>
+        <p className='text-sm text-stone-400'>Loading profile…</p>
       ) : (
         <>
           {user?.id === userData?.userId && (
@@ -429,18 +429,18 @@ const DetailsContent = () => {
 
           {isEditing && (
             <div className='hidden md:flex justify-end p-4'>
-              <div className='flex justify-end gap-4 max-w-4xl'>
+              <div className='flex justify-end gap-3'>
                 <button
-                  className={`${buttonStyles} bg-red-500 w-full sm:w-auto`}
+                  className={`${buttonStyles} border border-stone-200 text-stone-600 hover:bg-stone-50`}
                   onClick={handleCancelClick}
                 >
                   Cancel
                 </button>
                 <button
-                  className={`${buttonStyles} bg-blue-500 w-full sm:w-auto`}
+                  className={`${buttonStyles} bg-[#1B5A1B] hover:bg-[#1B5A1B]/90 text-white`}
                   onClick={handleSaveClick}
                 >
-                  Save
+                  Save changes
                 </button>
               </div>
             </div>
@@ -448,18 +448,18 @@ const DetailsContent = () => {
 
           {isEditing && (
             <div className='fixed flex md:hidden bottom-0 left-0 right-0 bg-white shadow-lg p-4 z-50'>
-              <div className='flex justify-end gap-4 max-w-4xl mx-auto'>
+              <div className='flex gap-3 w-full'>
                 <button
-                  className={`${buttonStyles} bg-red-500 w-full sm:w-auto`}
+                  className={`${buttonStyles} flex-1 border border-stone-200 text-stone-600 hover:bg-stone-50`}
                   onClick={handleCancelClick}
                 >
                   Cancel
                 </button>
                 <button
-                  className={`${buttonStyles} bg-blue-500 w-full sm:w-auto`}
+                  className={`${buttonStyles} flex-1 bg-[#1B5A1B] hover:bg-[#1B5A1B]/90 text-white`}
                   onClick={handleSaveClick}
                 >
-                  Save
+                  Save changes
                 </button>
               </div>
             </div>

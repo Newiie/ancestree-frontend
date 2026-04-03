@@ -98,137 +98,137 @@ const ProfileHeader = () => {
 
 
   return (
-    <div className='w-full relative bg-white p-4 rounded-lg'>
-      <div className='absolute inset-0 h-[13rem] w-full'>
-        <div
-          className='relative w-full h-full'
-          onMouseEnter={() => setIsBackgroundHover(true)}
-          onMouseLeave={() => setIsBackgroundHover(false)}
-        >
-          <Image
-            src={isEditingBackground ? newBackgroundImage || backgroundImage : backgroundImage}
-            alt='Background'
-            layout='fill'
-            objectFit='cover'
-            className='rounded-t-lg cursor-pointer'
-          />
-          <div className='absolute inset-0 h-[13rem] w-full bg-black opacity-30 rounded-t-lg'></div>
-          {isBackgroundHover && (
-            <>
-              <div className='absolute top-2 right-2 p-2 hover:bg-black/20 transition-colors duration-400 rounded-full '>
-
-                <SquarePenIcon
-                  className='text-white cursor-pointer'
-                  width={20}
-                  height={20}
-                  onClick={() => document.getElementById('backgroundFileInput')?.click()}
-                  />
-              </div>
-              <input
-                id="backgroundFileInput"
-                type="file"
-                accept="image/*"
-                onChange={handleBackgroundImageChange}
-                className="hidden"
-                />
-            </>
-          )}
-        </div>
+    <div className='w-full relative bg-white rounded-2xl overflow-hidden border border-stone-200 shadow-sm'>
+      {/* Background image */}
+      <div className='relative h-44 w-full'
+        onMouseEnter={() => setIsBackgroundHover(true)}
+        onMouseLeave={() => setIsBackgroundHover(false)}
+      >
+        <Image
+          src={isEditingBackground ? newBackgroundImage || backgroundImage : backgroundImage}
+          alt='Profile background'
+          fill
+          className='object-cover'
+        />
+        <div className='absolute inset-0 bg-gradient-to-t from-black/40 to-transparent' />
+        {isBackgroundHover && (
+          <>
+            <button
+              type='button'
+              onClick={() => document.getElementById('backgroundFileInput')?.click()}
+              className='absolute top-3 right-3 p-2 bg-black/30 hover:bg-black/50 rounded-full transition-colors'
+            >
+              <SquarePenIcon className='text-white' width={16} height={16} />
+            </button>
+            <input
+              id="backgroundFileInput"
+              type="file"
+              accept="image/*"
+              onChange={handleBackgroundImageChange}
+              className="hidden"
+            />
+          </>
+        )}
         {isEditingBackground && (
-          <div className='flex gap-2 mt-2 absolute -bottom-10 right-2'>
-            <button onClick={handleConfirmBackgroundImage} className='bg-green-500 text-white px-2 py-1 rounded-lg'>
+          <div className='absolute bottom-3 right-3 flex gap-2'>
+            <button onClick={handleConfirmBackgroundImage} className='px-3 py-1.5 bg-[#1B5A1B] text-white text-xs font-semibold rounded-lg'>
               Confirm
             </button>
-            <button onClick={handleCancelBackgroundImage} className='bg-red-500 text-white px-2 py-1 rounded-lg'>
+            <button onClick={handleCancelBackgroundImage} className='px-3 py-1.5 bg-white/80 text-stone-700 text-xs font-semibold rounded-lg'>
               Cancel
             </button>
           </div>
         )}
       </div>
-      <div className='relative flex flex-col w-[max-content] pl-[2rem] pb-[1rem] mt-[8rem]'>
-        <div
-          onMouseEnter={() => setIsProfileHover(true)}
-          onMouseLeave={() => setIsProfileHover(false)}
-          className='relative w-24 h-24 rounded-full bg-[#F5F5F5]'
-        >
-          <Image
-            src={isEditingProfile ? newProfileImage || profileImage : profileImage}
-            alt='Profile'
-            width={100}
-            height={100}
-            className='w-24 h-24 z-10 rounded-full cursor-pointer border-4 border-white'
-          />
-          {isProfileHover && user?.id === userData?.userId && (
-            <>
-            <div className=' absolute -bottom-3 -right-2 p-2 hover:bg-black/20 transition-colors duration-400 rounded-full '>
-              <SquarePenIcon
-                  className='text-black/60 hover:text-black z-20 cursor-pointer'
-                  width={20}
-                  height={20}
+
+      {/* Avatar + info */}
+      <div className='px-6 pb-5'>
+        <div className='flex items-end justify-between -mt-10 mb-4'>
+          {/* Avatar */}
+          <div
+            className='relative'
+            onMouseEnter={() => setIsProfileHover(true)}
+            onMouseLeave={() => setIsProfileHover(false)}
+          >
+            <Image
+              src={isEditingProfile ? newProfileImage || profileImage : profileImage}
+              alt='Profile photo'
+              width={80}
+              height={80}
+              className='w-20 h-20 rounded-full object-cover border-4 border-white shadow-md'
+            />
+            {isProfileHover && user?.id === userData?.userId && (
+              <>
+                <button
+                  type='button'
                   onClick={() => document.getElementById('profileFileInput')?.click()}
+                  className='absolute -bottom-1 -right-1 p-1.5 bg-white border border-stone-200 rounded-full shadow-sm hover:bg-stone-50 transition-colors'
+                >
+                  <SquarePenIcon className='text-stone-500' width={12} height={12} />
+                </button>
+                <input
+                  id="profileFileInput"
+                  type="file"
+                  accept="image/*"
+                  onChange={handleProfileImageChange}
+                  className="hidden"
                 />
-              </div>
-            
-              <input
-                id="profileFileInput"
-                type="file"
-                accept="image/*"
-                onChange={handleProfileImageChange}
-                className="hidden"
-              />
-            </>
-          )}
+              </>
+            )}
+          </div>
+
+          {/* Action buttons */}
+          <div className='flex items-center gap-2 pb-1'>
+            <Link
+              href={'/dashboard/family-tree/' + userData?.userId}
+              className='px-4 py-2 border border-stone-200 text-stone-700 text-sm font-medium rounded-xl hover:bg-stone-50 transition-colors'
+            >
+              View Tree
+            </Link>
+            {user?.id !== userData?.userId && (
+              <button
+                onClick={() => {
+                  if (userFriends?.friendRequest?.includes(userData?.userId ?? '')) {
+                    acceptFriendRequest(userData?.userId ?? '');
+                    updateService.acceptConnectionRequest(userData?.name || 'User');
+                  } else if (!userData?.friendsList?.some((friend: UserFriend) => friend.userId === user?.id)) {
+                    sendFriendRequest(userData?.userId ?? '');
+                    updateService.sendConnectionRequest(userData?.name || 'User');
+                  }
+                }}
+                className='px-4 py-2 bg-[#1B5A1B] hover:bg-[#1B5A1B]/90 text-white text-sm font-medium rounded-xl transition-colors'
+              >
+                {userData?.friendsList?.some((friend: UserFriend) => friend.userId === user?.id)
+                  ? 'Connected'
+                  : userData?.friendRequestList?.includes(user?.id ?? '')
+                  ? 'Sent Request'
+                  : userFriends?.friendRequest?.includes(userData?.userId ?? '')
+                  ? 'Accept Request'
+                  : 'Connect'}
+              </button>
+            )}
+          </div>
         </div>
+
         {isEditingProfile && (
-          <div className='flex gap-2 mt-2'>
-            <button onClick={handleConfirmProfileImage} className='bg-green-500 text-white px-2 py-1 rounded-lg'>
-              Confirm
+          <div className='flex gap-2 mb-3'>
+            <button onClick={handleConfirmProfileImage} className='px-3 py-1.5 bg-[#1B5A1B] text-white text-xs font-semibold rounded-lg'>
+              Confirm photo
             </button>
-            <button onClick={handleCancelProfileImage} className='bg-red-500 text-white px-2 py-1 rounded-lg'>
+            <button onClick={handleCancelProfileImage} className='px-3 py-1.5 border border-stone-200 text-stone-600 text-xs font-semibold rounded-lg'>
               Cancel
             </button>
           </div>
         )}
-        
-        <h1 className='text-xl font-bold mt-2'>{userData?.generalInformation?.firstname} {userData?.generalInformation?.middlename} {userData?.generalInformation?.lastname}</h1>
-        <p className='text-gray-700'>ID: {userData?.userId}</p>
-        <div className='flex mt-2'>
-          <Link href={'/dashboard/family-tree/' + userData?.userId} className='bg-white hover:bg-btn-secondary transition-colors duration-300 text-primary border-1 border-green px-2 py-1 rounded-lg mr-2'>
-            View Tree
-          </Link>
-          {
-            user?.id !== userData?.userId && 
-            (
-              <button
-                onClick={() => {
-                    if (userFriends?.friendRequest?.includes(userData?.userId ?? '')) {
-                      // When accepting a friend request
-                      acceptFriendRequest(userData?.userId ?? '');
 
-                      // Create an update for the logged-in user
-                      updateService.acceptConnectionRequest(userData?.name || 'User');
-                    } else if (!userData?.friendsList?.some((friend: UserFriend) => friend.userId === user?.id)) {
-                      // When sending a friend request
-                      sendFriendRequest(userData?.userId ?? '');
-
-                      // Create an update for the logged-in user
-                      updateService.sendConnectionRequest(userData?.name || 'User');
-                    }
-                  }
-                }
-                className='bg-primary hover:bg-primary/70 transition-colors duration-300  cursor-pointer text-white border-1 hover:border-white border-green px-2 py-1 rounded-lg'>
-                  {
-                    userData?.friendsList?.some((friend: UserFriend) => friend.userId === user?.id) ?
-                    "Connected" :
-                    userData?.friendRequestList?.includes(user?.id ?? '') ?
-                    "Sent Request"
-                    : userFriends?.friendRequest?.includes(userData?.userId ?? '')
-                    ? "Accept Request":
-                    "Connect"
-                  }
-              </button>
-            )
-          }
+        {/* Name + subtitle */}
+        <div>
+          <h1 className='text-xl font-bold text-stone-900'>
+            {userData?.generalInformation?.firstName || userData?.generalInformation?.firstname}{' '}
+            {userData?.generalInformation?.middleName || userData?.generalInformation?.middlename}{' '}
+            {userData?.generalInformation?.lastName || userData?.generalInformation?.lastname}
+          </h1>
+          <p className='text-sm text-stone-400 mt-0.5'>Family tree member</p>
         </div>
       </div>
     </div>
