@@ -196,39 +196,33 @@ const Content = () => {
   }, [api])
 
   return (
-    <div className='bg-[#DFDFDF] text-black p-4 sm:p-6'>
-      <div className='bg-white rounded-[4px] p-4 gap-[2rem]'>
-        <div>
-          {/* PROFILE DETAILS */}
-          <div className='relative flex flex-col sm:flex-row items-center ml-0 sm:ml-12 mt-4 sm:mt-12'>
-            <div className='absolute z-10 left-0 lg:-top-[28px] lg:-left-[40px] p-2 bg-[#D4E2CC] rounded-full w-[80px] h-[80px] lg:h-[max-content] lg:w-[max-content] block'>
-              <Image 
-                src={`${userData?.profilePicture ? userData?.profilePicture : '/images/doge.png'}`} 
-                alt='profile' 
-                className='w-[80px] bg-white h-[80px] rounded-full object-cover' 
-                width={100} 
-                height={100} 
-              />
-            </div>
-            <div className='relative flex flex-col sm:flex-row gap-4 sm:gap-[4rem] rounded-sm w-full sm:pl-16 py-2 px-4 bg-[#D4E2CC]'>
-              <div className='text-center sm:text-left'>
-                <p className='text-xl sm:text-[2rem] text-black/80 font-semibold'>
-                  {userData?.generalInformation?.firstName} {userData?.generalInformation?.lastName}
-                </p>
-              </div>
-              <div className='flex justify-center sm:justify-start items-center'>
-                <Link 
-                  href={`/dashboard/family-tree/${userData?.userId}`} 
-                  className={`bg-white hover:bg-btn-secondary text-primary border-1 transition-colors duration-200 border-green px-2 py-1 rounded-lg mr-2`}
-                >
-                  View Tree
-                </Link>
-              </div>
-              <EllipsisIcon className='absolute top-2 right-4 cursor-pointer hidden sm:block' />
-            </div>
-          </div>
+    <div className='bg-stone-50 text-black p-4 sm:p-6 space-y-4'>
+      {/* PROFILE HERO */}
+      <div className='flex items-center gap-4 bg-white rounded-2xl p-5 border border-stone-200 shadow-sm'>
+        <div className='relative flex-shrink-0'>
+          <Image
+            src={userData?.profilePicture ? userData.profilePicture : '/images/doge.png'}
+            alt='profile'
+            width={64}
+            height={64}
+            className='w-16 h-16 rounded-full object-cover ring-2 ring-[#1B5A1B]/20'
+          />
+        </div>
+        <div className='flex-grow min-w-0'>
+          <h1 className='text-xl font-bold text-stone-800 truncate'>
+            {userData?.generalInformation?.firstName} {userData?.generalInformation?.lastName}
+          </h1>
+          <p className='text-sm text-stone-400'>Your family tree awaits</p>
+        </div>
+        <Link
+          href={`/dashboard/family-tree/${userData?.userId}`}
+          className='flex-shrink-0 px-4 py-2 bg-[#1B5A1B] text-white text-sm font-medium rounded-xl hover:bg-[#1B5A1B]/90 transition-colors'
+        >
+          View Tree
+        </Link>
+      </div>
 
-          <div className='grid grid-cols-1 md:grid-cols-2 gap-4 mt-4'>
+      <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
             {/* FIRST COLUMN */}
             <div className='space-y-4'>
               {/* ACCOUNT PROGRESS */}
@@ -406,8 +400,6 @@ const Content = () => {
               </div>
             </div>
           </div>
-        </div>
-      </div>
     </div>
   );
 };
