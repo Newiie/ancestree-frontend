@@ -279,7 +279,7 @@ const Content = () => {
               {/* GETTING STARTED PROGRESS */}
               {(() => {
                 const completedCount = progressSteps.filter(s => s.completed).length;
-                const pct = Math.round((completedCount / progressSteps.length) * 100);
+                const pct = progressSteps.length ? Math.round((completedCount / progressSteps.length) * 100) : 0;
                 return (
                   <div className='bg-white rounded-2xl border border-stone-200 p-5'>
                     <div className='flex items-center justify-between mb-2'>
