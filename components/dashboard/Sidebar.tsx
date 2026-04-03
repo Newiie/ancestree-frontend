@@ -110,16 +110,31 @@ const Sidebar = () => {
     <Popover>
       <div className="px-3 pt-3 pb-3 border-t border-white/10">
         <div className="flex items-center gap-2.5 overflow-hidden">
-          <div className="relative flex-shrink-0">
-            <Image
-              src={userData?.profilePicture || '/images/doge.png'}
-              alt="Profile"
-              width={36}
-              height={36}
-              className="w-9 h-9 rounded-full object-cover ring-2 ring-[#D4F3C0]/40"
-            />
-            <span className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-[#D4F3C0] rounded-full border-2 border-[#1B5A1B]" />
-          </div>
+          {collapsed ? (
+            <PopoverTrigger asChild>
+              <div className="relative flex-shrink-0 cursor-pointer">
+                <Image
+                  src={userData?.profilePicture || '/images/doge.png'}
+                  alt="Profile"
+                  width={36}
+                  height={36}
+                  className="w-9 h-9 rounded-full object-cover ring-2 ring-[#D4F3C0]/40"
+                />
+                <span className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-[#D4F3C0] rounded-full border-2 border-[#1B5A1B]" />
+              </div>
+            </PopoverTrigger>
+          ) : (
+            <div className="relative flex-shrink-0">
+              <Image
+                src={userData?.profilePicture || '/images/doge.png'}
+                alt="Profile"
+                width={36}
+                height={36}
+                className="w-9 h-9 rounded-full object-cover ring-2 ring-[#D4F3C0]/40"
+              />
+              <span className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-[#D4F3C0] rounded-full border-2 border-[#1B5A1B]" />
+            </div>
+          )}
           <div className={`flex-grow min-w-0 transition-all duration-300 ease-in-out ${collapsed ? 'max-w-0 opacity-0' : 'max-w-[120px] opacity-100 delay-100'}`}>
             <p className="text-sm font-semibold text-white truncate leading-tight">{userName}</p>
             <p className="text-xs text-white/40 truncate leading-tight">Online</p>
