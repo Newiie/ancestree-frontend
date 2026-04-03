@@ -1,7 +1,4 @@
-import React, { 
-  useState, 
-  useEffect 
-} from 'react';
+import React, { useState } from 'react';
 import { useProfile } from '@/providers/ProfileProvider';
 import Image from 'next/image';
 import Link from 'next/link';
