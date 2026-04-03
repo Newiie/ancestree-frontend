@@ -255,70 +255,6 @@ const Content = () => {
                 );
               })()}
 
-              {/* MEMORIES CAROUSEL */}
-              <div className='bg-white rounded-2xl border border-stone-200 p-5'>
-                <h2 className='text-sm font-semibold text-stone-700 mb-3'>Memories</h2>
-                {memoryPhotos.length > 0 ? (
-                  <>
-                    <Carousel
-                      setApi={setApi}
-                      opts={{
-                        loop: true,
-                        align: 'center',
-                        slidesToScroll: 1,
-                      }}
-                      className="mx-auto"
-                    >
-                      <CarouselContent className="flex gap-4 px-4">
-                        {memoryPhotos.map((item, index) => (
-                          <CarouselItem 
-                            key={index} 
-                            className="basis-3/4 sm:basis-1/2 lg:basis-1/3 flex justify-center"
-                          >
-                            <div className='w-[200px] sm:w-[250px] h-[250px] sm:h-[300px] bg-white rounded-lg shadow-md overflow-hidden transition-transform duration-300 hover:scale-105'>
-                              <Image 
-                                src={item.image} 
-                                alt='memory' 
-                                className='w-full h-full object-cover' 
-                                width={1000} 
-                                height={1000} 
-                              />
-                            </div>
-                          </CarouselItem>
-                        ))}
-                      </CarouselContent>
-                    </Carousel>
-                    <div className='flex justify-center w-full mx-auto mt-6 gap-2 items-center'>
-                      {memoryPhotos.map((item, index) => (
-                        <div 
-                          key={index} 
-                          className='h-[8px] w-[8px] rounded-full transition-all duration-300' 
-                          style={{ 
-                            backgroundColor: current === index ? '#1B5A1B' : 'rgba(27, 90, 27, 0.42)',
-                            transform: current === index ? 'scale(1.5)' : 'scale(1)'
-                          }}
-                        />
-                      ))}
-                    </div>
-                  </>
-                ) : (
-                  <div className='flex flex-col items-center justify-center py-10 text-center'>
-                    <Image 
-                      src='/images/no-memories.svg' 
-                      alt='No memories' 
-                      width={200} 
-                      height={200} 
-                      className='mb-4 opacity-70'
-                    />
-                    <h3 className='text-lg text-[#1B5A1B] font-semibold mb-2'>No Memories Yet</h3>
-                    <p className='text-sm text-gray-600'>
-                      Start capturing and preserving your family&apos;s precious moments. 
-                      Upload your first memory and watch your family story unfold.
-                    </p>
-                  </div>
-                )}
-              </div>
-
               {/* UPCOMING EVENTS */}
               <div className='bg-white rounded-2xl border border-stone-200 p-5'>
                 <h2 className='text-sm font-semibold text-stone-700 mb-3'>Upcoming</h2>
@@ -348,6 +284,70 @@ const Content = () => {
                         </div>
                       </div>
                     ))}
+                  </div>
+                )}
+              </div>
+
+              {/* MEMORIES CAROUSEL */}
+              <div className='bg-white rounded-2xl border border-stone-200 p-5'>
+                <h2 className='text-sm font-semibold text-stone-700 mb-3'>Memories</h2>
+                {memoryPhotos.length > 0 ? (
+                  <>
+                    <Carousel
+                      setApi={setApi}
+                      opts={{
+                        loop: true,
+                        align: 'center',
+                        slidesToScroll: 1,
+                      }}
+                      className="mx-auto"
+                    >
+                      <CarouselContent className="flex gap-4 px-4">
+                        {memoryPhotos.map((item, index) => (
+                          <CarouselItem
+                            key={index}
+                            className="basis-3/4 sm:basis-1/2 lg:basis-1/3 flex justify-center"
+                          >
+                            <div className='w-[200px] sm:w-[250px] h-[250px] sm:h-[300px] bg-white rounded-lg shadow-md overflow-hidden transition-transform duration-300 hover:scale-105'>
+                              <Image
+                                src={item.image}
+                                alt='memory'
+                                className='w-full h-full object-cover'
+                                width={1000}
+                                height={1000}
+                              />
+                            </div>
+                          </CarouselItem>
+                        ))}
+                      </CarouselContent>
+                    </Carousel>
+                    <div className='flex justify-center w-full mx-auto mt-6 gap-2 items-center'>
+                      {memoryPhotos.map((item, index) => (
+                        <div
+                          key={index}
+                          className='h-[8px] w-[8px] rounded-full transition-all duration-300'
+                          style={{
+                            backgroundColor: current === index ? '#1B5A1B' : 'rgba(27, 90, 27, 0.42)',
+                            transform: current === index ? 'scale(1.5)' : 'scale(1)'
+                          }}
+                        />
+                      ))}
+                    </div>
+                  </>
+                ) : (
+                  <div className='flex flex-col items-center justify-center py-10 text-center'>
+                    <Image
+                      src='/images/no-memories.svg'
+                      alt='No memories'
+                      width={200}
+                      height={200}
+                      className='mb-4 opacity-70'
+                    />
+                    <h3 className='text-lg text-[#1B5A1B] font-semibold mb-2'>No Memories Yet</h3>
+                    <p className='text-sm text-gray-600'>
+                      Start capturing and preserving your family&apos;s precious moments.
+                      Upload your first memory and watch your family story unfold.
+                    </p>
                   </div>
                 )}
               </div>
