@@ -16,8 +16,8 @@ const Page = () => {
 
     return (
         <div className="content | overflow-y-auto h-screen">
-            <div className='bg-[#DFDFDF] text-black h-full p-4 sm:p-6'>
-                <div className='w-full p-4 h-full bg-gray-100 rounded-lg shadow-md'>
+            <div className='bg-stone-50 text-black min-h-full p-4 sm:p-6'>
+                <div className='w-full bg-white border border-stone-200 rounded-2xl p-5 sm:p-6'>
                     <h1 className='text-xl sm:text-2xl font-bold mb-4'>Gallery</h1>
                     <div className='flex items-center border-b-1 border-primary overflow-x-auto'>
                         {["All Photos", "Albums"].map((item, index) => (

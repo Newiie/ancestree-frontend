@@ -78,9 +78,9 @@ const FolderPage = () => {
   };
 
   return (
-    <div className="content | overflow-y-auto">
-      <div className='bg-[#DFDFDF] text-black h-full p-4 sm:p-6'>
-        <div className='w-full p-4 h-full bg-gray-100 rounded-lg shadow-md'>
+    <div className="content | overflow-y-auto h-screen">
+      <div className='bg-stone-50 text-black min-h-full p-4 sm:p-6'>
+        <div className='w-full bg-white border border-stone-200 rounded-2xl p-5 sm:p-6'>
           <div className='flex items-center gap-4 mb-4'>
             <button 
               onClick={handleGoBack} 
