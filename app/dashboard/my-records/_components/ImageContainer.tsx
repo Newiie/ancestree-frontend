@@ -87,7 +87,7 @@ const ImageContainer = ({ photo }: { photo: { key: string; url: string } }) => {
   };
 
   return (
-    <div className='relative w-full aspect-square rounded-[4px] overflow-hidden group'>
+    <div className='relative w-full aspect-square rounded-xl overflow-hidden group cursor-pointer'>
       <Image 
         src={photo.url} 
         className='h-full w-full object-cover' 
