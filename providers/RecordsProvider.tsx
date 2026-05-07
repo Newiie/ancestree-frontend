@@ -10,7 +10,7 @@ import { toast } from 'sonner'
 
 // Define the Album interface
 export interface Album {
-    _id: string;
+    id: string;
     name: string;
     photos: Photo[];
 }

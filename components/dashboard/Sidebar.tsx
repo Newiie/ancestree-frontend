@@ -11,7 +11,6 @@ import {
 import useAuth from '@/hooks/useAuth';
 import { usePathname } from 'next/navigation';
 import {
-  BookImageIcon,
   BookTextIcon,
   ChevronLeftIcon,
   ChevronRightIcon,
@@ -56,7 +55,6 @@ const Sidebar = () => {
     { icon: <NetworkIcon size={18} />, label: 'Family Tree', url: `/dashboard/family-tree/${user?.id}` },
     { icon: <HeartIcon size={18} />, label: 'Relationships', url: '/dashboard/relationships' },
     { icon: <BookTextIcon size={18} />, label: 'My Records', url: '/dashboard/my-records' },
-    { icon: <BookImageIcon size={18} />, label: 'Gallery', url: '/dashboard/gallery' },
   ];
 
   const isActive = (url: string) => {

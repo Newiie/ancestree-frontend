@@ -121,7 +121,7 @@ const Albums = () => {
             <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 py-4 w-full'>
                 {albums.length > 0 ? (
                     albums.map((album) => (
-                        <div key={album._id} className='w-full'>
+                        <div key={album.id} className='w-full'>
                             <Folder album={album} />
                         </div>
                     ))

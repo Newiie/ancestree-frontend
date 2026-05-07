@@ -20,7 +20,7 @@ const getAlbums = async () => {
             throw new Error(`Error getting albums: ${response.status} ${response.statusText}`);
         }
         const data = await response.json();
-        return data;
+        return data?.albums ?? [];
     } catch (error) {
         throw error;
     }

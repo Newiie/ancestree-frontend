@@ -40,7 +40,7 @@ const Folder = ({ album }: any) => {
   const handleDelete = async () => {
     try {
       setIsFetching(true);
-      await galleryService.deleteAlbum(album._id);
+      await galleryService.deleteAlbum(album.id);
       setIsFetching(false);
     } catch (error) {
       setError('Failed to delete album');
@@ -53,7 +53,7 @@ const Folder = ({ album }: any) => {
 
     try {
       setIsFetching(true);
-      await galleryService.editAlbum(album._id, newAlbumName);
+      await galleryService.editAlbum(album.id, newAlbumName);
       setIsEditOpen(false);
       setIsPopoverOpen(false);
     } catch (error) {
@@ -99,7 +99,7 @@ const Folder = ({ album }: any) => {
         onClick={(e) => {
           // Check if the click target is not within the popover trigger
           if (!e.currentTarget.querySelector('[data-popover-trigger]')?.contains(e.target as Node)) {
-            router.push(`/dashboard/my-records/${album._id}`)
+            router.push(`/dashboard/my-records/${album.id}`)
           }
         }}
       >
