@@ -7,12 +7,14 @@ import { useEffect } from 'react'
 import galleryService from '@/services/api/galleryService'
 import { useRecords } from '@/providers/RecordsProvider'
 import Image from 'next/image'
+import { PlusIcon } from 'lucide-react'
 
 const Page = () => {
     const {
-        albums, 
+        albums,
         setAlbums,
     } = useRecords()
+    const photoCount = albums.reduce((sum, a) => sum + (a?.photos?.length ?? 0), 0)
     const [selectedTab, setSelectedTab] = useState("All Photos")
     const [createAlbumOpen, setCreateAlbumOpen] = useState(false)
 
@@ -20,30 +22,42 @@ const Page = () => {
         <div className="content | overflow-y-auto h-screen">
             <div className='bg-stone-50 text-black min-h-full p-4 sm:p-6'>
                 <div className='w-full bg-white border border-stone-200 rounded-2xl p-5 sm:p-6'>
-                    <h1 className='text-xl sm:text-2xl font-bold mb-4'>Gallery</h1>
-                    <div className='flex items-center border-b-1 border-primary overflow-x-auto'>
-                        {["All Photos", "Albums"].map((item, index) => (
-                            <div 
-                                key={index} 
-                                onClick={() => setSelectedTab(item)} 
-                                className={`
-                                    text-base sm:text-lg 
-                                    px-4 sm:px-8 
-                                    py-2 
-                                    font-semibold 
-                                    border-primary 
-                                    transition 
-                                    hover:border-b-2 
-                                    hover:text-primary 
-                                    text-muted-foreground 
-                                    cursor-pointer 
-                                    duration-300 
-                                    ${selectedTab === item ? 'border-b-2 text-primary' : ''}
-                                `}
-                            >
-                                {item}
-                            </div>
-                        ))}
+                    {/* HEADER */}
+                    <div className='flex items-start justify-between gap-4 mb-5'>
+                        <div>
+                            <p className='text-xs font-semibold uppercase tracking-wider text-stone-500 mb-1'>Records</p>
+                            <h1 className='text-2xl font-bold text-stone-900'>Gallery</h1>
+                            <p className='text-sm text-stone-500 mt-0.5'>
+                                {photoCount} {photoCount === 1 ? 'photo' : 'photos'} · {albums.length} {albums.length === 1 ? 'album' : 'albums'}
+                            </p>
+                        </div>
+                        <button
+                            onClick={() => setCreateAlbumOpen(true)}
+                            className='inline-flex items-center gap-2 bg-primary text-white text-sm font-medium px-4 py-2 rounded-xl hover:bg-primary/90 transition-colors flex-shrink-0'
+                        >
+                            <PlusIcon size={16} />
+                            New Album
+                        </button>
+                    </div>
+
+                    {/* PILL TABS */}
+                    <div className='inline-flex gap-0.5 bg-stone-100 p-0.5 rounded-xl mb-5'>
+                        {["All Photos", "Albums"].map((item) => {
+                            const active = selectedTab === item
+                            return (
+                                <button
+                                    key={item}
+                                    onClick={() => setSelectedTab(item)}
+                                    className={`px-4 py-1.5 text-sm rounded-lg transition-colors ${
+                                        active
+                                            ? 'bg-white text-stone-900 shadow-sm font-semibold'
+                                            : 'text-stone-500 hover:text-stone-700 font-medium'
+                                    }`}
+                                >
+                                    {item}
+                                </button>
+                            )
+                        })}
                     </div>
                     <div className={`grid ${selectedTab === "Albums" ? "grid-cols-1" : "grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5"}  gap-4 p-4`}>
                         {
