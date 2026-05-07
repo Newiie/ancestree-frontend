@@ -2,6 +2,7 @@
 import ImageContainer from './_components/ImageContainer'
 import React, { useState } from 'react'
 import Albums from './_components/Albums'
+import CreateAlbumDialog from './_components/CreateAlbumDialog'
 import { useEffect } from 'react'
 import galleryService from '@/services/api/galleryService'
 import { useRecords } from '@/providers/RecordsProvider'
@@ -13,6 +14,7 @@ const Page = () => {
         setAlbums,
     } = useRecords()
     const [selectedTab, setSelectedTab] = useState("All Photos")
+    const [createAlbumOpen, setCreateAlbumOpen] = useState(false)
 
     return (
         <div className="content | overflow-y-auto h-screen">
@@ -82,10 +84,11 @@ const Page = () => {
                                 )}
                             </>
                         }
-                        { selectedTab === "Albums" && <Albums /> }
+                        { selectedTab === "Albums" && <Albums onAddAlbum={() => setCreateAlbumOpen(true)} /> }
                     </div>
                 </div>
             </div>
+            <CreateAlbumDialog open={createAlbumOpen} onOpenChange={setCreateAlbumOpen} />
         </div>
     )
 }
