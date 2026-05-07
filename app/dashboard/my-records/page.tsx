@@ -32,8 +32,9 @@ const Page = () => {
                             </p>
                         </div>
                         <button
+                            type="button"
                             onClick={() => setCreateAlbumOpen(true)}
-                            className='inline-flex items-center gap-2 bg-primary text-white text-sm font-medium px-4 py-2 rounded-xl hover:bg-primary/90 transition-colors flex-shrink-0'
+                            className='inline-flex items-center gap-2 bg-primary text-white text-sm font-medium px-4 py-2 rounded-xl hover:bg-primary/90 transition-colors flex-shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring'
                         >
                             <PlusIcon size={16} />
                             New Album
@@ -47,8 +48,9 @@ const Page = () => {
                             return (
                                 <button
                                     key={item}
+                                    type="button"
                                     onClick={() => setSelectedTab(item)}
-                                    className={`px-4 py-1.5 text-sm rounded-lg transition-colors ${
+                                    className={`px-4 py-1.5 text-sm rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${
                                         active
                                             ? 'bg-white text-stone-900 shadow-sm font-semibold'
                                             : 'text-stone-500 hover:text-stone-700 font-medium'
