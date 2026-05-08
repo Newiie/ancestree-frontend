@@ -14,10 +14,11 @@ import useError from '@/hooks/useError';
 interface ImageContainerProps {
     photo: { key: string; url: string }
     onPhotoClick?: () => void
-    onEditClick?: () => void  // NEW — opens parent's EditPhotoDialog
+    onEditClick?: () => void
+    onDeleteClick?: () => void
 }
 
-const ImageContainer: React.FC<ImageContainerProps> = ({ photo, onPhotoClick, onEditClick }) => {
+const ImageContainer: React.FC<ImageContainerProps> = ({ photo, onPhotoClick, onEditClick, onDeleteClick }) => {
   const { albumId } = useParams();
   const { setIsFetching } = useRecords();
   const { setError } = useError();
@@ -26,7 +27,13 @@ const ImageContainer: React.FC<ImageContainerProps> = ({ photo, onPhotoClick, on
 
   const handleDeletePhoto = async () => {
     if (isDeleting) return;
-
+    if (onDeleteClick) {
+      setIsPopoverOpen(false);
+      onDeleteClick();
+      return;
+    }
+    // Fallback for callers that don't pass onDeleteClick (album-detail page)
+    if (!albumId) return;
     try {
       setIsDeleting(true);
       setIsFetching(true);

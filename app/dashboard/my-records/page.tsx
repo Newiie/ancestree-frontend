@@ -93,6 +93,14 @@ const Page = () => {
                                                 })
                                             }
                                             onEditClick={() => setEditTarget({ albumId, photoKey: photo.key })}
+                                            onDeleteClick={async () => {
+                                                try {
+                                                    await galleryService.deletePhoto(albumId, photo.key)
+                                                    await fetchAlbums()
+                                                } catch {
+                                                    setError('Failed to delete photo')
+                                                }
+                                            }}
                                         />
                                     ))
                                 ) : (
