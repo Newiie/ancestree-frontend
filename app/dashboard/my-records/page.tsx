@@ -83,7 +83,7 @@ const Page = () => {
                                 {allPhotos.length > 0 ? (
                                     allPhotos.map(({ photo, albumName, albumId }, i) => (
                                         <ImageContainer
-                                            key={photo.key}
+                                            key={`${albumId}-${photo.key}`}
                                             photo={photo}
                                             onPhotoClick={() =>
                                                 setLightboxState({
@@ -136,6 +136,7 @@ const Page = () => {
                         try {
                             await galleryService.deletePhoto(ctx.albumId, p.key)
                             await fetchAlbums()
+                            setLightboxState(null)
                         } catch {
                             setError('Failed to delete photo')
                         }
