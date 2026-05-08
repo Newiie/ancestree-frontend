@@ -109,26 +109,27 @@ const ImageContainer: React.FC<ImageContainerProps> = ({ photo, onPhotoClick }) 
       />
       <div className='absolute top-0 left-0 w-full h-full bg-black/20'></div>
       
-      <div data-photo-menu className='absolute top-0 left-0 w-full h-full flex justify-center items-start'>
+      <div className='absolute top-0 left-0 w-full h-full flex justify-center items-start pointer-events-none'>
         <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
-          <PopoverTrigger>
-            <div className='
-              absolute 
-              bg-black/55 
-              p-1.5 
-              rounded-full 
-              top-2 
-              right-2 
-              cursor-pointer 
-              opacity-0 
-              group-hover:opacity-100 
-              transition-opacity 
+          <PopoverTrigger asChild>
+            <div data-photo-menu className='
+              absolute
+              bg-black/55
+              p-1.5
+              rounded-full
+              top-2
+              right-2
+              cursor-pointer
+              opacity-0
+              group-hover:opacity-100
+              transition-opacity
               duration-300
+              pointer-events-auto
             '>
               <EllipsisVerticalIcon className='text-[#FAFAFA]' size={12} />
             </div>
           </PopoverTrigger>
-          <PopoverContent className="w-40 mt-8 w-[8rem] p-1">
+          <PopoverContent data-photo-menu className="w-40 mt-8 w-[8rem] p-1">
             <div className="flex flex-col">
               <AlertDialog open={isEditOpen} onOpenChange={setIsEditOpen}>
                 <AlertDialogTrigger asChild>

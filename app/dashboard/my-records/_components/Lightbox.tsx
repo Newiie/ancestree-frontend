@@ -6,6 +6,7 @@ import { ChevronLeftIcon, ChevronRightIcon, XIcon, PencilIcon, Trash2Icon } from
 export interface LightboxPhoto {
     key: string
     url: string
+    albumName?: string
 }
 
 interface LightboxProps {
@@ -36,6 +37,7 @@ const Lightbox: React.FC<LightboxProps> = ({ photos, startIndex, albumName, onCl
     if (photos.length === 0) return null
     const safeIndex = Math.max(0, Math.min(index, photos.length - 1))
     const photo = photos[safeIndex]
+    const displayAlbumName = photo.albumName ?? albumName
     const isFirst = safeIndex === 0
     const isLast = safeIndex === photos.length - 1
 
@@ -79,10 +81,10 @@ const Lightbox: React.FC<LightboxProps> = ({ photos, startIndex, albumName, onCl
             >
                 <div className='flex items-center gap-3 text-sm text-white/70'>
                     <span>{safeIndex + 1} of {photos.length}</span>
-                    {albumName && (
+                    {displayAlbumName && (
                         <>
                             <span className='text-white/40'>·</span>
-                            <span className='truncate max-w-[40vw]'>{albumName}</span>
+                            <span className='truncate max-w-[40vw]'>{displayAlbumName}</span>
                         </>
                     )}
                 </div>

@@ -78,11 +78,11 @@ const Page = () => {
                                 {allPhotos.length > 0 ? (
                                     allPhotos.map(({ photo, albumName }, i) => (
                                         <ImageContainer
-                                            key={`${photo.key}-${i}`}
+                                            key={photo.key}
                                             photo={photo}
                                             onPhotoClick={() =>
                                                 setLightboxState({
-                                                    photos: allPhotos.map((x) => x.photo),
+                                                    photos: allPhotos.map((x) => ({ ...x.photo, albumName: x.albumName })),
                                                     index: i,
                                                     albumName,
                                                 })
