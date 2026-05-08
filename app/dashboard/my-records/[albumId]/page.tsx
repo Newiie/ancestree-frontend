@@ -84,8 +84,26 @@ const FolderPage = () => {
                   onEditClick={() => setEditTarget({ key: photo.key })}
                 />
               )) : (
-                <div className='col-span-full text-center text-gray-500 py-8'>
-                  No photos in this album
+                <div className='col-span-full flex flex-col items-center justify-center py-10 text-center'>
+                    <Image
+                        src='/images/no-photos.svg'
+                        alt='No photos'
+                        width={200}
+                        height={200}
+                        className='mb-4 opacity-70'
+                    />
+                    <h3 className='text-lg font-semibold text-stone-900 mb-2'>No Photos Yet</h3>
+                    <p className='text-sm text-stone-500 max-w-md mb-4'>
+                        This album is empty. Upload your first photo to get started.
+                    </p>
+                    <button
+                        type="button"
+                        onClick={() => setUploadOpen(true)}
+                        className='inline-flex items-center gap-2 bg-primary text-white text-sm font-medium px-4 py-2 rounded-xl hover:bg-primary/90 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring'
+                    >
+                        <ImagePlusIcon size={16} aria-hidden="true" />
+                        Upload First Photo
+                    </button>
                 </div>
               )
             }

@@ -104,8 +104,8 @@ const Page = () => {
                                             height={250}
                                             className='mb-4 opacity-70'
                                         />
-                                        <h3 className='text-lg text-[#1B5A1B] font-semibold mb-2'>No Photos Yet</h3>
-                                        <p className='text-sm text-gray-600 max-w-md'>
+                                        <h3 className='text-lg font-semibold text-stone-900 mb-2'>No Photos Yet</h3>
+                                        <p className='text-sm text-stone-500 max-w-md'>
                                             Your photo collection is empty. Start capturing and organizing
                                             your family&apos;s memories by uploading your first photo.
                                         </p>
