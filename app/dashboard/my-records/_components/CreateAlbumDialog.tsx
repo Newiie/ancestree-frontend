@@ -61,9 +61,10 @@ const CreateAlbumDialog: React.FC<CreateAlbumDialogProps> = ({ open, onOpenChang
                 <AlertDialogFooter>
                     <AlertDialogCancel onClick={handleCancel}>Cancel</AlertDialogCancel>
                     <button
+                        type="button"
                         onClick={handleCreate}
                         disabled={!albumName.trim() || isFetching}
-                        className='w-full sm:w-auto bg-primary text-white text-sm font-medium px-4 py-2 rounded-xl hover:bg-primary/90 transition-colors disabled:bg-primary/50 disabled:cursor-not-allowed'
+                        className='w-full sm:w-auto bg-primary text-white text-sm font-medium px-4 py-2 rounded-xl hover:bg-primary/90 transition-colors disabled:bg-primary/50 disabled:cursor-not-allowed focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring'
                     >
                         {isFetching ? "Creating..." : "Create Album"}
                     </button>

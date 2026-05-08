@@ -113,7 +113,7 @@ const FolderPage = () => {
               onOpenChange={setUploadOpen}
               albumId={albumId as string}
               albumName={album?.name ?? ''}
-              onComplete={() => setIsFetching(true)}
+              onComplete={() => setIsFetching((v) => !v)}
           />
           {lightboxIndex !== null && album?.photos && (
               <Lightbox
@@ -127,7 +127,7 @@ const FolderPage = () => {
                   onDelete={async (p) => {
                       try {
                           await galleryService.deletePhoto(albumId as string, p.key)
-                          setIsFetching(true)
+                          setIsFetching((v) => !v)
                       } catch {
                           setError('Failed to delete photo')
                       }
