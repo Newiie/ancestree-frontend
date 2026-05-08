@@ -19,7 +19,7 @@ jest.mock('@/services/api/galleryService', () => ({
 }))
 
 jest.mock('@/providers/RecordsProvider', () => ({
-    useRecords: () => ({ setIsFetching: jest.fn() }),
+    useRecords: () => ({ fetchAlbums: jest.fn().mockResolvedValue(undefined) }),
 }))
 
 jest.mock('sonner', () => ({

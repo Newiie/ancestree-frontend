@@ -33,7 +33,7 @@ interface UploadDialogProps {
 }
 
 const UploadDialog: React.FC<UploadDialogProps> = ({ open, onOpenChange, albumId, albumName, onComplete }) => {
-    const { setIsFetching } = useRecords()
+    const { fetchAlbums } = useRecords()
     const [entries, setEntries] = useState<FileEntry[]>([])
     const [isDragging, setIsDragging] = useState(false)
     const [phase, setPhase] = useState<'idle' | 'uploading'>('idle')
@@ -120,8 +120,8 @@ const UploadDialog: React.FC<UploadDialogProps> = ({ open, onOpenChange, albumId
         }
         if (failed === 0) {
             toast.success(`Uploaded ${done} ${done === 1 ? 'photo' : 'photos'}`)
+            await fetchAlbums()
             onComplete()
-            setIsFetching((v) => !v) // trigger provider refetch
             reset()
             onOpenChange(false)
         } else {
