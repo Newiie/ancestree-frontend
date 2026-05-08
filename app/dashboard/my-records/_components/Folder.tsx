@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { FolderClosedIcon, EllipsisVerticalIcon, PencilIcon, Trash2Icon } from 'lucide-react';
 import Image from 'next/image';
 import {
@@ -23,7 +23,6 @@ import {
 import { Input } from "@/components/ui/input";
 
 const Folder = ({ album }: any) => {
-  const router = useRouter();
   const { setIsFetching } = useRecords();
   const { setError } = useError();
   const [isEditOpen, setIsEditOpen] = useState(false);
@@ -59,9 +58,9 @@ const Folder = ({ album }: any) => {
   return (
     <div className='group relative bg-white border border-stone-200 rounded-xl overflow-hidden hover:shadow-md transition-shadow'>
         {/* COVER (clickable area for navigation) */}
-        <div
-            onClick={() => router.push(`/dashboard/my-records/${album.id}`)}
-            className='cursor-pointer'
+        <Link
+            href={`/dashboard/my-records/${album.id}`}
+            className='block cursor-pointer'
         >
             <div className='aspect-[4/3] bg-stone-50 relative overflow-hidden'>
                 {album.photos && album.photos.length > 0 ? (
@@ -83,19 +82,19 @@ const Folder = ({ album }: any) => {
                     </div>
                 )}
             </div>
-        </div>
+        </Link>
 
         {/* NAME STRIP */}
         <div className='flex items-center justify-between gap-2 px-3 py-2.5'>
-            <div
-                onClick={() => router.push(`/dashboard/my-records/${album.id}`)}
+            <Link
+                href={`/dashboard/my-records/${album.id}`}
                 className='min-w-0 flex-1 cursor-pointer'
             >
                 <p className='text-sm font-semibold text-stone-900 truncate'>{album.name}</p>
                 {(!album.photos || album.photos.length === 0) && (
                     <p className='text-xs text-stone-400 mt-0.5'>Empty</p>
                 )}
-            </div>
+            </Link>
             <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
                 <PopoverTrigger
                     data-popover-trigger
