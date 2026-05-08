@@ -20,16 +20,18 @@ interface LightboxProps {
 const Lightbox: React.FC<LightboxProps> = ({ photos, startIndex, albumName, onClose, onEdit, onDelete }) => {
     const [index, setIndex] = useState(startIndex)
     const touchStartX = useRef<number | null>(null)
+    const onCloseRef = useRef(onClose)
+    useEffect(() => { onCloseRef.current = onClose })
 
     useEffect(() => {
         const onKey = (e: KeyboardEvent) => {
             if (e.key === 'ArrowRight') setIndex((i) => Math.min(photos.length - 1, i + 1))
             else if (e.key === 'ArrowLeft') setIndex((i) => Math.max(0, i - 1))
-            else if (e.key === 'Escape') onClose()
+            else if (e.key === 'Escape') onCloseRef.current()
         }
         window.addEventListener('keydown', onKey)
         return () => window.removeEventListener('keydown', onKey)
-    }, [photos.length, onClose])
+    }, [photos.length])
 
     if (photos.length === 0) return null
     const safeIndex = Math.max(0, Math.min(index, photos.length - 1))
@@ -39,9 +41,12 @@ const Lightbox: React.FC<LightboxProps> = ({ photos, startIndex, albumName, onCl
 
     const handleDelete = async () => {
         if (!onDelete) return
+        const wasOnly = photos.length === 1
+        const wasLast = isLast
+        const prevIndex = safeIndex - 1
         await onDelete(photo)
-        if (photos.length === 1) onClose()
-        else if (isLast) setIndex(safeIndex - 1)
+        if (wasOnly) onClose()
+        else if (wasLast) setIndex(prevIndex)
         // else: stay at same index — list shifts up
     }
 
