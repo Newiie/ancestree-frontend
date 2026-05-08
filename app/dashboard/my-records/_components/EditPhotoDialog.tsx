@@ -114,7 +114,7 @@ const EditPhotoDialog: React.FC<EditPhotoDialogProps> = ({ open, onOpenChange, a
                         type="button"
                         onClick={() => onOpenChange(false)}
                         disabled={isUpdating}
-                        className='text-sm text-stone-700 px-3 py-2 bg-white border border-stone-300 rounded-lg hover:bg-stone-50 disabled:opacity-50'
+                        className='text-sm text-stone-700 px-3 py-2 bg-white border border-stone-300 rounded-lg hover:bg-stone-50 disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring'
                     >
                         Cancel
                     </button>
@@ -122,7 +122,7 @@ const EditPhotoDialog: React.FC<EditPhotoDialogProps> = ({ open, onOpenChange, a
                         type="button"
                         onClick={handleSubmit}
                         disabled={!selectedFile || isUpdating}
-                        className='text-sm text-white px-4 py-2 bg-primary rounded-lg hover:bg-primary/90 font-medium disabled:bg-primary/40 disabled:cursor-not-allowed'
+                        className='text-sm text-white px-4 py-2 bg-primary rounded-lg hover:bg-primary/90 font-medium disabled:bg-primary/40 disabled:cursor-not-allowed focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring'
                     >
                         {isUpdating ? 'Updating…' : 'Update Photo'}
                     </button>
