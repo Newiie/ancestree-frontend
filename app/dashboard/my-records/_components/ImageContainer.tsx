@@ -92,11 +92,12 @@ const ImageContainer: React.FC<ImageContainerProps> = ({ photo, onPhotoClick, on
                 Edit
               </button>
               <button
+                type="button"
                 onClick={handleDeletePhoto}
                 disabled={isDeleting}
-                className="p-1 hover:bg-gray-100 cursor-pointer text-red-600 flex gap-2 items-center disabled:opacity-50"
+                className="p-1 hover:bg-gray-100 cursor-pointer text-red-600 flex gap-2 items-center disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
               >
-                <Trash2Icon size={16} />
+                <Trash2Icon size={16} aria-hidden="true" />
                 Delete
               </button>
             </div>
