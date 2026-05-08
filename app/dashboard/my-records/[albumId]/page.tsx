@@ -7,6 +7,7 @@ import { useRecords } from '@/providers/RecordsProvider'
 import useError from '@/hooks/useError';
 import galleryService from '@/services/api/galleryService'
 import Image from 'next/image'
+import UploadDialog from '../_components/UploadDialog'
 
 const FolderPage = () => {
   const { isFetching, setIsFetching } = useRecords();
@@ -80,7 +81,13 @@ const FolderPage = () => {
               )
             }
           </div>
-          {/* TODO Task 9: <UploadDialog open={uploadOpen} onOpenChange={setUploadOpen} albumId={albumId as string} albumName={album?.name ?? ''} onComplete={() => setIsFetching(true)} /> */}
+          <UploadDialog
+              open={uploadOpen}
+              onOpenChange={setUploadOpen}
+              albumId={albumId as string}
+              albumName={album?.name ?? ''}
+              onComplete={() => setIsFetching(true)}
+          />
         </div>
       </div>
     </div>
