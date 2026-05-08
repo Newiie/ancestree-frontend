@@ -1,11 +1,7 @@
 "use client"
 import React, { useState, useEffect } from 'react'
 import ImageContainer from '../_components/ImageContainer'
-import { PencilIcon, ImagePlusIcon, X, ArrowLeft } from 'lucide-react'
-import { Input } from '@/components/ui/input'
-import { AlertDialog, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger, AlertDialogCancel } from '@/components/ui/alert-dialog'
-import { CirclePlus } from 'lucide-react'
-import { FolderClosedIcon } from 'lucide-react'
+import { ImagePlusIcon, ArrowLeft } from 'lucide-react'
 import { useRouter, useParams } from 'next/navigation'
 import { useRecords } from '@/providers/RecordsProvider'
 import useError from '@/hooks/useError';
@@ -13,14 +9,14 @@ import galleryService from '@/services/api/galleryService'
 import Image from 'next/image'
 
 const FolderPage = () => {
-  const [isOpen, setIsOpen] = useState(false)
   const { isFetching, setIsFetching } = useRecords();
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [preview, setPreview] = useState<string | null>(null);
+  const [uploadOpen, setUploadOpen] = useState(false)
   const { setError } = useError();
   const router = useRouter();
   const albumId = useParams().albumId;
   const [album, setAlbum] = useState<any>(null);
+
+  const photoCount = album?.photos?.length ?? 0
 
   useEffect(() => {
     if (!albumId) {
@@ -39,40 +35,6 @@ const FolderPage = () => {
     fetchAlbumData();
   }, [albumId, isFetching, router, setError]);
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      const file = e.target.files[0];
-      setSelectedFile(file);
-      
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setPreview(reader.result as string);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
-  const clearSelection = () => {
-    setSelectedFile(null);
-    setPreview(null);
-  };
-
-  const handleUploadPhoto = async () => {
-    if (!selectedFile) return;
-    setIsFetching(true);
-    try {
-      const formData = new FormData();
-      formData.append('photo', selectedFile);
-      await galleryService.uploadPhoto(albumId, formData);
-      setIsOpen(false);
-      clearSelection();
-    } catch (error) {
-      setError('Error uploading photo');
-    } finally {
-      setIsFetching(false);
-    }
-  };
-
   const handleGoBack = () => {
     router.push('/dashboard/my-records');
   };
@@ -81,109 +43,32 @@ const FolderPage = () => {
     <div className="content | overflow-y-auto h-screen">
       <div className='bg-stone-50 text-black min-h-full p-4 sm:p-6'>
         <div className='w-full bg-white border border-stone-200 rounded-2xl p-5 sm:p-6'>
-          <div className='flex items-center gap-4 mb-4'>
-            <button 
-              onClick={handleGoBack} 
-              className='
-                p-2 
-                rounded-full 
-                hover:bg-gray-200 
-                transition 
-                duration-300 
-                flex 
-                items-center 
-                justify-center
-              '
+          {/* HEADER */}
+          <div className='flex items-start gap-4 mb-5'>
+            <button
+              type="button"
+              onClick={handleGoBack}
+              className='p-2 rounded-full hover:bg-stone-100 transition-colors flex-shrink-0 text-stone-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring'
               aria-label="Go back to albums"
             >
-              <ArrowLeft size={24} />
+              <ArrowLeft size={20} aria-hidden="true" />
             </button>
-            <h1 className='text-xl sm:text-2xl font-bold'>{album?.name}</h1>
+            <div className='flex-1 min-w-0'>
+              <p className='text-xs font-semibold uppercase tracking-wider text-stone-500 mb-1'>Album</p>
+              <h1 className='text-2xl font-bold text-stone-900 truncate'>{album?.name ?? ' '}</h1>
+              <p className='text-sm text-stone-500 mt-0.5'>
+                {photoCount} {photoCount === 1 ? 'photo' : 'photos'}
+              </p>
+            </div>
+            <button
+              type="button"
+              onClick={() => setUploadOpen(true)}
+              className='inline-flex items-center gap-2 bg-primary text-white text-sm font-medium px-4 py-2 rounded-xl hover:bg-primary/90 transition-colors flex-shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring'
+            >
+              <ImagePlusIcon size={16} aria-hidden="true" />
+              Upload
+            </button>
           </div>
-          <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
-            <AlertDialogTrigger>
-              <span className='
-                text-sm 
-                sm:text-base 
-                px-2 
-                py-1 
-                rounded-lg 
-                flex 
-                items-center 
-                gap-2 
-                border 
-                border-primary 
-                shadow-sm 
-                bg-btn-inactive 
-                text-primary 
-                transition 
-                duration-200 
-                hover:text-white 
-                hover:bg-btn-primary
-              '>
-                <ImagePlusIcon size={16} />
-                Add Photo
-              </span>
-            </AlertDialogTrigger>
-            <AlertDialogContent>
-              <AlertDialogHeader>
-                <AlertDialogTitle>Upload Photo</AlertDialogTitle>
-                <AlertDialogDescription>
-                  Select a photo to add to this album
-                </AlertDialogDescription>
-                <Input
-                  type="file"
-                  accept="image/*"
-                  onChange={handleFileChange}
-                  className="mt-2"
-                />
-                {preview && (
-                  <div className="mt-4">
-                    <h4 className="text-sm font-medium mb-2">Selected Photo:</h4>
-                    <div className="relative group w-full max-w-md mx-auto">
-                      <Image
-                        src={preview}
-                        alt="Preview"
-                        width={0}
-                        height={0}
-                        className="w-full h-48 object-cover rounded-lg"
-                      />
-                      <button
-                        onClick={clearSelection}
-                        className="absolute top-2 right-2 p-1.5 bg-red-500 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-200"
-                      >
-                        <X size={16} className="text-white" />
-                      </button>
-                    </div>
-                  </div>
-                )}
-              </AlertDialogHeader>
-              <AlertDialogFooter>
-                <AlertDialogCancel onClick={clearSelection}>Cancel</AlertDialogCancel>
-                <button 
-                  onClick={handleUploadPhoto}
-                  disabled={!selectedFile || isFetching}
-                  className='
-                    w-full 
-                    sm:w-auto 
-                    bg-primary 
-                    text-white 
-                    px-4 
-                    py-2 
-                    rounded-lg 
-                    hover:bg-primary/80 
-                    transition 
-                    duration-300 
-                    disabled:bg-primary/50 
-                    disabled:text-white/50 
-                    disabled:cursor-not-allowed
-                  '
-                >
-                  {isFetching ? "Uploading..." : "Upload Photo"}
-                </button>
-              </AlertDialogFooter>    
-            </AlertDialogContent>
-          </AlertDialog>
           <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 py-4'>
             {
               album?.photos?.length > 0 ? album.photos.map((photo: any) => (
@@ -193,8 +78,9 @@ const FolderPage = () => {
                   No photos in this album
                 </div>
               )
-            } 
+            }
           </div>
+          {/* TODO Task 9: <UploadDialog open={uploadOpen} onOpenChange={setUploadOpen} albumId={albumId as string} albumName={album?.name ?? ''} onComplete={() => setIsFetching(true)} /> */}
         </div>
       </div>
     </div>
