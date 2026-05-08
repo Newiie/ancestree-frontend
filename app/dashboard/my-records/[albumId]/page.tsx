@@ -8,10 +8,12 @@ import useError from '@/hooks/useError';
 import galleryService from '@/services/api/galleryService'
 import Image from 'next/image'
 import UploadDialog from '../_components/UploadDialog'
+import Lightbox, { LightboxPhoto } from '../_components/Lightbox'
 
 const FolderPage = () => {
   const { isFetching, setIsFetching } = useRecords();
   const [uploadOpen, setUploadOpen] = useState(false)
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null)
   const { setError } = useError();
   const router = useRouter();
   const albumId = useParams().albumId;
@@ -72,8 +74,12 @@ const FolderPage = () => {
           </div>
           <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 py-4'>
             {
-              album?.photos?.length > 0 ? album.photos.map((photo: any) => (
-                <ImageContainer key={photo.key} photo={photo} />
+              album?.photos?.length > 0 ? album.photos.map((photo: LightboxPhoto, i: number) => (
+                <ImageContainer
+                  key={photo.key}
+                  photo={photo}
+                  onPhotoClick={() => setLightboxIndex(i)}
+                />
               )) : (
                 <div className='col-span-full text-center text-gray-500 py-8'>
                   No photos in this album
@@ -88,6 +94,13 @@ const FolderPage = () => {
               albumName={album?.name ?? ''}
               onComplete={() => setIsFetching(true)}
           />
+          {lightboxIndex !== null && album?.photos && (
+              <Lightbox
+                  photos={album.photos}
+                  startIndex={lightboxIndex}
+                  onClose={() => setLightboxIndex(null)}
+              />
+          )}
         </div>
       </div>
     </div>

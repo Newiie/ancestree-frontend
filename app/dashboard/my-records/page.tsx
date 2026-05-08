@@ -8,6 +8,7 @@ import galleryService from '@/services/api/galleryService'
 import { useRecords } from '@/providers/RecordsProvider'
 import Image from 'next/image'
 import { PlusIcon } from 'lucide-react'
+import Lightbox, { LightboxPhoto } from './_components/Lightbox'
 
 const Page = () => {
     const {
@@ -17,6 +18,11 @@ const Page = () => {
     const photoCount = albums.reduce((sum, a) => sum + (a?.photos?.length ?? 0), 0)
     const [selectedTab, setSelectedTab] = useState("All Photos")
     const [createAlbumOpen, setCreateAlbumOpen] = useState(false)
+    const [lightboxState, setLightboxState] = useState<{ photos: LightboxPhoto[]; index: number; albumName: string } | null>(null)
+
+    const allPhotos = albums.flatMap((album) =>
+        (album?.photos ?? []).map((p) => ({ photo: p, albumName: album.name }))
+    )
 
     return (
         <div className="content | overflow-y-auto h-screen">
@@ -67,39 +73,36 @@ const Page = () => {
                             : 'grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2'
                     }>
                         {
-                            selectedTab === "All Photos" && 
+                            selectedTab === "All Photos" &&
                             <>
-                                {albums.flatMap((album) => 
-                                    album?.photos?.map((photo, index) => (
-                                        <ImageContainer 
-                                            photo={photo} 
-                                            key={`${photo.key}-${index}`} 
+                                {allPhotos.length > 0 ? (
+                                    allPhotos.map(({ photo, albumName }, i) => (
+                                        <ImageContainer
+                                            key={`${photo.key}-${i}`}
+                                            photo={photo}
+                                            onPhotoClick={() =>
+                                                setLightboxState({
+                                                    photos: allPhotos.map((x) => x.photo),
+                                                    index: i,
+                                                    albumName,
+                                                })
+                                            }
                                         />
-                                    )) || []
-                                ).length > 0 ? (
-                                    albums.flatMap((album) => 
-                                        album?.photos?.map((photo, index) => (
-                                            <ImageContainer 
-                                                photo={photo} 
-                                                key={`${photo.key}-${index}`} 
-                                            />
-                                        )) || []
-                                    )
+                                    ))
                                 ) : (
                                     <div className='col-span-full flex flex-col items-center justify-center py-10 text-center'>
-                                        <Image 
-                                            src='/images/no-photos.svg' 
-                                            alt='No photos' 
-                                            width={250} 
-                                            height={250} 
+                                        <Image
+                                            src='/images/no-photos.svg'
+                                            alt='No photos'
+                                            width={250}
+                                            height={250}
                                             className='mb-4 opacity-70'
                                         />
                                         <h3 className='text-lg text-[#1B5A1B] font-semibold mb-2'>No Photos Yet</h3>
                                         <p className='text-sm text-gray-600 max-w-md'>
-                                            Your photo collection is empty. Start capturing and organizing 
+                                            Your photo collection is empty. Start capturing and organizing
                                             your family&apos;s memories by uploading your first photo.
                                         </p>
-                                       
                                     </div>
                                 )}
                             </>
@@ -109,6 +112,14 @@ const Page = () => {
                 </div>
             </div>
             <CreateAlbumDialog open={createAlbumOpen} onOpenChange={setCreateAlbumOpen} />
+            {lightboxState && (
+                <Lightbox
+                    photos={lightboxState.photos}
+                    startIndex={lightboxState.index}
+                    albumName={lightboxState.albumName}
+                    onClose={() => setLightboxState(null)}
+                />
+            )}
         </div>
     )
 }

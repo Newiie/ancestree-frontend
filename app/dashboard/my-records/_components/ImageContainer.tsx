@@ -22,7 +22,12 @@ import galleryService from '@/services/api/galleryService';
 import { useRecords } from '@/providers/RecordsProvider';
 import useError from '@/hooks/useError';
 
-const ImageContainer = ({ photo }: { photo: { key: string; url: string } }) => {
+interface ImageContainerProps {
+    photo: { key: string; url: string }
+    onPhotoClick?: () => void
+}
+
+const ImageContainer: React.FC<ImageContainerProps> = ({ photo, onPhotoClick }) => {
   const { albumId } = useParams();
   const { setIsFetching } = useRecords();
   const { setError } = useError();
@@ -87,7 +92,14 @@ const ImageContainer = ({ photo }: { photo: { key: string; url: string } }) => {
   };
 
   return (
-    <div className='relative w-full aspect-square rounded-xl overflow-hidden group cursor-pointer'>
+    <div
+        onClick={(e) => {
+            if (!(e.target as HTMLElement).closest('[data-photo-menu]')) {
+                onPhotoClick?.()
+            }
+        }}
+        className='relative w-full aspect-square rounded-xl overflow-hidden group cursor-pointer'
+    >
       <Image 
         src={photo.url} 
         className='h-full w-full object-cover' 
@@ -97,7 +109,7 @@ const ImageContainer = ({ photo }: { photo: { key: string; url: string } }) => {
       />
       <div className='absolute top-0 left-0 w-full h-full bg-black/20'></div>
       
-      <div className='absolute top-0 left-0 w-full h-full flex justify-center items-start'>
+      <div data-photo-menu className='absolute top-0 left-0 w-full h-full flex justify-center items-start'>
         <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
           <PopoverTrigger>
             <div className='
