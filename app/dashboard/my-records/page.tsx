@@ -9,19 +9,24 @@ import { useRecords } from '@/providers/RecordsProvider'
 import Image from 'next/image'
 import { PlusIcon } from 'lucide-react'
 import Lightbox, { LightboxPhoto } from './_components/Lightbox'
+import EditPhotoDialog from './_components/EditPhotoDialog'
+import useError from '@/hooks/useError'
 
 const Page = () => {
     const {
         albums,
         setAlbums,
+        fetchAlbums,
     } = useRecords()
     const photoCount = albums.reduce((sum, a) => sum + (a?.photos?.length ?? 0), 0)
     const [selectedTab, setSelectedTab] = useState("All Photos")
     const [createAlbumOpen, setCreateAlbumOpen] = useState(false)
     const [lightboxState, setLightboxState] = useState<{ photos: LightboxPhoto[]; index: number; albumName: string } | null>(null)
+    const { setError } = useError()
+    const [editTarget, setEditTarget] = useState<{ albumId: string; photoKey: string } | null>(null)
 
     const allPhotos = albums.flatMap((album) =>
-        (album?.photos ?? []).map((p) => ({ photo: p, albumName: album.name }))
+        (album?.photos ?? []).map((p) => ({ photo: p, albumName: album.name, albumId: album.id }))
     )
 
     return (
@@ -76,7 +81,7 @@ const Page = () => {
                             selectedTab === "All Photos" &&
                             <>
                                 {allPhotos.length > 0 ? (
-                                    allPhotos.map(({ photo, albumName }, i) => (
+                                    allPhotos.map(({ photo, albumName, albumId }, i) => (
                                         <ImageContainer
                                             key={photo.key}
                                             photo={photo}
@@ -87,6 +92,7 @@ const Page = () => {
                                                     albumName,
                                                 })
                                             }
+                                            onEditClick={() => setEditTarget({ albumId, photoKey: photo.key })}
                                         />
                                     ))
                                 ) : (
@@ -118,8 +124,30 @@ const Page = () => {
                     startIndex={lightboxState.index}
                     albumName={lightboxState.albumName}
                     onClose={() => setLightboxState(null)}
+                    onEdit={(p) => {
+                        const ctx = allPhotos.find((x) => x.photo.key === p.key)
+                        if (!ctx) return
+                        setLightboxState(null)
+                        setEditTarget({ albumId: ctx.albumId, photoKey: p.key })
+                    }}
+                    onDelete={async (p) => {
+                        const ctx = allPhotos.find((x) => x.photo.key === p.key)
+                        if (!ctx) return
+                        try {
+                            await galleryService.deletePhoto(ctx.albumId, p.key)
+                            await fetchAlbums()
+                        } catch {
+                            setError('Failed to delete photo')
+                        }
+                    }}
                 />
             )}
+            <EditPhotoDialog
+                open={editTarget !== null}
+                onOpenChange={(next) => { if (!next) setEditTarget(null) }}
+                albumId={editTarget?.albumId ?? ''}
+                photoKey={editTarget?.photoKey ?? null}
+            />
         </div>
     )
 }

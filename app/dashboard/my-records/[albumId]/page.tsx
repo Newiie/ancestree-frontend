@@ -9,11 +9,13 @@ import galleryService from '@/services/api/galleryService'
 import Image from 'next/image'
 import UploadDialog from '../_components/UploadDialog'
 import Lightbox, { LightboxPhoto } from '../_components/Lightbox'
+import EditPhotoDialog from '../_components/EditPhotoDialog'
 
 const FolderPage = () => {
   const { isFetching, setIsFetching } = useRecords();
   const [uploadOpen, setUploadOpen] = useState(false)
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null)
+  const [editTarget, setEditTarget] = useState<{ key: string } | null>(null)
   const { setError } = useError();
   const router = useRouter();
   const albumId = useParams().albumId;
@@ -79,6 +81,7 @@ const FolderPage = () => {
                   key={photo.key}
                   photo={photo}
                   onPhotoClick={() => setLightboxIndex(i)}
+                  onEditClick={() => setEditTarget({ key: photo.key })}
                 />
               )) : (
                 <div className='col-span-full text-center text-gray-500 py-8'>
@@ -99,8 +102,26 @@ const FolderPage = () => {
                   photos={album.photos}
                   startIndex={lightboxIndex}
                   onClose={() => setLightboxIndex(null)}
+                  onEdit={(p) => {
+                      setLightboxIndex(null)
+                      setEditTarget({ key: p.key })
+                  }}
+                  onDelete={async (p) => {
+                      try {
+                          await galleryService.deletePhoto(albumId as string, p.key)
+                          setIsFetching(true)
+                      } catch {
+                          setError('Failed to delete photo')
+                      }
+                  }}
               />
           )}
+          <EditPhotoDialog
+              open={editTarget !== null}
+              onOpenChange={(next) => { if (!next) setEditTarget(null) }}
+              albumId={albumId as string}
+              photoKey={editTarget?.key ?? null}
+          />
         </div>
       </div>
     </div>
