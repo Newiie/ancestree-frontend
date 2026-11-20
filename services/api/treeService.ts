@@ -6,6 +6,7 @@ import { UpdateType } from './updateService';
 import profileService from './profileService';
 import { ApiError } from '@/lib/errors';
 import { treeDataResponseSchema } from '@/lib/schema';
+import { handleUnauthorized } from '@/lib/authGuard';
 
 const fetchTreeData = async (userId: string) => {
     const token = selectToken(store.getState());
@@ -17,11 +18,14 @@ const fetchTreeData = async (userId: string) => {
         },
     });
     if (!response.ok) {
+        if (response.status === 401) handleUnauthorized();
         throw new ApiError(response.status, `Failed to fetch tree data: ${response.status}`);
     }
     const data = await response.json();
+    console.log('[treeService] raw response:', JSON.stringify(data, null, 2));
     const parsed = treeDataResponseSchema.safeParse(data);
     if (!parsed.success) {
+        console.error('[treeService] Zod parse errors:', parsed.error.issues);
         throw new ApiError(500, 'Unexpected response shape from tree API');
     }
     return parsed.data;
@@ -39,6 +43,7 @@ const postAddParent = async (treeId: string, formData: FormData) => {
         body: formData,
     });
     if (!response.ok) {
+        if (response.status === 401) handleUnauthorized();
         throw new ApiError(response.status, `Failed to add parent: ${response.status}`);
     }
     const data = await response.json();
@@ -59,6 +64,7 @@ const postAddChild = async (treeId: string, formData: FormData) => {
         body: formData,
     });
     if (!response.ok) {
+        if (response.status === 401) handleUnauthorized();
         throw new ApiError(response.status, `Failed to add child: ${response.status}`);
     }
     const data = await response.json();
@@ -79,6 +85,7 @@ const patchEditPersonNode = async (nodeId: string, formData: FormData) => {
         body: formData,
     });
     if (!response.ok) {
+        if (response.status === 401) handleUnauthorized();
         throw new ApiError(response.status, `Failed to edit person node: ${response.status}`);
     }
     const data = await response.json();
@@ -99,6 +106,7 @@ const deletePersonNode = async (nodeId: string) => {
         },
     });
     if (!response.ok) {
+        if (response.status === 401) handleUnauthorized();
         throw new ApiError(response.status, `Failed to delete person node: ${response.status}`);
     }
     const data = await response.json();
@@ -120,6 +128,7 @@ const postConnectPersonToUser = async (userId: string, nodeId: string) => {
         body: JSON.stringify({ nodeId }),
     });
     if (!response.ok) {
+        if (response.status === 401) handleUnauthorized();
         throw new ApiError(response.status, `Failed to connect person to user: ${response.status}`);
     }
     const data = await response.json();

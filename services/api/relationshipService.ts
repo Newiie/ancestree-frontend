@@ -19,10 +19,8 @@ const findSimilarPersons = async (personDetails: { firstName?: string, lastName?
 
         const data = await response.json();
 
-        // Update user progress for searching relatives
-        if (data && data.length > 0) {
-            await profileService.updateUserProgress("Search for relatives using the Relationships tool");
-        }
+        // Mark step as done whenever the user performs a search
+        await profileService.updateUserProgress("Search for relatives using the Relationships tool");
 
         return data;
     } catch (error) {

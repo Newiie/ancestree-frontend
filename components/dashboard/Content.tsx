@@ -150,9 +150,29 @@ const Content = () => {
         const memoriesResponse = await dashboardService.fetchRecentMemories();
         const updatesResponse = await dashboardService.fetchMonthlyUpdates();
         const birthdaysResponse = await dashboardService.fetchUpcomingBirthdays();
-        // Update progress steps if fetched successfully
+        // Merge API completion status into the hardcoded progress template
+        // API may return objects [{title, completed}] or just completed titles as strings
         if (progressResponse?.progress) {
-          setProgressSteps(progressResponse.progress);
+          const apiProgress: unknown[] = progressResponse.progress;
+          const completedTitles = new Set(
+            apiProgress.map((s: unknown) =>
+              typeof s === 'string' ? s : (s as { title?: string }).title
+            )
+          );
+          const isStatusArray = apiProgress.length > 0 && typeof apiProgress[0] === 'object';
+          if (isStatusArray) {
+            setProgressSteps(
+              progress.map(step => ({
+                ...step,
+                completed: !!(apiProgress as { title?: string; completed?: boolean }[]).find(
+                  s => s.title === step.title
+                )?.completed
+              }))
+            );
+          } else {
+            // API returned array of completed title strings
+            setProgressSteps(progress.map(step => ({ ...step, completed: completedTitles.has(step.title) })));
+          }
         }
 
         // Update memory photos if fetched successfully

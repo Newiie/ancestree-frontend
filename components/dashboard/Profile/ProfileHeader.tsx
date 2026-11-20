@@ -12,13 +12,14 @@ import { UserFriend } from '@/types/profile';
 
 const ProfileHeader = () => {
   const { user } = useAuth();
-  const { 
-    userData, 
-    updateProfileImage, 
-    updateBackgroundImage, 
-    sendFriendRequest, 
+  const {
+    userData,
+    updateProfileImage,
+    updateBackgroundImage,
+    sendFriendRequest,
     acceptFriendRequest,
-    userFriends
+    userFriends,
+    profileUserId
   } = useProfile();
 
   const [isProfileHover, setIsProfileHover] = useState<boolean>(false);
@@ -208,7 +209,7 @@ const ProfileHeader = () => {
               >
                 View Tree
               </Link>
-              {user?.id !== userData?.userId && (() => {
+              {user?.id !== profileUserId && (() => {
                 const isConnected = userData?.friendsList?.some((friend: UserFriend) => friend.userId === user?.id);
                 const sentRequest = userData?.friendRequestList?.includes(user?.id ?? '');
                 const incomingRequest = userFriends?.friendRequest?.includes(userData?.userId ?? '');

@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from "@/lib/axiosInstance";
 import store from "@/store/store";
 import { selectToken, selectId } from "@/store/userSlice";
 import { baseUrl } from '@/lib/config';

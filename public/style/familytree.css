@@ -135,6 +135,7 @@ body {
     border-radius: 5px;
     text-decoration: none;
     transition: 0.5s;
+    background-color: #ffffff;
     width: 10rem;
     white-space: normal;
 }

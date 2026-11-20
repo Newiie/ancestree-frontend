@@ -2,6 +2,7 @@ import { baseUrl } from "@/lib/config";
 import { selectToken } from "@/store/userSlice";
 import store from "@/store/store";
 import profileService from "./profileService";
+import { handleUnauthorized } from "@/lib/authGuard";
 const notificationService = {
     fetchNotifications: async () => {
         try {
@@ -16,7 +17,8 @@ const notificationService = {
             });
             
             if (response.status === 401) {
-                throw new Error("token expired");
+                handleUnauthorized();
+                return;
             }
             
             const data = await response.json();
@@ -38,7 +40,8 @@ const notificationService = {
             });
             
             if (response.status === 401) {
-                throw new Error("token expired");
+                handleUnauthorized();
+                return;
             }
             
             const data = await response.json();

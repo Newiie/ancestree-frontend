@@ -24,6 +24,7 @@ interface ProfileProviderType {
   isFetching: boolean;
   userFriends: FriendListResponse;
   friendsData: UserFriend[];
+  profileUserId: string;
 }
 
 const ProfileContext = createContext<ProfileProviderType | undefined>(undefined);
@@ -160,7 +161,8 @@ export const ProfileProvider: React.FC<{ children: ReactNode, userId: string }> 
       acceptFriendRequest,
       isFetching,
       userFriends,
-      friendsData
+      friendsData,
+      profileUserId: userId
     }}>
       {children}
     </ProfileContext.Provider>

@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Image from 'next/image';
-import { InfoIcon, PencilIcon, PlusIcon, UserRoundIcon } from 'lucide-react';
+import { InfoIcon, PencilIcon, PlusIcon, UserRoundIcon, Calendar, Globe, MapPin, Users, User2 } from 'lucide-react';
 import { useTree } from '@/providers/TreeProvider';
 import { useRouter } from 'next/navigation';
 import {
@@ -103,138 +103,130 @@ const TreeNodeCard = ({
                                         <InfoIcon size={16} />
                                     </div>
                                 </SheetTrigger>
-                                <SheetContent>
-                                    <SheetHeader>
-                                    <SheetTitle>Person Information: </SheetTitle>
-                                    <SheetDescription>
-                                        Overview of personal and family details.
-                                    </SheetDescription>
-                                    </SheetHeader>
-                                    <div>
-                                        <p className='pt-4'>
-                                            Name:
-                                            <span className='pl-2 text-[#7C7C7C]'>
-                                                {node?.person?.generalInformation?.firstName}
-                                                {" "}
-                                                {node?.person?.generalInformation?.middleName}
-                                                {" "}
-                                                {node?.person?.generalInformation?.lastName}
-                                                {" "}
-                                                {node?.person?.generalInformation?.suffix}
+                                <SheetContent className="bg-[#faf9f7] border-l border-stone-200/60 overflow-y-auto p-0">
+                                    {/* Profile header */}
+                                    <div className="flex flex-col items-center gap-3 px-5 pt-8 pb-5 border-b border-stone-100">
+                                        <div className="w-20 h-20 rounded-full overflow-hidden border-2 border-[#1B5A1B]/20 shadow-md flex-shrink-0">
+                                            <Image
+                                                src={node?.person?.profilePicture || FALLBACK_AVATAR}
+                                                alt="profile"
+                                                width={80}
+                                                height={80}
+                                                className="w-full h-full object-cover"
+                                            />
+                                        </div>
+                                        <div className="text-center">
+                                            <h2 className="text-base font-semibold text-stone-800">
+                                                {[
+                                                    node?.person?.generalInformation?.firstName,
+                                                    node?.person?.generalInformation?.middleName,
+                                                    node?.person?.generalInformation?.lastName,
+                                                    node?.person?.generalInformation?.suffix,
+                                                ].filter(Boolean).join(' ')}
+                                            </h2>
+                                            <span className={`mt-1.5 inline-block text-xs px-2.5 py-0.5 rounded-full font-medium ${
+                                                node?.person?.generalInformation?.status === 'living'
+                                                    ? 'bg-[#D4F3C0]/60 text-[#1B5A1B]'
+                                                    : node?.person?.generalInformation?.status === 'deceased'
+                                                    ? 'bg-stone-100 text-stone-500'
+                                                    : 'bg-stone-100 text-stone-400'
+                                            }`}>
+                                                {capitalizeFirstLetter(node?.person?.generalInformation?.status ?? 'Unknown')}
                                             </span>
-                                        </p>
-                                        {
-                                            node?.person?.vitalInformation?.sex && (
-                                                <>
+                                        </div>
+                                    </div>
 
-                                                    <p>
-                                                        Sex:
-                                                        <span className='pl-2 text-[#7C7C7C]'>
-                                                        {capitalizeFirstLetter(node?.person?.vitalInformation?.sex ?? '')}
-                                                        </span>
-                                                    </p>
-                                                </>
-                                            )
-                                        }
-                                        {
-                                            node?.person?.generalInformation?.status && (
-                                                <>
+                                    <SheetHeader className="sr-only">
+                                        <SheetTitle>Person Information</SheetTitle>
+                                        <SheetDescription>Overview of personal and family details.</SheetDescription>
+                                    </SheetHeader>
 
-                                                    <p>
-                                                        Status:
-                                                        <span className='pl-2 text-[#7C7C7C]'>
-                                                            {capitalizeFirstLetter(node?.person?.generalInformation?.status ?? '')}
-                                                        </span>
-                                                    </p>
-                                                </>
-                                            )
-                                        }
-                                        {
-                                            node?.person?.generalInformation?.birthPlace && (
-                                                <>
+                                    <div className="flex flex-col gap-4 px-5 py-5">
 
-                                                    <p>
-                                                        Birth Place:
-                                                        <span className='pl-2 text-[#7C7C7C]'>
-                                                            {capitalizeFirstLetter(node?.person?.generalInformation?.birthPlace ?? '')}
-                                                        </span>
-                                                    </p>
-                                                </>
-                                            )
-                                        }
+                                        {/* Personal details */}
+                                        <div className="bg-stone-50/80 rounded-xl p-3 flex flex-col gap-2.5 border border-stone-100">
+                                            <div className="flex items-center gap-1.5 mb-0.5">
+                                                <User2 size={11} className="text-[#1B5A1B]/70" />
+                                                <p className="text-xs font-semibold text-stone-500 uppercase tracking-wide">Personal</p>
+                                            </div>
+                                            {node?.person?.vitalInformation?.sex && (
+                                                <div className="flex items-center justify-between">
+                                                    <span className="text-xs text-stone-400 font-medium">Sex</span>
+                                                    <span className="text-sm text-stone-700">{capitalizeFirstLetter(node.person.vitalInformation.sex)}</span>
+                                                </div>
+                                            )}
+                                            {node?.person?.generalInformation?.birthdate && (
+                                                <div className="flex items-center justify-between">
+                                                    <span className="text-xs text-stone-400 font-medium flex items-center gap-1"><Calendar size={10} />Birth Date</span>
+                                                    <span className="text-sm text-stone-700">{node.person.generalInformation.birthdate.slice(0, 10)}</span>
+                                                </div>
+                                            )}
+                                            {(node?.person?.generalInformation?.birthPlace || node?.person?.generalInformation?.birthCountry) && (
+                                                <div className="flex items-center justify-between gap-2">
+                                                    <span className="text-xs text-stone-400 font-medium flex items-center gap-1 flex-shrink-0"><MapPin size={10} />Birthplace</span>
+                                                    <span className="text-sm text-stone-700 text-right">
+                                                        {[node.person.generalInformation.birthPlace, node.person.generalInformation.birthCountry].filter(Boolean).join(', ')}
+                                                    </span>
+                                                </div>
+                                            )}
+                                        </div>
 
-
-                                        {
-                                            node?.person?.generalInformation?.birthCountry && (
-                                                <>
-
-                                                    <p>
-                                                        Birth Country:
-                                                        <span className='pl-2 text-[#7C7C7C]'>
-                                                            {capitalizeFirstLetter(node?.person?.generalInformation?.birthCountry ?? '')}
-                                                        </span>
-                                                    </p>
-                                                </>
-                                            )
-                                        }
-
-
+                                        {/* Nationality */}
                                         {(node?.person?.generalInformation?.nationality?.length ?? 0) > 0 && (
-                                            <>
-
-                                                <div>
-                                                    <p>
-                                                        Nationality:
-                                                    </p>
-                                                    {node?.person?.generalInformation?.nationality?.map((nationality: string) => (
-                                                        <span className='pl-4 text-[#7C7C7C]' key={nationality}>{capitalizeFirstLetter(nationality)}</span>
+                                            <div className="bg-stone-50/80 rounded-xl p-3 flex flex-col gap-2 border border-stone-100">
+                                                <div className="flex items-center gap-1.5 mb-0.5">
+                                                    <Globe size={11} className="text-[#1B5A1B]/70" />
+                                                    <p className="text-xs font-semibold text-stone-500 uppercase tracking-wide">Nationality</p>
+                                                </div>
+                                                <div className="flex flex-wrap gap-1.5">
+                                                    {node.person!.generalInformation!.nationality!.map((nat: string) => (
+                                                        <span key={nat} className="inline-flex items-center bg-[#D4F3C0]/60 text-[#1B5A1B] px-2.5 py-1 rounded-full text-xs font-medium border border-[#1B5A1B]/10">
+                                                            {capitalizeFirstLetter(nat)}
+                                                        </span>
                                                     ))}
                                                 </div>
-                                            </>
+                                            </div>
                                         )}
-                                        {
-                                            node?.person?.generalInformation?.birthdate && (
-                                                <>
 
-                                                    <p>
-                                                        Birth Date:
-                                                        <span className='pl-2 text-[#7C7C7C]'>
-                                                            {node?.person?.generalInformation?.birthdate.slice(0, 10)}
+                                        {/* Parents */}
+                                        {(node?.parents?.length ?? 0) > 0 && (
+                                            <div className="bg-stone-50/80 rounded-xl p-3 flex flex-col gap-2 border border-stone-100">
+                                                <div className="flex items-center gap-1.5 mb-0.5">
+                                                    <Users size={11} className="text-[#1B5A1B]/70" />
+                                                    <p className="text-xs font-semibold text-stone-500 uppercase tracking-wide">Parents</p>
+                                                </div>
+                                                {node.parents!.map((parent: TreeNodeType, index: number) => (
+                                                    <div key={parent.id ?? index} className="flex items-center gap-2">
+                                                        <div className="w-6 h-6 rounded-full overflow-hidden border border-stone-200 flex-shrink-0">
+                                                            <Image
+                                                                src={parent.person?.profilePicture || FALLBACK_AVATAR}
+                                                                alt="parent"
+                                                                width={24}
+                                                                height={24}
+                                                                className="w-full h-full object-cover"
+                                                            />
+                                                        </div>
+                                                        <span className="text-sm text-stone-700">
+                                                            {[
+                                                                parent.person?.generalInformation?.firstName,
+                                                                parent.person?.generalInformation?.middleName,
+                                                                parent.person?.generalInformation?.lastName,
+                                                            ].filter(Boolean).map(capitalizeFirstLetter).join(' ')}
                                                         </span>
-                                                    </p>
-                                                </>
-                                            )
-                                        }
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        )}
 
-
-                                        {
-                                            (node?.parents?.length ?? 0) > 0 && (
-                                                <>
-
-                                                    <p>
-                                                        Parents:
-                                                    </p>
-                                                    {node?.parents?.map((parent: TreeNodeType, index: number) => (
-                                                        <p className='pl-4 text-[#7C7C7C]' key={parent.id ?? index}>
-                                                            {capitalizeFirstLetter(parent.person?.generalInformation?.firstName ?? '')}
-                                                            {" "}
-                                                            {capitalizeFirstLetter(parent.person?.generalInformation?.middleName ?? '')}
-                                                            {" "}
-                                                            {capitalizeFirstLetter(parent.person?.generalInformation?.lastName ?? '')}
-                                                        </p>
-                                                    ))}
-                                                </>
-                                            )
-                                        }
-
-                                        {(currentUserId === userId) &&<button
-                                        className='mt-4 bg-white hover:bg-red-50 text-red-500 border border-red-300 px-4 py-1 rounded-[3px]'
-                                        onClick={() => {
-                                            handleDeletePersonNode()
-                                        }}
-                                        >
-                                            Delete Person
-                                        </button>}
+                                        {/* Delete */}
+                                        {currentUserId === userId && (
+                                            <button
+                                                className="w-full mt-1 py-2.5 rounded-xl border border-red-200 text-red-500 text-sm font-medium hover:bg-red-50 transition-colors duration-150"
+                                                onClick={handleDeletePersonNode}
+                                            >
+                                                Delete Person
+                                            </button>
+                                        )}
                                     </div>
                                 </SheetContent>
                             </Sheet>

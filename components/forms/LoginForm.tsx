@@ -1,8 +1,8 @@
 "use client";
 
 import React, { FormEvent, useState, useEffect } from 'react';
-import { KeyRound, User } from 'lucide-react';
-import { useRouter } from 'next/navigation';
+import { KeyRound, User, AlertCircle } from 'lucide-react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import authService from '../../services/api/authService';
 import useAuth from '@/hooks/useAuth';
 
@@ -13,6 +13,8 @@ const LoginForm = () => {
   const [isLoading, setIsLoading] = useState(false);
   const { login, user } = useAuth();
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const sessionExpired = searchParams.get('reason') === 'session_expired';
 
   useEffect(() => {
     if (user?.id) {
@@ -52,6 +54,12 @@ const LoginForm = () => {
   return (
     <div className="bg p-8 rounded-lg bg-gray-100 shadow-md w-full max-w-md">
       <h1 className='text-primary text-center text-[2rem] font-[500]'>Welcome Back!</h1>
+      {sessionExpired && (
+        <div className="flex items-center gap-2 bg-amber-50 border border-amber-200 text-amber-800 text-sm px-3 py-2.5 rounded-lg mb-1">
+          <AlertCircle size={15} className="flex-shrink-0" />
+          Your session has expired. Please log in again.
+        </div>
+      )}
       <form onSubmit={handleLogin} className="flex flex-col gap-[1rem] w-full">
         {error && <div className="text-red-500">{error}</div>}
         <label className="text-black" htmlFor="email">Username:</label>

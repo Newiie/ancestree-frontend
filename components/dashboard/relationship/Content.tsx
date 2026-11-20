@@ -12,8 +12,10 @@ const Content = () => {
     birthdate: ''
   });
 
-  const [isSearching, setIsSearching] = useState<boolean>(false);  
+  const [isSearching, setIsSearching] = useState<boolean>(false);
   const [searchResults, setSearchResults] = useState([]);
+  const [hasSearched, setHasSearched] = useState(false);
+  const [searchError, setSearchError] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState('Find Person');
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -27,9 +29,19 @@ const Content = () => {
   const handleSearch = async () => {
     setIsSearching(true);
     setSearchResults([]);
-    const data = await relationshipService.findSimilarPersons(formData);
-    setSearchResults(data);
-    setIsSearching(false);
+    setSearchError(null);
+    setHasSearched(true);
+    try {
+      const [data] = await Promise.all([
+        relationshipService.findSimilarPersons(formData),
+        new Promise(resolve => setTimeout(resolve, 800)),
+      ]);
+      setSearchResults((data as any) ?? []);
+    } catch {
+      setSearchError('Something went wrong. Please try again.');
+    } finally {
+      setIsSearching(false);
+    }
   };
 
   return (
@@ -124,7 +136,7 @@ const Content = () => {
             <button
               type='submit'
               disabled={isSearching}
-              className='px-6 py-2.5 bg-[#1B5A1B] hover:bg-[#1B5A1B]/90 disabled:opacity-50 disabled:cursor-not-allowed text-white text-sm font-semibold rounded-xl transition-colors'
+              className='w-[110px] py-2.5 bg-[#1B5A1B] hover:bg-[#1B5A1B]/90 disabled:opacity-50 disabled:cursor-not-allowed text-white text-sm font-semibold rounded-xl transition-colors text-center'
             >
               {isSearching ? 'Searching…' : 'Search'}
             </button>
@@ -148,7 +160,19 @@ const Content = () => {
           </div>
         )}
 
-        {!isSearching && searchResults.length > 0 && (
+        {!isSearching && searchError && (
+          <div className='bg-white rounded-2xl border border-red-100 p-8 flex flex-col items-center text-center'>
+            <div className='w-12 h-12 rounded-full bg-red-50 flex items-center justify-center mb-4'>
+              <svg width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='#ef4444' strokeWidth='1.5' strokeLinecap='round' strokeLinejoin='round'>
+                <circle cx='12' cy='12' r='10'/><line x1='12' y1='8' x2='12' y2='12'/><line x1='12' y1='16' x2='12.01' y2='16'/>
+              </svg>
+            </div>
+            <p className='text-sm font-semibold text-stone-700 mb-1'>Search failed</p>
+            <p className='text-sm text-stone-400'>{searchError}</p>
+          </div>
+        )}
+
+        {!isSearching && !searchError && hasSearched && searchResults.length > 0 && (
           <>
             <p className='text-xs font-semibold text-stone-400 uppercase tracking-widest mb-3'>
               {searchResults.length} result{searchResults.length !== 1 ? 's' : ''} found
@@ -161,15 +185,15 @@ const Content = () => {
           </>
         )}
 
-        {!isSearching && searchResults.length === 0 && (
+        {!isSearching && !searchError && hasSearched && searchResults.length === 0 && (
           <div className='bg-white rounded-2xl border border-stone-200 p-10 flex flex-col items-center text-center'>
             <div className='w-12 h-12 rounded-full bg-[#EAF1E5] flex items-center justify-center mb-4'>
               <svg width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='#1B5A1B' strokeWidth='1.5' strokeLinecap='round' strokeLinejoin='round'>
                 <circle cx='11' cy='11' r='8'/><path d='m21 21-4.35-4.35'/>
               </svg>
             </div>
-            <p className='text-sm font-semibold text-stone-700 mb-1'>Search for relatives</p>
-            <p className='text-sm text-stone-400 max-w-xs'>Enter a name or birth details above to find potential family connections in the global tree.</p>
+            <p className='text-sm font-semibold text-stone-700 mb-1'>No results found</p>
+            <p className='text-sm text-stone-400 max-w-xs'>No matches for your search. Try different name or birth details.</p>
           </div>
         )}
       </div>

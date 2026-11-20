@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { CircleXIcon } from 'lucide-react';
+import { X, Link2 } from 'lucide-react';
 import { useTree } from '@/providers/TreeProvider';
 
 const ConnectPersonModal = () => {
@@ -16,48 +16,77 @@ const ConnectPersonModal = () => {
     e.preventDefault();
     handleConnectPersonToUser(userId);
   };
+
   return (
-    <div className="absolute top-0 left-0 flex items-center justify-center w-full h-full bg-black/50 z-10">
+    <div className="absolute inset-0 flex items-center justify-center bg-black/40 backdrop-blur-[2px] z-10">
       <motion.form
-        initial={{ y: '-10%', opacity: 0 }}
-        animate={{ y: '0%', opacity: 1 }}
-        exit={{ y: '-15%', opacity: 0 }}
-        transition={{ duration: 0.3, ease: 'easeOut' }}
-        className="relative flex flex-col gap-6 bg-white rounded-[10px] py-4 px-8"
+        initial={{ y: -16, opacity: 0, scale: 0.98 }}
+        animate={{ y: 0, opacity: 1, scale: 1 }}
+        exit={{ y: -12, opacity: 0, scale: 0.97 }}
+        transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+        className="relative bg-[#faf9f7] w-[95%] max-w-[380px] rounded-2xl shadow-2xl shadow-stone-900/20 border border-stone-200/60"
         onSubmit={handleSubmit}
       >
-        <div className='text-xl text-black/70 font-bold pr-4'>Connect Person to User</div>
-        <div
-          className="absolute top-4 right-2 cursor-pointer"
-          onClick={() => toggleConnectPersonModal()}
-        >
-          <CircleXIcon
-            className='text-black/70 hover:text-black/50 transition-colors duration-300'
-            size={24}
-          />
-        </div>
-        {/* NAME DETAILS */}
-        <div className='flex flex-wrap mt-2 w-full gap-2'>
-          <div className='relative flex flex-col flex-grow'>
-            <label className='absolute -top-5 left-0 text-sm text-gray-600 mb-1 font-semibold'>User ID: </label>
-            <input
-              type="text"
-              placeholder='User ID'
-              className='border flex-1 outline-none hover:bg-white/50 rounded px-2 py-1'
-              value={userId}
-              onChange={(e) => setUserId(e.target.value)}
-            />
+        {/* Header */}
+        <div className="flex items-start justify-between px-5 pt-5 pb-4 border-b border-stone-200/70">
+          <div className="flex flex-col gap-1">
+            <div className="flex items-center gap-2">
+              <div className="w-6 h-6 rounded-md bg-[#D4F3C0]/60 flex items-center justify-center">
+                <Link2 size={13} className="text-[#1B5A1B]" />
+              </div>
+              <span className="text-xs uppercase tracking-widest text-stone-400 font-medium">Family Tree</span>
+            </div>
+            <h2 className="text-base font-semibold text-stone-800 mt-0.5">Connect Person to User</h2>
+            <p className="text-xs text-stone-400 leading-relaxed">
+              Link this family member to an existing account using their User ID.
+            </p>
           </div>
+          <button
+            type="button"
+            onClick={() => toggleConnectPersonModal()}
+            className="mt-0.5 w-7 h-7 flex items-center justify-center rounded-full bg-stone-100 hover:bg-stone-200 text-stone-500 transition-colors flex-shrink-0"
+          >
+            <X size={14} />
+          </button>
         </div>
 
-        {/* BUTTONS */}
-        <div className='flex justify-end gap-4'>
-          <button type='button' onClick={() => toggleConnectPersonModal()} className='bg-white hover:bg-[#DFDFDF] transition-colors duration-300 text-black border-1 border-green px-4 py-1 rounded-md'>Cancel</button>
-          <button className='bg-primary hover:bg-primary/70 transition-colors duration-300 text-white px-4 py-1 rounded-md' type='submit'>Connect</button>
+        {/* Body */}
+        <div className="px-5 py-5 flex flex-col gap-5">
+          <div className="flex flex-col gap-1.5">
+            <label className="text-xs font-semibold text-stone-500 uppercase tracking-wide">
+              User ID
+            </label>
+            <input
+              type="text"
+              placeholder="Enter User ID"
+              className="w-full border border-stone-200 rounded-lg px-3 py-2 text-sm text-stone-800 bg-stone-50 placeholder:text-stone-400 focus:outline-none focus:border-[#1B5A1B]/40 focus:bg-white transition-colors duration-150"
+              value={userId}
+              onChange={(e) => setUserId(e.target.value)}
+              autoFocus
+            />
+          </div>
+
+          {/* Actions */}
+          <div className="flex gap-2">
+            <button
+              type="button"
+              onClick={() => toggleConnectPersonModal()}
+              className="flex-1 py-2.5 rounded-xl border border-[#1B5A1B]/30 text-[#1B5A1B] text-sm font-medium hover:bg-[#D4F3C0]/40 transition-colors duration-150"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              className="flex-1 py-2.5 rounded-xl bg-[#1B5A1B] hover:bg-[#34762E] text-white text-sm font-medium transition-colors duration-150 flex items-center justify-center gap-1.5"
+            >
+              <Link2 size={13} />
+              Connect
+            </button>
+          </div>
         </div>
       </motion.form>
     </div>
-  )
-}
+  );
+};
 
 export default ConnectPersonModal;

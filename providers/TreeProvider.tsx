@@ -49,10 +49,13 @@ export const TreeProvider: React.FC<{ children: ReactNode, id: string }> = ({ ch
             setUserId(id);
             TreeService.fetchTreeData(id)
                 .then((data) => {
+                    console.log('[TreeProvider] familyTree.id:', data.familyTree.id);
+                    console.log('[TreeProvider] root.id:', data.familyTree.root.id);
                     setTreeData([data.familyTree.root]);
                     setTreeId(data.familyTree.id);
                 })
-                .catch(() => {
+                .catch((err) => {
+                    console.error('[TreeProvider] fetchTreeData error:', err);
                     toast.error('Failed to load family tree. Please refresh the page.');
                 })
                 .finally(() => {
